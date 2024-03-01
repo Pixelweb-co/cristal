@@ -1,0 +1,10 @@
+Below is a list of files we were unable to include in this export. These files
+are not missing, but were not available in our file-store cloud at the time the
+tarball was made or are not included because they can be generated. In almost
+all cases these will be resolved the next time you generate a backup or export.
+
+.htaccess: Generated files are not included
+
+If you need immediate access to the files listed here, or have questions about
+the state of your files, you can contact support via your Dashboard.
+

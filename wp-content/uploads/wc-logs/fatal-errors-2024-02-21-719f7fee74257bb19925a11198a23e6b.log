@@ -1,0 +1,15 @@
+2024-02-21T22:34:03+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in D:\xampp\htdocs\crystal-eco\wp-includes\formatting.php:5683
+Stack trace:
+#0 D:\xampp\htdocs\crystal-eco\wp-includes\formatting.php(5683): urlencode(Array)
+#1 D:\xampp\htdocs\crystal-eco\wp-includes\class-wp-query.php(1179): wp_basename(Array)
+#2 D:\xampp\htdocs\crystal-eco\wp-includes\class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 D:\xampp\htdocs\crystal-eco\wp-includes\class-wp-query.php(1868): WP_Query->parse_query()
+#4 D:\xampp\htdocs\crystal-eco\wp-includes\class-wp-query.php(3824): WP_Query->get_posts()
+#5 D:\xampp\htdocs\crystal-eco\wp-includes\class-wp.php(696): WP_Query->query(Array)
+#6 D:\xampp\htdocs\crystal-eco\wp-includes\class-wp.php(816): WP->query_posts()
+#7 D:\xampp\htdocs\crystal-eco\wp-includes\functions.php(1336): WP->main('')
+#8 D:\xampp\htdocs\crystal-eco\wp-blog-header.php(16): wp()
+#9 D:\xampp\htdocs\crystal-eco\index.php(17): require('D:\\xampp\\htdocs...')
+#10 {main}
+  thrown en D:\xampp\htdocs\crystal-eco\wp-includes\formatting.php en la línea 5683
+

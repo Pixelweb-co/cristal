@@ -1,0 +1,15 @@
+2024-02-02T22:08:31+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+

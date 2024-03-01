@@ -1,0 +1,50 @@
+.tml .tml-label {
+    color: #ffff
+}
+
+/* [type=button], [type=submit], button {
+    border: 1px solid rgb(247, 243, 244);
+    color:#ffff
+} */
+
+.tml-lostpassword-link {
+  display: none;
+}
+.elementor-330 .elementor-element.elementor-element-5f503d30:not(.elementor-motion-effects-element-type-background), .elementor-330 .elementor-element.elementor-element-5f503d30 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    box-shadow: 0 0 10px 0 #000000;
+}
+
+.woocommerce-cart .woocommerce-cart-form {
+    flex: 1 0 70%; /* 100% at small screens; 70% on larger screens */
+    margin-right: 30px;
+  }
+  /* The element that contains the cart totals */
+  .woocommerce-cart .cart-collaterals {
+    flex: 1 0 30%; /* 100% at small screens; 30% on larger screens */
+    margin-left: 30px;
+  }
+  /* Some minor tweak to make sure the cart totals fill the space */
+  .woocommerce-cart .cart-collaterals .cart_totals {
+    width: 100%;
+    padding: 0 20px 70px;
+  }
+
+  .woocommerce-cart  {
+    .e-con>.e-con-inner {
+        margin: 0 53px !important;
+    }
+  }
+
+  .e-con-inner {
+    max-width: none !important;
+}
+
+.coupon .e-cart-section .shop_table {
+    display: none  !important;
+}
+.e-shop-table .e-cart-section .e-shop-table .e-cart-section {
+    display: none  !important;
+}
+.coupon .e-cart-section .shop_table{
+    display: none  !important;
+}

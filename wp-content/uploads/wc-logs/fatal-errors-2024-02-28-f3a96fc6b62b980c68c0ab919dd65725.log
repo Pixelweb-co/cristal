@@ -1,0 +1,58 @@
+2024-02-28T16:52:35+00:00 CRITICAL Uncaught ArgumentCountError: Too few arguments to function buscar_productos(), 0 passed in D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php on line 11 and exactly 4 expected in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php:518
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php(11): buscar_productos()
+#1 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(106): include('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#3 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#4 {main}
+  thrown in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php on line 518
+
+2024-02-28T16:53:16+00:00 CRITICAL Uncaught ArgumentCountError: Too few arguments to function buscar_productos(), 0 passed in D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php on line 11 and exactly 4 expected in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php:518
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php(11): buscar_productos()
+#1 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(106): include('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#3 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#4 {main}
+  thrown in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php on line 518
+
+2024-02-28T16:58:40+00:00 CRITICAL syntax error, unexpected token ";", expecting "]" in D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php on line 88
+
+2024-02-28T19:00:49+00:00 CRITICAL Unmatched '}' in D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\header.php on line 113
+
+2024-02-28T19:21:13+00:00 CRITICAL Uncaught Error: Call to a member function contents() on null in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\templates\miniCart.php:3
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php(208): include()
+#1 D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php(217): mostrar_minicart()
+#2 D:\xampp\htdocs\demowp\wp-includes\shortcodes.php(433): shortcode_mini_cart('', '', 'mini_cart')
+#3 [internal function]: do_shortcode_tag(Array)
+#4 D:\xampp\htdocs\demowp\wp-includes\shortcodes.php(273): preg_replace_callback('/\\[(\\[?)(mini_c...', 'do_shortcode_ta...', '[mini_cart]')
+#5 D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\header.php(114): do_shortcode('[mini_cart]')
+#6 D:\xampp\htdocs\demowp\wp-includes\template.php(790): require_once('D:\\xampp\\htdocs...')
+#7 D:\xampp\htdocs\demowp\wp-includes\template.php(725): load_template('D:\\xampp\\htdocs...', true, Array)
+#8 D:\xampp\htdocs\demowp\wp-includes\general-template.php(48): locate_template(Array, true, true, Array)
+#9 D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php(6): get_header()
+#10 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(106): include('D:\\xampp\\htdocs...')
+#11 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#12 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#13 {main}
+  thrown in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\templates\miniCart.php on line 3
+
+2024-02-28T19:21:46+00:00 CRITICAL Uncaught Error: Call to a member function contents() on null in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\templates\miniCart.php:3
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php(208): include()
+#1 D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php(217): mostrar_minicart()
+#2 D:\xampp\htdocs\demowp\wp-includes\shortcodes.php(433): shortcode_mini_cart('', '', 'mini_cart')
+#3 [internal function]: do_shortcode_tag(Array)
+#4 D:\xampp\htdocs\demowp\wp-includes\shortcodes.php(273): preg_replace_callback('/\\[(\\[?)(mini_c...', 'do_shortcode_ta...', '[mini_cart]')
+#5 D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\header.php(114): do_shortcode('[mini_cart]')
+#6 D:\xampp\htdocs\demowp\wp-includes\template.php(790): require_once('D:\\xampp\\htdocs...')
+#7 D:\xampp\htdocs\demowp\wp-includes\template.php(725): load_template('D:\\xampp\\htdocs...', true, Array)
+#8 D:\xampp\htdocs\demowp\wp-includes\general-template.php(48): locate_template(Array, true, true, Array)
+#9 D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php(6): get_header()
+#10 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(106): include('D:\\xampp\\htdocs...')
+#11 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#12 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#13 {main}
+  thrown in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\templates\miniCart.php on line 3
+

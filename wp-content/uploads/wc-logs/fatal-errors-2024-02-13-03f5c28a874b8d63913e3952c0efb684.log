@@ -1,0 +1,30 @@
+2024-02-13T13:42:59+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /code/wp-includes/formatting.php:5683
+Stack trace:
+#0 /code/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /code/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /code/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /code/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /code/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /code/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /code/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /code/wp-includes/functions.php(1336): WP->main('')
+#8 /code/wp-blog-header.php(16): wp()
+#9 /code/index.php(17): require('/code/wp-blog-h...')
+#10 {main}
+  thrown en /code/wp-includes/formatting.php en la línea 5683
+
+2024-02-13T14:27:55+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /code/wp-includes/formatting.php:5683
+Stack trace:
+#0 /code/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /code/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /code/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /code/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /code/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /code/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /code/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /code/wp-includes/functions.php(1336): WP->main('')
+#8 /code/wp-blog-header.php(16): wp()
+#9 /code/index.php(17): require('/code/wp-blog-h...')
+#10 {main}
+  thrown en /code/wp-includes/formatting.php en la línea 5683
+

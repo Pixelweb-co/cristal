@@ -1,0 +1,262 @@
+2024-01-26T01:43:47+00:00 CRITICAL Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given in /var/www/docroot/wp-content/themes/hello-elementor/functions.php:479
+Stack trace:
+#0 /var/www/docroot/wp-content/themes/hello-elementor/functions.php(479): in_array('comunicacion', 'parfois')
+#1 /var/www/docroot/wp-includes/shortcodes.php(433): dropdown_subcategorias_shortcode(Array, '', 'dropdown_subcat...')
+#2 [internal function]: do_shortcode_tag(Array)
+#3 /var/www/docroot/wp-includes/shortcodes.php(273): preg_replace_callback('/\\[(\\[?)(dropdo...', 'do_shortcode_ta...', '[dropdown_subca...')
+#4 /var/www/docroot/wp-content/plugins/elementor/includes/widgets/shortcode.php(130): do_shortcode('[dropdown_subca...')
+#5 /var/www/docroot/wp-content/plugins/elementor/includes/base/controls-stack.php(2297): Elementor\Widget_Shortcode->render()
+#6 /var/www/docroot/wp-content/plugins/elementor/includes/base/widget-base.php(614): Elementor\Controls_Stack->render_by_mode()
+#7 /var/www/docroot/wp-content/plugins/elementor/includes/base/widget-base.php(755): Elementor\Widget_Base->render_content()
+#8 /var/www/docroot/wp-content/plugins/elementor/includes/base/element-base.php(464): Elementor\Widget_Base->print_content()
+#9 /var/www/docroot/wp-content/plugins/elementor/includes/base/element-base.php(1375): Elementor\Element_Base->print_element()
+#10 /var/www/docroot/wp-content/plugins/elementor/includes/base/element-base.php(464): Elementor\Element_Base->print_content()
+#11 /var/www/docroot/wp-content/plugins/elementor/includes/base/element-base.php(1375): Elementor\Element_Base->print_element()
+#12 /var/www/docroot/wp-content/plugins/elementor/includes/base/element-base.php(464): Elementor\Element_Base->print_content()
+#13 /var/www/docroot/wp-content/plugins/elementor/core/base/document.php(1749): Elementor\Element_Base->print_element()
+#14 /var/www/docroot/wp-content/plugins/elementor-pro/modules/theme-builder/documents/theme-document.php(418): Elementor\Core\Base\Document->print_elements(Array)
+#15 /var/www/docroot/wp-content/plugins/elementor/includes/frontend.php(1179): ElementorPro\Modules\ThemeBuilder\Documents\Theme_Document->print_elements_with_wrapper(Array)
+#16 /var/www/docroot/wp-content/plugins/elementor/core/base/document.php(1193): Elementor\Frontend->get_builder_content(24, false)
+#17 /var/www/docroot/wp-content/plugins/elementor/modules/library/documents/library-document.php(76): Elementor\Core\Base\Document->get_content(false)
+#18 /var/www/docroot/wp-content/plugins/elementor-pro/modules/theme-builder/documents/theme-document.php(158): Elementor\Modules\Library\Documents\Library_Document->get_content(false)
+#19 /var/www/docroot/wp-content/plugins/elementor-pro/modules/theme-builder/documents/theme-document.php(173): ElementorPro\Modules\ThemeBuilder\Documents\Theme_Document->get_content()
+#20 /var/www/docroot/wp-content/plugins/elementor-pro/modules/theme-builder/classes/locations-manager.php(364): ElementorPro\Modules\ThemeBuilder\Documents\Theme_Document->print_content()
+#21 /var/www/docroot/wp-content/plugins/elementor-pro/modules/theme-builder/api.php(13): ElementorPro\Modules\ThemeBuilder\Classes\Locations_Manager->do_location('header')
+#22 /var/www/docroot/wp-content/themes/hello-elementor/header.php(35): elementor_theme_do_location('header')
+#23 /var/www/docroot/wp-includes/template.php(790): require_once('/var/www/docroo...')
+#24 /var/www/docroot/wp-includes/template.php(725): load_template('/var/www/docroo...', true, Array)
+#25 /var/www/docroot/wp-includes/general-template.php(48): locate_template(Array, true, true, Array)
+#26 /var/www/docroot/wp-content/themes/hello-elementor/archive-product.php(6): get_header()
+#27 /var/www/docroot/wp-content/plugins/woocommerce/includes/wc-core-functions.php(345): include('/var/www/docroo...')
+#28 /var/www/docroot/wp-content/plugins/woocommerce/templates/taxonomy-product-cat.php(22): wc_get_template('archive-product...')
+#29 /var/www/docroot/wp-includes/template-loader.php(106): include('/var/www/docroo...')
+#30 /var/www/docroot/wp-blog-header.php(19): require_once('/var/www/docroo...')
+#31 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#32 {main}
+  thrown en /var/www/docroot/wp-content/themes/hello-elementor/functions.php en la línea 479
+
+2024-01-26T01:45:36+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:46:25+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:46:26+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:46:31+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:46:34+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:46:34+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:47:00+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:47:53+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:47:57+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:48:49+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:48:58+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:49:01+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:49:21+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:49:52+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+
+2024-01-26T01:50:03+00:00 CRITICAL Uncaught TypeError: urlencode(): Argument #1 ($string) must be of type string, array given in /var/www/docroot/wp-includes/formatting.php:5683
+Stack trace:
+#0 /var/www/docroot/wp-includes/formatting.php(5683): urlencode(Array)
+#1 /var/www/docroot/wp-includes/class-wp-query.php(1179): wp_basename(Array)
+#2 /var/www/docroot/wp-includes/class-wp-query.php(949): WP_Query->parse_tax_query(Array)
+#3 /var/www/docroot/wp-includes/class-wp-query.php(1868): WP_Query->parse_query()
+#4 /var/www/docroot/wp-includes/class-wp-query.php(3824): WP_Query->get_posts()
+#5 /var/www/docroot/wp-includes/class-wp.php(696): WP_Query->query(Array)
+#6 /var/www/docroot/wp-includes/class-wp.php(816): WP->query_posts()
+#7 /var/www/docroot/wp-includes/functions.php(1336): WP->main('')
+#8 /var/www/docroot/wp-blog-header.php(16): wp()
+#9 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#10 {main}
+  thrown en /var/www/docroot/wp-includes/formatting.php en la línea 5683
+

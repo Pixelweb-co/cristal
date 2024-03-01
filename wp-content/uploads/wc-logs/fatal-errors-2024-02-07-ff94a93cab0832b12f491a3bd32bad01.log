@@ -1,0 +1,44 @@
+2024-02-07T15:06:22+00:00 CRITICAL Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, function "custom_login_redirect" not found or invalid function name in /var/www/docroot/wp-includes/class-wp-hook.php:324
+Stack trace:
+#0 /var/www/docroot/wp-includes/plugin.php(205): WP_Hook->apply_filters('http://crystal....', Array)
+#1 /var/www/docroot/wp-content/plugins/theme-my-login/includes/actions.php(449): apply_filters('login_redirect', 'http://crystal....', '', Object(WP_Error))
+#2 /var/www/docroot/wp-includes/class-wp-hook.php(324): tml_login_handler('')
+#3 /var/www/docroot/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#4 /var/www/docroot/wp-includes/plugin.php(517): WP_Hook->do_action(Array)
+#5 /var/www/docroot/wp-content/plugins/theme-my-login/includes/actions.php(373): do_action('tml_action_logi...')
+#6 /var/www/docroot/wp-includes/class-wp-hook.php(324): tml_action_handler('')
+#7 /var/www/docroot/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters(false, Array)
+#8 /var/www/docroot/wp-includes/plugin.php(517): WP_Hook->do_action(Array)
+#9 /var/www/docroot/wp-includes/template-loader.php(13): do_action('template_redire...')
+#10 /var/www/docroot/wp-blog-header.php(19): require_once('/var/www/docroo...')
+#11 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#12 {main}
+  thrown en /var/www/docroot/wp-includes/class-wp-hook.php en la línea 324
+
+2024-02-07T15:06:48+00:00 CRITICAL Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, function "custom_login_redirect" not found or invalid function name in /var/www/docroot/wp-includes/class-wp-hook.php:324
+Stack trace:
+#0 /var/www/docroot/wp-includes/plugin.php(205): WP_Hook->apply_filters('http://crystal....', Array)
+#1 /var/www/docroot/wp-content/plugins/theme-my-login/includes/actions.php(449): apply_filters('login_redirect', 'http://crystal....', '', Object(WP_Error))
+#2 /var/www/docroot/wp-includes/class-wp-hook.php(324): tml_login_handler('')
+#3 /var/www/docroot/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#4 /var/www/docroot/wp-includes/plugin.php(517): WP_Hook->do_action(Array)
+#5 /var/www/docroot/wp-content/plugins/theme-my-login/includes/actions.php(373): do_action('tml_action_logi...')
+#6 /var/www/docroot/wp-includes/class-wp-hook.php(324): tml_action_handler('')
+#7 /var/www/docroot/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters(false, Array)
+#8 /var/www/docroot/wp-includes/plugin.php(517): WP_Hook->do_action(Array)
+#9 /var/www/docroot/wp-includes/template-loader.php(13): do_action('template_redire...')
+#10 /var/www/docroot/wp-blog-header.php(19): require_once('/var/www/docroo...')
+#11 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#12 {main}
+  thrown en /var/www/docroot/wp-includes/class-wp-hook.php en la línea 324
+
+2024-02-07T15:16:53+00:00 CRITICAL Uncaught Error: Call to undefined function fa_custom_setup_kit() in /var/www/docroot/wp-content/themes/hello-theme-child-master/functions.php:55
+Stack trace:
+#0 /var/www/docroot/wp-settings.php(611): include()
+#1 /var/www/docroot/wp-config.php(100): require_once('/var/www/docroo...')
+#2 /var/www/docroot/wp-load.php(50): require_once('/var/www/docroo...')
+#3 /var/www/docroot/wp-blog-header.php(13): require_once('/var/www/docroo...')
+#4 /var/www/docroot/index.php(17): require('/var/www/docroo...')
+#5 {main}
+  thrown en /var/www/docroot/wp-content/themes/hello-theme-child-master/functions.php en la línea 55
+
