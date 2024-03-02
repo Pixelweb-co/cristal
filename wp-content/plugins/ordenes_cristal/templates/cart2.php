@@ -31,7 +31,7 @@
                                         </div>  
                                         <div class="observ_field " >
                                             <b>Observación:</b>        
-                                            <textarea class="form-control" placeholder="Escribe alguna observacíon adicional"></textarea>
+                                            <textarea class="form-control" ng-model="x.observacion" placeholder="Escribe alguna observacíon adicional"></textarea>
 
                                          </div>
                                     </td>
@@ -126,9 +126,11 @@
                         </div>
 			                
                         <?=include('panelStats.php')?>
-			                <div class="btn-cart-totals">
-                            <button type="button" class="btn btn-outline-generic">Enviar</span></button>
-                                
+			                <div  class="btn-cart-totals">
+                            <button type="button" id="btnSaveOrder" class="btn btn-outline-generic" ng-click="guardarOrden()">
+                                   <div class="cart-loader"></div> <span class="title_btn">Enviar</span> 
+                            </button>
+                    </div>                
 			                    
 			                </div>
                             <?=include('modalAddProduct.php')?>

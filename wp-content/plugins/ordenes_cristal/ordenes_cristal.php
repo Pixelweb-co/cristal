@@ -34,20 +34,29 @@ function cristal_pos_activate() {
         fecha_orden datetime NOT NULL,
         cliente varchar(100) NOT NULL,
         totalOrden decimal(10,2) NOT NULL,
+        fichero_adjunto varchar(100) NOT NULL,
+        marca varchar(100) NOT NULL,
+        image_marca varchar(100) NOT NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";
 
     $orden_items_sql = "CREATE TABLE $orden_items_table_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        id_item mediumint(9) NOT NULL AUTO_INCREMENT,
         order_id mediumint(9) NOT NULL,
-        nombre varchar(100) NOT NULL,
-        referencia varchar(100) NOT NULL,
-        precio decimal(10,2) NOT NULL,
-        peso decimal(10,2) NOT NULL,
-        categoria varchar(100) NOT NULL,
+        ID varchar(100) NOT NULL,
+        post_title varchar(100) NOT NULL,
+        post_content longtext,
+        post_id int(10) NOT NULL,
+        price decimal(10,2) NOT NULL,
+        categorias longtext NOT NULL,
         cnt int NOT NULL,
-        PRIMARY KEY  (id),
-        FOREIGN KEY  (order_id) REFERENCES $orden_table_name(id)
+        subtotal decimal(10,2) NOT NULL,
+        observacion longtext ,
+        marca varchar(100) NOT NULL,
+        sku varchar(100) NOT NULL,
+        image_url   longtext NOT NULL, 
+        PRIMARY KEY  (id_item),
+        FOREIGN KEY  (order_id) REFERENCES $orden_table_name(id) ON DELETE CASCADE
     ) $charset_collate;";
 
     $sql_valores_ideales = "CREATE TABLE IF NOT EXISTS $tabla_valores_ideales (
@@ -76,7 +85,10 @@ function agregar_estilos_y_scripts() {
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        var plugins_url = '<?=plugins_url()?>' 
+    </script>
     <?php
     
 
@@ -95,6 +107,10 @@ function agregar_estilos_y_scripts() {
     wp_register_script('order-plugin', plugins_url('assets/js/order_cart.js', __FILE__), array('jquery'), '1.0', true);
     wp_enqueue_script('order-plugin');
 
+
+    // Registrar y encolar el archivo JS
+    wp_register_script('validate-plugin', plugins_url('assets/js/jquery.validate.js', __FILE__), array('jquery'), '1.0', true);
+    wp_enqueue_script('validate-plugin');
 
 }
 
@@ -190,6 +206,7 @@ function cristal_pos_ordenes_page() {
 }
 
 
+
 // Función para mostrar formulario de orden
 function mostrar_formulario_orden() {
     // Aquí va el HTML del formulario de orden
@@ -206,6 +223,10 @@ function mostrar_formulario_orden() {
     
     ob_start();
     ?>  
+    <script>
+        var categorias_data = <?=json_encode($categorias)?>
+
+    </script>
 
 <?php include ('templates/cart2.php'); ?>
 
@@ -628,6 +649,7 @@ function buscar_productos($nombre='', $marca_id = null, $categoria_id = null, $t
             'sku' => $sku_producto,
             'categorias' => $categorias_producto_info, // Agregar las categorías del producto al resultado
             'marca'=>$marca_id_producto,
+            'observacion' => ''
         );
     }
 
@@ -849,3 +871,138 @@ function guardar_valor_marca_producto($post_id) {
 
 // Guardar el valor seleccionado en el campo marca del producto
 add_action('woocommerce_process_product_meta', 'guardar_valor_marca_producto');
+
+
+// Registrar la ruta del endpoint para guardar la orden
+function registrar_endpoint_guardar_orden() {
+    register_rest_route('ordenes_cristal/v1', '/guardar_orden', array(
+        'methods' => 'POST',
+        'callback' => 'handle_order_save_request',
+    ));
+}
+add_action('rest_api_init', 'registrar_endpoint_guardar_orden');
+
+// Función para manejar las solicitudes POST al endpoint /order-save
+function handle_order_save_request( $request ) {
+    // Obtener los datos del cuerpo de la solicitud
+    $params = $request->get_params();
+
+    // Verificar si se enviaron los datos de la orden
+    if (isset($_POST['order'])) {
+        // Si el usuario está logueado, obtener su ID
+        
+        $newOrder = json_decode(base64_decode($_POST['order']));
+       
+        
+        $user = wp_get_current_user();
+       
+        $user_id = $user->ID;
+        
+        if ($user_id) {
+            global $wpdb;
+            $orden_table_name = $wpdb->prefix . 'orden';
+            $orden_items_table_name = $wpdb->prefix . 'orden_items';
+            
+            // Crear una nueva orden
+            $fecha_actual = current_time('mysql'); // Obtener la fecha y hora actuales en formato MySQL
+            $totalOrden = $newOrder->total_order; // El total de la orden
+            
+            $file_name = '';
+            if($_FILES){
+                $file_name = $_FILES['file_order']['name']; 
+            }
+
+            $marca = $newOrder->marca;
+            $image_marca = $newOrder->image_marca; 
+
+            // Insertar la nueva orden en la tabla de órdenes
+            $wpdb->insert(
+                $orden_table_name,
+                array(
+                    'fecha_orden' => $fecha_actual,
+                    'cliente' => $user_id,
+                    'totalOrden' => $totalOrden,
+                    'fichero_adjunto'=>$file_name,
+                    'marca'=>$marca,
+                    'image_marca'=>$image_marca
+                )
+            );
+
+
+            // Obtener el ID de la orden recién creada
+            $order_id = $wpdb->insert_id;
+           
+            // Guardar los ítems de la orden en la tabla de items de la orden
+            foreach ($newOrder->items as $item) {
+                $wpdb->insert(
+                    $orden_items_table_name,
+                    array(
+                        'order_id' => $order_id,
+                        'ID' => $item->ID,
+                        'post_title' => $item->post_title,
+                        'post_content' => $item->post_content,
+                        'cnt' => $item->cnt,
+                        'observacion' => $item->observacion,
+                        'marca' => $item->marca,
+                        'price' => $item->price,
+                        'categorias' => json_encode($item->categorias),
+                        'subtotal' => $item->subtotal,
+                        'sku'=>$item->sku,
+                        'image_url'=>$item->image_url
+                    )
+                );
+            }
+
+            // Si se adjuntó un archivo, guardarlo relacionado con la orden
+            if (isset($_FILES['file_order'])) {
+                
+           
+            $file_order_upload = $_FILES['file_order'];
+
+            // Obtener el directorio de subidas de WordPress
+            $upload_dir = wp_upload_dir();
+            $base_dir = $upload_dir['basedir'];
+            $ordenes_cristal_dir = $base_dir . '/ordenes_cristal';
+
+            // Verificar si la carpeta ordenes_cristal existe, si no, crearla
+            if (!file_exists($ordenes_cristal_dir)) {
+                mkdir($ordenes_cristal_dir, 0755, true); // Crear la carpeta con permisos 0755
+            }
+
+            // Guardar el archivo adjunto en la carpeta uploads/ordenes_cristal
+            $file_path = $ordenes_cristal_dir . '/' . $file_order_upload['name'];
+            move_uploaded_file($file_order_upload['tmp_name'], $file_path);
+            }
+
+
+            return array( 'success' => true, 'message' => 'Order saved successfully', 'order_id' => $order_id );
+        } else {
+            return array( 'success' => false, 'message' => 'User not logged in' );
+        }
+    } else {
+        // Si faltan datos de la orden, devolver un mensaje de error
+        return array( 'success' => false, 'message' => 'Error: Missing order data' );
+    }
+}
+
+
+function get_orders_list() {
+
+    global $wpdb;
+    $orden_table_name = $wpdb->prefix . 'orden';
+    $orden_items_table_name = $wpdb->prefix . 'orden_items';
+
+    $out_data = [];
+    $orders= $wpdb->get_results("SELECT * FROM $orden_table_name");
+
+    foreach ($orders as $order) {
+
+        $order_items = $wpdb->get_results("SELECT * FROM $orden_items_table_name where order_id = $order->id");
+    
+        array_push($out_data,['order'=>$order,'items'=>$order_items]);
+
+
+    }
+
+    return $out_data;
+}

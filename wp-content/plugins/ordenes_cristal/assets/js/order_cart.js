@@ -1,609 +1,895 @@
-
-
 function closeModal() {
-    console.log('closeModal',$('#modalSearchProducts'))
-    $('#modalSearchProducts').modal('hide');
-
-    }
-
-  
-var app = angular.module("shoppingCart", []);
-   
-    app.controller('cartSearchController', function($scope, $http) {
-        console.log('controllerSearch')
-        $scope.marcaSeleccionada = null
-        $scope.categoriaSeleccionada = null
-        $scope.nombreProducto = null
-        $scope.tiendaSeleccionada = null
-        $scope.sresult = []
-
-    
-    
-        $scope.setMarca = (id) =>{
-            console.log('setMarca', id)
-            $scope.marcaSeleccionada = id
-            console.log('setsel', id)
-         jQuery("#filter-area .marco-marca-m").removeClass('selected');
-         jQuery("#menuma-"+id).addClass('selected');
-           
-        }
-
-        $scope.buscarProductos = function(){
-
-            jQuery("#primary .cart-loader").show();
-
-            var parametros = {};
-            if($scope.marcaSeleccionada) {
-                parametros.marca = $scope.marcaSeleccionada;
-            }
-            if($scope.categoriaSeleccionada) {
-                parametros.categoria = $scope.categoriaSeleccionada;
-            }
-            if($scope.nombreProducto) {
-                parametros.nombre = $scope.nombreProducto;
-            }
-            if($scope.tiendaSeleccionada) {
-                parametros.tienda = $scope.tiendaSeleccionada;
-            }
-            console.log("parametros",parametros);
-            // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
-            $http({
-                method : "POST",
-                url : base_url+'/wp-json/ordenes_cristal/v1/buscar_productos',
-                params: parametros,
-                headers:{'X-WP-Nonce' : nonce},
-            }).then(function (response) {
-                // Manejar la respuesta de la búsqueda de productos
-                console.log("Tienda ",response.data.tienda)
-                $scope.sresult = response.data.productos;
-                $scope.smarca = response.data.marca;
-                $scope.stienda = response.data.tienda;
-                jQuery("#primary .cart-loader").hide();
-            });
-        }        
-
-        $scope.addCart = (id_item,newProduct=false) => {
-            
-            if(!newProduct){
-            var product_add = $scope.sresult.find(p=>p.ID === id_item);
-            }else{
-            var product_add = {
-                post_title:'',
-                cnt:0,
-                categorias:[],
-                price:0,
-                marca:[],
-                post_content:'',
-                subtotal:0,
-                sku:'',
-                ID:74800
-            }    
-            }
-            
-            console.log("padd",product_add);
-
-            // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
-            // $http({
-            //     method : "POST",
-            //     url : '<?=get_site_url()?>/wp-json/ordenes_cristal/v1/add_to_cart',
-            //     params: product_add,
-            //     headers:{'X-WP-Nonce' : nonce},
-            // }).then(function (response) {
-            //     // Manejar la respuesta de la búsqueda de productos
-            //    // $scope.sresult = response.data;
-            //     console.log("result",response);
-            //     $scope.loadData()
-            //    
-           
-            // });
-
-
-            if(!localStorage.getItem('OrderCart')){
-                console.log("no existe localstorass")
-
-                localStorage.setItem('OrderCart',JSON.stringify([{...product_add,cnt:1}]))
-
-            }else{
-                
-                
-                var data = JSON.parse(localStorage.getItem('OrderCart'));
-                console.log("carrito",data)
-                
-                var found = data.find(i=>i.ID==product_add.ID)
-                
-                            if(!found){
-                                
-                                console.log("no found",found)
-               
-                                data.push({...product_add,cnt:1,subtotal:product_add.price})    
-                                
-                                localStorage.setItem('OrderCart',JSON.stringify(data));
-                            
-                            }else{
-                                    
-                                
-                                console.log("founddd ",found)
-                            
-
-
-                                found.cnt = found.cnt + 1
-                                found.subtotal = found.price * found.cnt
-                                
-                                var new_data = data.filter(i=>i.ID != product_add.ID);
-                                new_data.push(found);
-                                console.log("nwdta",new_data);
-                            
-                                localStorage.setItem('OrderCart',JSON.stringify(new_data));
-                                
-                                console.log("actr localstorass",new_data)
-                                
-                            }    
-            }
-
-           showMiniCart()
-           
-        }
-    })
-
-
-
-
-app.controller('miniCartController', function($scope, $http) {
-
-    console.log('miniCartController',$scope)
-
-    
-    
-    $scope.totalize = ()=>{
-        console.log("totalize")
-        $scope.total_order = 0
-        var data = JSON.parse(localStorage.getItem('OrderCart'));
-        if(!data){
-            return false
-        }
-
-        console.log("citems_t" ,data)
-
-
-        data.map((item,index)=>{
-            
-            $scope.total_order += parseInt(item.subtotal)
-
-        })
-
-    }
-
-    $scope.calculate = () => {
-        // Objeto para almacenar los totales por categoría
-        var totalsByCategory = {};
-    
-        // Obtener los datos del carrito del almacenamiento local
-        var cartData = JSON.parse(localStorage.getItem('OrderCart'));
-    
-        // Verificar si hay datos en el carrito
-        if (!cartData || cartData.length === 0) {
-            return [];
-        }
-       var id_C = 0
-        // Calcular los totales por categoría
-        cartData.forEach(item => {
-            // Obtener las categorías asociadas al producto
-            var categories = item.categorias;
-    
-            // Verificar si el producto tiene categorías asociadas
-            if (categories && categories.length > 0) {
-                categories.forEach(category => {
-                    // Obtener el nombre de la categoría
-                    var categoryName = category.name;
-                    if(categoryName != 'Sin categorizar'){
-                     id_C = category.ID;
-                    // Verificar si ya hay un total para esta categoría
-                    if (!totalsByCategory[categoryName]) {
-                        totalsByCategory[categoryName] = 0;
-                    }
-    
-                    // Incrementar el total de la categoría con el subtotal del producto
-                    totalsByCategory[categoryName] += parseInt(item.subtotal);
-                }
-                });
-            }
-        });
-    
-        // Convertir el objeto totalsByCategory a un array de objetos
-        var result = [];
-        Object.keys(totalsByCategory).forEach(categoryName => {
-            result.push({
-                ID: id_C,
-                title: categoryName, // Usando el nombre de la categoría como título
-                total_cat: parseInt(totalsByCategory[categoryName])
-            });
-        });
-        console.log("res por cat",result);
-        return result;
-    };
-
-    $scope.loadData = function() {
-          
-        $scope.items = localStorage.getItem('OrderCart') != null ? JSON.parse(localStorage.getItem('OrderCart')) : []
-        
-        console.log("items",$scope.items);
-        
-        $scope.totalize()
-        $scope.stats = $scope.calculate()
-        
-    
-    }
-
-    $scope.loadData()
-})
-
-        
-        
-        app.controller('cartController', function($scope, $http) {
-            
-          $scope.total_order = 0 
-          $file_order_upload = null 
-
-            // Obtener las tiendas desde el endpoint
-            $http.get(base_url+'/wp-json/ordenes_cristal/v1/obtener_tiendas')
-                    .then(function(response) {
-                        // Asignar las tiendas obtenidas a $scope.tiendas
-                        console.log(response);
-                        $scope.tiendas = response.data;
-                    })
-                    .catch(function(error) {
-                        console.error('Error al obtener las tiendas:', error);
-                    });
-
-                // Función para filtrar las tiendas según la opción seleccionada en el select
-                $scope.filtrarTiendas = function() {
-                    // Realizar alguna acción con la tienda seleccionada (por ejemplo, realizar otra llamada al servidor)
-                    console.log('Tienda seleccionada:', $scope.filtroTienda);
-                };
-
-                $scope.removeItem = function(id) {
-                    // Encuentra el índice del elemento con el ID especificado
-                    var index = $scope.items.findIndex(function(item) {
-                        return item.ID === id;
-                    });
-                    // Si se encontró el elemento, elimínalo del arreglo
-                    if (index !== -1) {
-                        $scope.items.splice(index, 1);
-                        // Actualiza localStorage eliminando el elemento correspondiente
-                        var cartData = JSON.parse(localStorage.getItem('OrderCart'));
-                        if (cartData) {
-                            var updatedCartData = cartData.filter(function(item) {
-                                return item.ID !== id;
-                            });
-                            localStorage.setItem('OrderCart', JSON.stringify(updatedCartData));
-                        }
-                    }
-                    // Recalcula el total del pedido
-                    $scope.totalize();
-                };
-                                      
-
-          $scope.loadData = function() {
-          
-            $scope.items = localStorage.getItem('OrderCart') != null ? JSON.parse(localStorage.getItem('OrderCart')) : []
-            
-            
-            $scope.totalize()
-            $scope.stats = $scope.calculate()
-            
-        
-        }
-
-        $scope.totalize = ()=>{
-            console.log("totalize")
-            $scope.total_order = 0
-            var data = JSON.parse(localStorage.getItem('OrderCart'));
-            if(!data){
-                return false
-            }
-
-            console.log("citems_t" ,data)
-
-
-            data.map((item,index)=>{
-                
-                $scope.total_order += parseInt(item.subtotal)
-
-            })
-
-        }
-
-        $scope.calculate = () => {
-            // Objeto para almacenar los totales por categoría
-            var totalsByCategory = {};
-        
-            // Obtener los datos del carrito del almacenamiento local
-            var cartData = JSON.parse(localStorage.getItem('OrderCart'));
-        
-            // Verificar si hay datos en el carrito
-            if (!cartData || cartData.length === 0) {
-                return [];
-            }
-           var id_C = 0
-            // Calcular los totales por categoría
-            cartData.forEach(item => {
-                // Obtener las categorías asociadas al producto
-                var categories = item.categorias;
-        
-                // Verificar si el producto tiene categorías asociadas
-                if (categories && categories.length > 0) {
-                    categories.forEach(category => {
-                        // Obtener el nombre de la categoría
-                        var categoryName = category.name;
-                        if(categoryName != 'Sin categorizar'){
-                         id_C = category.ID;
-                        // Verificar si ya hay un total para esta categoría
-                        if (!totalsByCategory[categoryName]) {
-                            totalsByCategory[categoryName] = 0;
-                        }
-        
-                        // Incrementar el total de la categoría con el subtotal del producto
-                        totalsByCategory[categoryName] += item.subtotal;
-                    
-                    }
-                    });
-                }
-            });
-        
-            // Convertir el objeto totalsByCategory a un array de objetos
-            var result = [];
-            Object.keys(totalsByCategory).forEach(categoryName => {
-                result.push({
-                    ID: id_C,
-                    title: categoryName, // Usando el nombre de la categoría como título
-                    total_cat: totalsByCategory[categoryName]
-                });
-            });
-            console.log("res por cat",result);
-            return result;
-        };
-        
-
-        $scope.addCart = (id_item) => {
-            var product_add = $scope.sresult.find(p=>p.ID === id_item);
-            console.log("padd",product_add);
-
-            // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
-            // $http({
-            //     method : "POST",
-            //     url : '<?=get_site_url()?>/wp-json/ordenes_cristal/v1/add_to_cart',
-            //     params: product_add,
-            //     headers:{'X-WP-Nonce' : nonce},
-            // }).then(function (response) {
-            //     // Manejar la respuesta de la búsqueda de productos
-            //    // $scope.sresult = response.data;
-            //     console.log("result",response);
-            //     $scope.loadData()
-            //    
-           
-            // });
-
-
-            if(!localStorage.getItem('OrderCart')){
-                console.log("no existe localstorass")
-
-                localStorage.setItem('OrderCart',JSON.stringify([{...product_add,cnt:1}]))
-
-            }else{
-                
-                
-                var data = JSON.parse(localStorage.getItem('OrderCart'));
-                console.log("carrito",data)
-                
-                var found = data.find(i=>i.ID==product_add.ID)
-                
-                            if(!found){
-                                
-                                console.log("no found",found)
-               
-                                data.push({...product_add,cnt:1,subtotal:product_add.price})    
-                                
-                                localStorage.setItem('OrderCart',JSON.stringify(data));
-                            
-                            }else{
-                                    
-                                
-                                console.log("founddd ",found)
-                            
-
-
-                                found.cnt = found.cnt + 1
-                                found.subtotal = found.price * found.cnt
-                                
-                                var new_data = data.filter(i=>i.ID != product_add.ID);
-                                new_data.push(found);
-                                console.log("nwdta",new_data);
-                            
-                                localStorage.setItem('OrderCart',JSON.stringify(new_data));
-                                
-                                console.log("actr localstorass",new_data)
-                                
-                            }    
-            }
-
-            $scope.loadData();
-
-           closeModal();
-        }
-
-
-
-        $scope.setQty = (action,id_item)=>{
-             console.log("id_item",id_item);   
-            var data = JSON.parse(localStorage.getItem('OrderCart'));
-            var found = data.find(i=>i.ID==id_item)
-            
-
-            if(action=='add'){
-                found.cnt = found.cnt + 1
-  
-            }else {
-                found.cnt = found.cnt - 1
-
-            }
-            
-            
-            if(found.cnt <= 0){
-                $scope.removeItem(id_item)
-                return false
-            }
-
-            found.subtotal = parseInt(found.price) * parseInt(found.cnt)
-            var new_data = data.filter(i=>i.ID != id_item);
-            new_data.push(found);
-            console.log("nwdta_rp",new_data);
-                            
-            localStorage.setItem('OrderCart',JSON.stringify(new_data));
-                                
-            console.log("update qty",new_data)
-            $scope.items = new_data;
-            $scope.loadData();
-    
-        }
-
-
-        $scope.marcaSeleccionada = ""
-        $scope.categoriaSeleccionada = ""
-        $scope.nombreProducto = ""
-        $scope.tiendaSeleccionada = ""
-
-        $scope.buscarProductos = function(){
-            var parametros = {};
-            if($scope.marcaSeleccionada) {
-                parametros.marca = $scope.marcaSeleccionada;
-            }
-            if($scope.categoriaSeleccionada) {
-                parametros.categoria = $scope.categoriaSeleccionada;
-            }
-            if($scope.nombreProducto) {
-                parametros.nombre = $scope.nombreProducto;
-            }
-            if($scope.tiendaSeleccionada) {
-                parametros.tienda = $scope.tiendaSeleccionada;
-            }
-
-            // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
-            $http({
-                method : "POST",
-                url : base_url+'/wp-json/ordenes_cristal/v1/buscar_productos',
-                params: parametros,
-                headers:{'X-WP-Nonce' : nonce},
-            }).then(function (response) {
-                // Manejar la respuesta de la búsqueda de productos
-                console.log("Tienda ",response.data.tienda)
-                $scope.sresult = response.data.productos;
-                $scope.smarca = response.data.marca;
-                $scope.stienda = response.data.tienda;
-            });
-        }        
-
-        $scope.loadData()
-        
-        
-        
-});
-
-
-    function showMiniCart() {
-        // Esperar a que AngularJS inicialice el elemento MiniCart
-        angular.element(document).ready(function() {
-            // Obtener el alcance de AngularJS del elemento MiniCart
-            var scope = angular.element(document.getElementById("MiniCart")).scope();
-    
-            // Aplicar los cambios en el alcance
-            scope.$apply(function() {
-                // Llamar a la función loadData en el controlador correspondiente para actualizar los datos del mini carrito
-                scope.loadData();
-            });
-        });
-    
-        // Mostrar el mini carrito
-        jQuery('#cartResume').fadeIn();
-        jQuery("#cartResume div.card").animate({
-            width: '25%',
-            left:'75%'
-        });
-    }
-    
-
-function hideMiniCart() {
-    
-    jQuery('#cartResume').fadeOut();
-    jQuery("#cartResume div.card").animate({
-        width: '0%',
-        left:'100%'
-    });
+  console.log("closeModal", $("#modalSearchProducts"));
+  $("#modalSearchProducts").modal("hide");
 }
 
+var app = angular.module("shoppingCart", []);
 
-jQuery(document).ready(function($) {
+app.controller("cartSearchController", function ($scope, $http) {
+  console.log("controllerSearch");
+  localStorage.removeItem("marca_sel");
+  $scope.marcaSeleccionada = null;
+  $scope.categoriaSeleccionada = null;
+  $scope.nombreProducto = null;
+  $scope.tiendaSeleccionada = null;
+  $scope.sresult = [];
 
-    $(document).on("click","#cartController .obs-toggle", function () {
-   
-      if($(this).find('i').hasClass('fa-caret-up')){
-        $(this).find('i').removeClass('fa-caret-up').addClass('fa-caret-down');
-        console.log($(this).closest('tr').find('.observ_field'))
-        $(this).closest('tr').find('.observ-field').show();
+  $scope.setMarca = (id,image_url) => {
+  
+    if(localStorage.getItem("marca_sel")) {
+      
+      var items_order = JSON.parse(localStorage.getItem("OrderCart"));
+      console.log("new ",id);
+      console.log("old ",localStorage.getItem("marca_sel"));
+      if(localStorage.getItem("marca_sel") !== id && items_order != null && items_order.length > 0) { 
+      
+        Swal.fire({  
+          title: 'Ya hay un pedido con la marca seleccionada, desea cancelar el pedido actual e iniciar uno nuevo con esta marca que desea?',  
+          showDenyButton: false,  showCancelButton: true,  
+          confirmButtonText: `Iniciar nuevo pedido`,  
+          cancelButtonText: `Cancelar`,
+        }).then((result) => {  
+        /* Read more about isConfirmed, isDenied below */  
+            if (result.isConfirmed) {    
+              $scope.sresult = [];      
+              console.log("limpiando",$scope.sresult)
+            
+              localStorage.setItem("OrderCart",JSON.stringify([]))
+              localStorage.setItem("marca_sel", id);
+              localStorage.setItem("marca_sel_image", image_url);
+              
+              $scope.marcaSeleccionada = id;
+              console.log("setsel", id);
+              $scope.$apply();
+                  
+              jQuery("#filter-area .marco-marca-m").removeClass("selected");
+              jQuery("#menuma-" + id).addClass("selected");      
+              Swal.fire('Marca seleccionada!', '', 'success')  
 
-        
+
+        } else if (result.isDenied) {    
+            
+        //Swal.fire('Changes are not saved', '', 'info')  
+         
+        }
+        });
+
+  
       }else{
-        $(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-up');
-        $(this).closest('tr').find('.observ-field').hide();
+
+            $scope.sresult = [];
+            localStorage.setItem("marca_sel", id);
+            localStorage.setItem("marca_sel_image", image_url);
+            $scope.marcaSeleccionada = id;
+            console.log("new setsel", id);
+
+            jQuery("#filter-area .marco-marca-m").removeClass("selected");
+            jQuery("#menuma-" + id).addClass("selected");    
+              
       }
+
+    }else{
     
-    })        
+      
+    $scope.sresult = [];
+
+    localStorage.setItem("marca_sel", id);
+    localStorage.setItem("marca_sel_image", image_url);
+    $scope.marcaSeleccionada = id;
+    console.log("new setsel", id);
+
+    jQuery("#filter-area .marco-marca-m").removeClass("selected");
+    jQuery("#menuma-" + id).addClass("selected");    
+    
+    }
+    console.log("sresult",$scope.sresult)
+
+};
+
+  $scope.buscarProductos = function () {
+    jQuery("#primary .cart-loader").show();
+
+    $marca_sel = localStorage.getItem("marca_sel");
+
+    if(!$marca_sel) {
+
+      Swal.fire({
+        title: "Te falta seleccionar la marca",
+        text: "Para realizar la busqueda debes selecionar una marca de el listado",
+        icon: "info"
+      });
+      jQuery("#primary .cart-loader").hide();
+
+      return false;
+
+    }
+
+
+
+    var parametros = {};
+    if ($scope.marcaSeleccionada) {
+      parametros.marca = $scope.marcaSeleccionada;
+    }
+    if ($scope.categoriaSeleccionada) {
+      parametros.categoria = $scope.categoriaSeleccionada;
+    }
+    if ($scope.nombreProducto) {
+      parametros.nombre = $scope.nombreProducto;
+    }
+    if ($scope.tiendaSeleccionada) {
+      parametros.tienda = $scope.tiendaSeleccionada;
+    }
+    console.log("parametros", parametros);
+    // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
+    $http({
+      method: "POST",
+      url: base_url + "/wp-json/ordenes_cristal/v1/buscar_productos",
+      params: parametros,
+      headers: { "X-WP-Nonce": nonce },
+    }).then(function (response) {
+      // Manejar la respuesta de la búsqueda de productos
+      console.log("Tienda ", response.data.tienda);
+      $scope.sresult = response.data.productos;
+      $scope.smarca = response.data.marca;
+      $scope.stienda = response.data.tienda;
+      jQuery("#primary .cart-loader").hide();
+    });
+  };
+
+  $scope.addCart = (id_item, newProduct = false) => {
+    if (!newProduct) {
+      var product_add = $scope.sresult.find((p) => p.ID === id_item);
+    } else {
+      var product_add = {
+        post_title: "",
+        cnt: 0,
+        categorias: [],
+        price: 0,
+        marca: [],
+        post_content: "",
+        subtotal: 0,
+        sku: "",
+        ID: 74800,
+      };
+    }
+
+    console.log("padd", product_add);
+
+    // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
+    // $http({
+    //     method : "POST",
+    //     url : '<?=get_site_url()?>/wp-json/ordenes_cristal/v1/add_to_cart',
+    //     params: product_add,
+    //     headers:{'X-WP-Nonce' : nonce},
+    // }).then(function (response) {
+    //     // Manejar la respuesta de la búsqueda de productos
+    //    // $scope.sresult = response.data;
+    //     console.log("result",response);
+    //     $scope.loadData()
+    //
+
+    // });
+
+    if (!localStorage.getItem("OrderCart")) {
+      console.log("no existe localstorass");
+
+      localStorage.setItem(
+        "OrderCart",
+        JSON.stringify([{ ...product_add, cnt: 1 }])
+      );
+    } else {
+      var data = JSON.parse(localStorage.getItem("OrderCart"));
+      console.log("carrito", data);
+
+      var found = data.find((i) => i.ID == product_add.ID);
+
+      if (!found) {
+        console.log("no found", found);
+
+        data.push({ ...product_add, cnt: 1, subtotal: product_add.price });
+
+        localStorage.setItem("OrderCart", JSON.stringify(data));
+      } else {
+        console.log("founddd ", found);
+
+        found.cnt = parseInt(found.cnt) + 1;
+        found.subtotal = parseInt(found.price) * parseInt(found.cnt);
+
+        var new_data = data.filter((i) => i.ID != product_add.ID);
+        new_data.push(found);
+        console.log("nwdta", new_data);
+
+        localStorage.setItem("OrderCart", JSON.stringify(new_data));
+
+        console.log("actr localstorass", new_data);
+      }
+    }
+
+    showMiniCart();
+  };
+});
+
+
+app.controller('cartOrderListController',function ($scope, $http) {
+  console.log("cartOrderListController", $scope);
+
+
+})
+
+
+app.controller("miniCartController", function ($scope, $http) {
+  console.log("miniCartController", $scope);
+
+  $scope.totalize = () => {
+    console.log("totalize");
+    $scope.total_order = 0;
+    var data = JSON.parse(localStorage.getItem("OrderCart"));
+    if (!data) {
+      return false;
+    }
+
+    console.log("citems_t", data);
+
+    data.map((item, index) => {
+      $scope.total_order += parseInt(item.subtotal);
+    });
+  };
+
+  $scope.calculate = () => {
+    // Objeto para almacenar los totales por categoría
+    var totalsByCategory = {};
+
+    // Obtener los datos del carrito del almacenamiento local
+    var cartData = JSON.parse(localStorage.getItem("OrderCart"));
+
+    // Verificar si hay datos en el carrito
+    if (!cartData || cartData.length === 0) {
+      return [];
+    }
+    var id_C = 0;
+    // Calcular los totales por categoría
+    cartData.forEach((item) => {
+      // Obtener las categorías asociadas al producto
+      var categories = item.categorias;
+
+      // Verificar si el producto tiene categorías asociadas
+      if (categories && categories.length > 0) {
+        categories.forEach((category) => {
+          // Obtener el nombre de la categoría
+          var categoryName = category.name;
+          if (categoryName != "Sin categorizar") {
+            id_C = category.ID;
+            // Verificar si ya hay un total para esta categoría
+            if (!totalsByCategory[categoryName]) {
+              totalsByCategory[categoryName] = 0;
+            }
+
+            // Incrementar el total de la categoría con el subtotal del producto
+            totalsByCategory[categoryName] += parseInt(item.subtotal);
+          }
+        });
+      }
+    });
+
+    // Convertir el objeto totalsByCategory a un array de objetos
+    var result = [];
+    Object.keys(totalsByCategory).forEach((categoryName) => {
+      result.push({
+        ID: id_C,
+        title: categoryName, // Usando el nombre de la categoría como título
+        total_cat: parseInt(totalsByCategory[categoryName]),
+      });
+    });
+    console.log("res por cat", result);
+    return result;
+  };
+
+  $scope.loadData = function () {
+    $scope.items =
+      localStorage.getItem("OrderCart") != null
+        ? JSON.parse(localStorage.getItem("OrderCart"))
+        : [];
+
+    console.log("items", $scope.items);
+
+    $scope.totalize();
+    $scope.stats = $scope.calculate();
+  };
+
+  $scope.loadData();
+});
+
+app.controller("cartController", function ($scope, $http) {
+  $scope.total_order = 0;
+  $file_order_upload = null;
+
+  // Obtener las tiendas desde el endpoint
+  $http
+    .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
+    .then(function (response) {
+      // Asignar las tiendas obtenidas a $scope.tiendas
+      console.log(response);
+      $scope.tiendas = response.data;
+    })
+    .catch(function (error) {
+      console.error("Error al obtener las tiendas:", error);
+    });
+
+  // Función para filtrar las tiendas según la opción seleccionada en el select
+  $scope.filtrarTiendas = function () {
+    // Realizar alguna acción con la tienda seleccionada (por ejemplo, realizar otra llamada al servidor)
+    console.log("Tienda seleccionada:", $scope.filtroTienda);
+  };
+
+  $scope.removeItem = function (id) {
+    // Encuentra el índice del elemento con el ID especificado
+    var index = $scope.items.findIndex(function (item) {
+      return item.ID === id;
+    });
+    // Si se encontró el elemento, elimínalo del arreglo
+    if (index !== -1) {
+      $scope.items.splice(index, 1);
+      // Actualiza localStorage eliminando el elemento correspondiente
+      var cartData = JSON.parse(localStorage.getItem("OrderCart"));
+      if (cartData) {
+        var updatedCartData = cartData.filter(function (item) {
+          return item.ID !== id;
+        });
+        localStorage.setItem("OrderCart", JSON.stringify(updatedCartData));
+      }
+    }
+    // Recalcula el total del pedido
+    $scope.totalize();
+    $scope.stats = $scope.calculate();
+  };
+
+  $scope.loadData = function () {
+    $scope.items =
+      localStorage.getItem("OrderCart") != null
+        ? JSON.parse(localStorage.getItem("OrderCart"))
+        : [];
+
+    $scope.totalize();
+    $scope.stats = $scope.calculate();
+  };
+
+  $scope.totalize = () => {
+    console.log("totalize");
+    $scope.total_order = 0;
+    var data = JSON.parse(localStorage.getItem("OrderCart"));
+    if (!data) {
+      return false;
+    }
+
+    console.log("citems_t", data);
+
+    data.map((item, index) => {
+      $scope.total_order += parseInt(item.subtotal);
+    });
+  };
+
+  $scope.calculate = () => {
+    // Objeto para almacenar los totales por categoría
+    var totalsByCategory = {};
+
+    // Obtener los datos del carrito del almacenamiento local
+    var cartData = JSON.parse(localStorage.getItem("OrderCart"));
+
+    // Verificar si hay datos en el carrito
+    if (!cartData || cartData.length === 0) {
+      return [];
+    }
+    var id_C = 0;
+    // Calcular los totales por categoría
+    cartData.forEach((item) => {
+      // Obtener las categorías asociadas al producto
+      var categories = item.categorias;
+
+      // Verificar si el producto tiene categorías asociadas
+      if (categories && categories.length > 0) {
+        categories.forEach((category) => {
+          // Obtener el nombre de la categoría
+          var categoryName = category.name;
+          if (categoryName != "Sin categorizar") {
+            id_C = category.ID;
+            // Verificar si ya hay un total para esta categoría
+            if (!totalsByCategory[categoryName]) {
+              totalsByCategory[categoryName] = 0;
+            }
+
+            // Incrementar el total de la categoría con el subtotal del producto
+            totalsByCategory[categoryName] += item.subtotal;
+          }
+        });
+      }
+    });
+
+    // Convertir el objeto totalsByCategory a un array de objetos
+    var result = [];
+    Object.keys(totalsByCategory).forEach((categoryName) => {
+      result.push({
+        ID: id_C,
+        title: categoryName, // Usando el nombre de la categoría como título
+        total_cat: totalsByCategory[categoryName],
+      });
+    });
+    console.log("res por cat", result);
+    return result;
+  };
+
+
+  $scope.setObservation = (item_id, observation) =>{
+
+    console.log("set",observation);
+
+  }
+
+  $scope.addCart = (id_item) => {
+    var product_add = $scope.sresult.find((p) => p.ID === id_item);
+    console.log("padd", product_add);
+
+    // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
+    // $http({
+    //     method : "POST",
+    //     url : '<?=get_site_url()?>/wp-json/ordenes_cristal/v1/add_to_cart',
+    //     params: product_add,
+    //     headers:{'X-WP-Nonce' : nonce},
+    // }).then(function (response) {
+    //     // Manejar la respuesta de la búsqueda de productos
+    //    // $scope.sresult = response.data;
+    //     console.log("result",response);
+    //     $scope.loadData()
+    //
+
+    // });
+
+    if (!localStorage.getItem("OrderCart")) {
+      console.log("no existe localstorass");
+
+      localStorage.setItem(
+        "OrderCart",
+        JSON.stringify([{ ...product_add, cnt: 1 }])
+      );
+    } else {
+      var data = JSON.parse(localStorage.getItem("OrderCart"));
+      console.log("carrito", data);
+
+      var found = data.find((i) => i.ID == product_add.ID);
+
+      if (!found) {
+        console.log("no found", found);
+
+        data.push({ ...product_add, cnt: 1, subtotal: parseInt(product_add.price) });
+
+        localStorage.setItem("OrderCart", JSON.stringify(data));
+      } else {
+        console.log("founddd ", found);
+
+        found.cnt = found.cnt + 1;
+        found.subtotal = found.price * found.cnt;
+
+        var new_data = data.filter((i) => i.ID != product_add.ID);
+        new_data.push(found);
+        console.log("nwdta", new_data);
+
+        localStorage.setItem("OrderCart", JSON.stringify(new_data));
+
+        console.log("actr localstorass", new_data);
+      }
+    }
+
+    $scope.loadData();
+    $scope.stats = $scope.calculate();
+  };
+
+  $scope.guardarOrden = () => {
+
+    jQuery('#btnSaveOrder .title_btn').html('Guardando...');
+    jQuery('#btnSaveOrder div.cart-loader').show();
+
+var image_marca = localStorage.getItem("marca_sel_image");
+
+var marca_sel = localStorage.getItem("marca_sel");
+
+
+  var formData = new FormData();
+  formData.append('file_order', $scope.file_order_upload);
+  formData.append('order', btoa(JSON.stringify({items:$scope.items,total_order:$scope.total_order,marca:marca_sel,image_marca:image_marca})));
+
+    console.log(formData);
+
+    // Realizar la solicitud AJAX
+jQuery.ajax({
+  url: base_url+'/wp-json/ordenes_cristal/v1/guardar_orden',
+  type: 'POST',
+  headers:{'X-WP-Nonce' : nonce},
+  data: formData,
+  processData: false,  // Evitar el procesamiento automático de datos
+  contentType: false,  // Evitar la configuración automática del tipo de contenido
+  success: function(response) {
+      console.log('El archivo se ha subido correctamente.');
+      // Manejar la respuesta del servidor si es necesario
+      jQuery('#btnSaveOrder .title_btn').html('Guardar');
+  jQuery('#btnSaveOrder div.cart-loader').hide();
+  
+  localStorage.removeItem("OrderCart");
+  
+  localStorage.removeItem("marca_sel");
+
+  localStorage.removeItem("marca_sel_image");
+  
+
+  location.href = base_url+'/index.php/listado-de-pedidos/'
+
+  },
+  error: function(xhr, status, error) {
+      console.error('Error al subir el archivo:', error);
+      // Manejar el error si es necesario
+      jQuery('#btnSaveOrder .title_btn').html('Guardar');
+      jQuery('#btnSaveOrder div.cart-loader').hide();
+  }
+});
+
+
+
+  };
+
+
+  $scope.setQty = (action, id_item) => {
+    console.log("id_item", id_item);
+    var data = JSON.parse(localStorage.getItem("OrderCart"));
+    var found = data.find((i) => i.ID == id_item);
+
+    if (action == "add") {
+      found.cnt = found.cnt + 1;
+    } else {
+      found.cnt = found.cnt - 1;
+    }
+
+    if (found.cnt <= 0) {
+      $scope.removeItem(id_item);
+      return false;
+    }
+
+    found.subtotal = parseInt(found.price) * parseInt(found.cnt);
+    var new_data = data.filter((i) => i.ID != id_item);
+    new_data.push(found);
+    console.log("nwdta_rp", new_data);
+
+    localStorage.setItem("OrderCart", JSON.stringify(new_data));
+
+    console.log("update qty", new_data);
+    $scope.items = new_data;
+    $scope.loadData();
+    $scope.stats = $scope.calculate();
+  };
+
+    // Función para generar un nuevo ID único para un producto
+    $scope.generateNewProductId = function(productList) {
+        var maxId = 0;
+
+        // Iterar sobre la lista de productos para encontrar el máximo ID
+        productList.forEach(function(product) {
+            if (product.ID > maxId) {
+                maxId = product.ID;
+            }
+        });
+
+        // Incrementar el máximo ID en 1 para obtener un nuevo ID único
+        var newId = maxId + 1;
+        return newId;
+    };
+
+
+  // Función para agregar un nuevo producto a la orden
+  $scope.addNewProduct = function (formData) {
+    // Agregar el nuevo producto a localStorage
+    console.log(formData);
+
+    // Generar un nuevo ID único para el nuevo producto
+    var newProductId = $scope.generateNewProductId($scope.items);
+
+
+    var newProduct = {
+       ID: newProductId, 
+       sku: formData.sku, 
+       post_title : formData.post_title,
+       post_content: formData.post_content,
+       cnt : parseInt(formData.cnt),
+       price : parseInt(formData.price),
+       categorias: [categorias_data.find(c=>c.term_id == formData.categorias)],
+       marca: formData.marca,
+       observacion: formData.observacion,
+       sku: formData.sku,
+       image_url: plugins_url+'/ordenes_cristal/assets/img/product-placeholder.png',
+       subtotal: parseInt(formData.price) * parseInt(formData.cnt)
+    };
+
+
+    console.log(newProduct);
+
+
+    // Verificar si ya hay productos en el carrito
+    var cartData = JSON.parse(localStorage.getItem("OrderCart")) || [];
+    // Agregar el nuevo producto al carrito
+    cartData.push(newProduct);
+    // Actualizar localStorage con los nuevos datos del carrito
+    localStorage.setItem("OrderCart", JSON.stringify(cartData));
+
+    // Recargar los datos del carrito
+    $scope.loadData();
+    $scope.stats = $scope.calculate();
+  };
+
+  $scope.marcaSeleccionada = "";
+  $scope.categoriaSeleccionada = "";
+  $scope.nombreProducto = "";
+  $scope.tiendaSeleccionada = "";
+
+  $scope.buscarProductos = function () {
+    var parametros = {};
+    if ($scope.marcaSeleccionada) {
+      parametros.marca = $scope.marcaSeleccionada;
+    }
+    if ($scope.categoriaSeleccionada) {
+      parametros.categoria = $scope.categoriaSeleccionada;
+    }
+    if ($scope.nombreProducto) {
+      parametros.nombre = $scope.nombreProducto;
+    }
+    if ($scope.tiendaSeleccionada) {
+      parametros.tienda = $scope.tiendaSeleccionada;
+    }
+
+    // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
+    $http({
+      method: "POST",
+      url: base_url + "/wp-json/ordenes_cristal/v1/buscar_productos",
+      params: parametros,
+      headers: { "X-WP-Nonce": nonce },
+    }).then(function (response) {
+      // Manejar la respuesta de la búsqueda de productos
+      console.log("Tienda ", response.data.tienda);
+      $scope.sresult = response.data.productos;
+      $scope.smarca = response.data.marca;
+      $scope.stienda = response.data.tienda;
+    });
+  };
+
+  $scope.loadData();
+});
+
+function showMiniCart() {
+  // Esperar a que AngularJS inicialice el elemento MiniCart
+  angular.element(document).ready(function () {
+    // Obtener el alcance de AngularJS del elemento MiniCart
+    var scope = angular.element(document.getElementById("MiniCart")).scope();
+
+    // Aplicar los cambios en el alcance
+    scope.$apply(function () {
+      // Llamar a la función loadData en el controlador correspondiente para actualizar los datos del mini carrito
+      scope.loadData();
+      scope.stats = scope.calculate();
+    });
+  });
+
+  // Mostrar el mini carrito
+  jQuery("#cartResume").fadeIn();
+  jQuery("#cartResume div.card").animate({
+    width: "25%",
+    left: "75%",
+  });
+}
+
+function hideMiniCart() {
+  jQuery("#cartResume").fadeOut();
+  jQuery("#cartResume div.card").animate({
+    width: "0%",
+    left: "100%",
+  });
+}
+
+jQuery(document).ready(function ($) {
+  $(document).on("click", "#cartController .obs-toggle", function () {
+    if ($(this).find("i").hasClass("fa-caret-up")) {
+      $(this).closest("tbody").find(".observ_field").hide();
+      $(this).closest("tbody").find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+      $(this).find("i").removeClass("fa-caret-up").addClass("fa-caret-down");
+      $(this).closest("tr").find(".observ_field").show();
+    } else {
+      $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+      $(this).closest("tr").find(".observ_field").hide();
+    angular.element(document).ready(function () {
+      // Actualizar el valor de $scope.file_order_upload en el controlador de AngularJS
+      var scope_cart = angular
+        .element(document.getElementById("cartController"))
+        .scope();
+      
+        scope_cart.$apply(function () {
+      
+        console.log(scope_cart.items);
+        localStorage.setItem('OrderCart', JSON.stringify(scope_cart.items))
+        scope_cart.loadData();
+
+        }) 
+    })
+
+  }
+});
+
+
+$(document).on("click", "#primary-list .obs-toggle-l", function () {
+  console.log("primary-list");
+  if ($(this).find("i").hasClass("fa-caret-up")) {
+    
+    //todos los elementos
+    $(".detail-order").hide();
+    $(".fa-caret-down").removeClass("fa-caret-down").addClass("fa-caret-up");
+    //elemento actual
+    $(this).find("i").removeClass("fa-caret-up").addClass("fa-caret-down");
+    $(this).closest("tbody").find(".detail-order").slideDown('slow');
+  } else {
+    $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+    $(this).closest("tbody").find(".detail-order").hide();
+
+}
+});
+
+
+
+
+
+  $.validator.setDefaults({
+    debug: true,
+    success: "valid",
+    submitHandler: function () {
+      alert("submitted!");
+    },
+  });
+
+  $("#prdForm").validate({
+    rules: {
+      post_title: {
+        required: true,
+        minlength: 5,
+      },
+      post_content: {
+        required: false,
+        minlength: 5,
+      },
+      cnt: {
+        required: true,
+        number: true,
+      },
+      price: {
+        required: true,
+        number: true,
+      },
+      categorias: {
+        required: true,
+      },
+      marca: {
+        required: true,
+      },
+      observacion: {
+        required: false,
+      },
+    },
+    messages: {
+      post_title: "El nombre de el producto es requerido.",
+      post_content: "",
+      cnt: {
+        required: "La cantiad de productos es requerida.",
+        number: "El valor debe ser númerico.",
+      },
+      categorias: {
+        required: "La categoría es requerida.",
+      },
+      marca: {
+        required: "La categoría es requerida.",
+      },
+      price: {
+        required: "Precio de el producto es requerido.",
+        number: "Precio debe ser número."
+      },
+   
+      observacion: "",
+    },
+    errorElement: "em",
+    errorPlacement: function (error, element) {
+      // Add the `invalid-feedback` class to the error element
+      error.addClass("invalid-feedback");
+
+      if (element.prop("type") === "checkbox") {
+        error.insertAfter(element.next("label"));
+      } else {
+        error.insertAfter(element);
+      }
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("is-valid");
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).addClass("is-valid").removeClass("is-invalid");
+    },
+  });
 
 });
 
 
+
+// Función para validar y enviar el formulario
+function AddNewProduct() {
+  // Validar el formulario usando jQuery Validate
+  if (jQuery("#prdForm").valid()) {
+    // Obtener los datos del formulario
+    var formData = {
+      sku: jQuery("#prdForm input[name='sku']").val(),
+      post_title: jQuery("#prdForm input[name='post_title']").val(),
+      post_content: jQuery("#prdForm textarea[name='post_content']").val(),
+      cnt: jQuery("#prdForm input[name='cnt']").val(),
+      categorias: jQuery("#prdForm select[name='categorias']").val(),
+      marca: jQuery("#prdForm select[name='marca']").val(),
+      price: jQuery("#prdForm input[name='price']").val(),
+      observacion: jQuery("#prdForm textarea[name='observacion']").val(),
+    };
+
+    // Llamar a la función addNewProduct en el controlador correspondiente
+    // Primero, obten el alcance de AngularJS del controlador
+    var scope = angular
+      .element(document.getElementById("cartController"))
+      .scope();
+    // Aplica los cambios en el alcance y llama a la función addNewProduct
+    scope.$apply(function () {
+      scope.addNewProduct(formData);
+    });
+
+    // Opcional: Cerrar el modal después de enviar el formulario
+    jQuery("#modalAddProduct").modal("hide");
+  }
+}
+
 function readURL(input) {
-        if (input.files && input.files[0]) {
-      
-          var reader = new FileReader();
-      
-          reader.onload = function(e) {
-            jQuery('.image-upload-wrap').hide();
-      
-            jQuery('.file-upload-image').attr('src', e.target.result);
-            jQuery('.file-upload-content').show();
-      
-            jQuery('.image-title').html(input.files[0].name);
-          };
-      
-          angular.element(document).ready(function() {
-        
-             // Actualizar el valor de $scope.file_order_upload en el controlador de AngularJS
-          var scope_cart = angular.element(document.getElementById("cartController")).scope()
-            console.log(scope_cart)
-            scope_cart.$apply(()=> {
-                scope_cart.file_order_upload = input.files[0];
-                console.log(scope_cart.file_order_upload)
-            })
-        });
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
 
+    reader.onload = function (e) {
+      jQuery(".image-upload-wrap").hide();
 
-         
-          reader.readAsDataURL(input.files[0]);
-      
-        } else {
-          removeUpload();
-        }
-      }
-      
-      function removeUpload() {
-        jQuery('.file-upload-input').replaceWith(jQuery('.file-upload-input').clone());
-        jQuery('.file-upload-content').hide();
-        jQuery('.image-upload-wrap').show();
-      }
-      jQuery('.image-upload-wrap').bind('dragover', function () {
-              jQuery('.image-upload-wrap').addClass('image-dropping');
-          });
-          jQuery('.image-upload-wrap').bind('dragleave', function () {
-              jQuery('.image-upload-wrap').removeClass('image-dropping');
+      jQuery(".file-upload-image").attr("src", e.target.result);
+      jQuery(".file-upload-content").show();
+
+      jQuery(".image-title").html(input.files[0].name);
+    };
+
+    angular.element(document).ready(function () {
+      // Actualizar el valor de $scope.file_order_upload en el controlador de AngularJS
+      var scope_cart = angular
+        .element(document.getElementById("cartController"))
+        .scope();
+      console.log(scope_cart);
+      scope_cart.$apply(() => {
+        scope_cart.file_order_upload = input.files[0];
+        console.log(scope_cart.file_order_upload);
       });
+    });
 
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    removeUpload();
+  }
+}
+
+function removeUpload() {
+  jQuery(".file-upload-input").replaceWith(
+    jQuery(".file-upload-input").clone()
+  );
+  jQuery(".file-upload-content").hide();
+  jQuery(".image-upload-wrap").show();
+}
+jQuery(".image-upload-wrap").bind("dragover", function () {
+  jQuery(".image-upload-wrap").addClass("image-dropping");
+});
+jQuery(".image-upload-wrap").bind("dragleave", function () {
+  jQuery(".image-upload-wrap").removeClass("image-dropping");
+});

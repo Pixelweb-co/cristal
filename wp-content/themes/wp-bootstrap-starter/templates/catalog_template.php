@@ -27,7 +27,7 @@ $productos_encontrados = buscar_productos('',null,null,null);
                         foreach ($marcas as $marca){
                             if($marca['image'] != ''){
                            ?> 
-                           <a role="button" id="menuma-<?=$marca['ID']?>" class="marco-marca-m" ng-click="setMarca(<?=$marca['ID']?>)">
+                           <a role="button" id="menuma-<?=$marca['ID']?>" class="marco-marca-m" ng-click="setMarca(<?=$marca['ID']?>,'<?=$marca['image']?>')">
                            <img src="<?=$marca['image']?>" style="height:50px; width:70px"/>
                            </a>
                            <?php
