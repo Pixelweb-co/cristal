@@ -115,8 +115,8 @@
             <?php
             
           
-            
-            $image_url = get_site_url('wp-content/images/catalogo.png');
+            $image_url_catalogo = 'wp-content/images/catal.png';
+            $image_url = get_site_url('wp-content/images/lista_prod.png');
             $image_url_pedidos = 'wp-content/images/free-box.png';
             $image_url_avatar = 'wp-content/images/avatar.png';
             $random_name = 'Usuario' . rand(100, 999);
@@ -135,7 +135,9 @@
             ));
             $menu_output = ob_get_clean();
             $menu_output = preg_replace('/<a.*?>(.*?)Inicio<\/a>/', '', $menu_output);
+            
 
+            $menu_output = preg_replace('/<a.*?>(.*?)Catalog1<\/a>/', '<a href=""><img src="' . $image_url_catalogo . '" alt="catal"></a>', $menu_output);
             $menu_output = preg_replace('/<a.*?>(.*?)Catalogo<\/a>/', '<a href=""><img src="' . $image_url . '" alt="Catálogo"></a>', $menu_output);
 
             $menu_output = preg_replace('/<a.*?>(.*?)hacer_pedido<\/a>/', '<a href="index.php/hacer_pedido/"><img src="' . $image_url_pedidos . '" alt="Hacer Pedidos"></a>', $menu_output);
@@ -171,6 +173,7 @@
             </button>
             <div class="d-flex align-items-center ml-auto">
             <?php
+                        $image_url = site_url('wp-content/images/catalogo.png');
             $image_url = site_url('wp-content/images/catalogo.png');
             $image_url_pedidos = site_url('wp-content/images/free-box.png');
             $image_url_avatar = site_url('wp-content/images/avatar.png');
