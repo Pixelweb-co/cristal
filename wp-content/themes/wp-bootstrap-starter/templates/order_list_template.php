@@ -9,7 +9,6 @@ $marcas = obtener_marcas();
 $tiendas = obtener_tiendas();
 $categorias = obtener_categorias();
 
-$productos_encontrados = buscar_productos('',null,null,null);
 
 
 
@@ -39,14 +38,22 @@ $productos_encontrados = buscar_productos('',null,null,null);
                                 <th></th>
                             </tr>
                             </thead>
-                            <?php foreach($ordenes as $ord){ ?>
+                            <?php 
+                            foreach($ordenes as $ord){ 
+                                $cantidad_items_orden = 0;
+                                
+                                 foreach($ord['items'] as $item){
+                                    $cantidad_items_orden += number_format($item->cnt);
+                                 }
+
+                                ?>
                             <tbody>
                                 <tr class="tr-border">
                                     <td><img src="<?=$ord['order']->image_marca?>" style="height:50px; width:70px"/></td>
                                     <td><?=$ord['order']->id?></td>
                                     <td><?=$ord['order']->fecha_orden?></td>
-                                    <td>ds</td>
-                                    <td width="13%">sd</td>
+                                    <td>$<?=number_format($ord['order']->totalOrden)?></td>
+                                    <td width="13%"><?=count($ord['items'])?></td>
                                     <td width="15%">
                                     <button type="button" class="btn  btn-xs" ng-click="removeItem(x.ID)">
                                         <i class="fa fa-edit" aria-hidden="true"></i>
@@ -75,7 +82,7 @@ $productos_encontrados = buscar_productos('',null,null,null);
                                                         <td><img src="<?=$item->image_url?>" style="height:50px; width:70px"/></td>
                                                         <td><?=$item->post_title?></td>
                                                         <td><?=$item->sku?></td>
-                                                        <td><?=$item->price?></td>
+                                                        <td>$<?=number_format($item->price)?></td>
                                                         <td style="text-align: center; width:15%"><?=$item->cnt?></td>
                                                     </tr>
                                                     <?php }?>    

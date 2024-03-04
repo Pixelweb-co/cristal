@@ -111,7 +111,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
                                             Mobiliario
                                         </p>
                                         <p class="lead mt-2">
-                                            ${{r.price}}
+                                            {{r.price | currency: '$'}}
                                         </p>
                                     </div>
 

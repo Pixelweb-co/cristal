@@ -6,3 +6,27 @@ Stack trace:
 #3 {main}
   thrown en D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\order_list_template.php en la línea 72
 
+2024-03-02T20:33:57+00:00 CRITICAL Uncaught Error: Call to undefined function base_url() in D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\header.php:116
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-includes\template.php(790): require_once()
+#1 D:\xampp\htdocs\demowp\wp-includes\template.php(725): load_template('D:\\xampp\\htdocs...', true, Array)
+#2 D:\xampp\htdocs\demowp\wp-includes\general-template.php(48): locate_template(Array, true, true, Array)
+#3 D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\order_list_template.php(6): get_header()
+#4 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(106): include('D:\\xampp\\htdocs...')
+#5 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#6 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#7 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\header.php en la línea 116
+
+2024-03-02T20:34:00+00:00 CRITICAL Uncaught Error: Call to undefined function base_url() in D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\header.php:116
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-includes\template.php(790): require_once()
+#1 D:\xampp\htdocs\demowp\wp-includes\template.php(725): load_template('D:\\xampp\\htdocs...', true, Array)
+#2 D:\xampp\htdocs\demowp\wp-includes\general-template.php(48): locate_template(Array, true, true, Array)
+#3 D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\404.php(10): get_header()
+#4 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(106): include('D:\\xampp\\htdocs...')
+#5 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#6 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#7 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\header.php en la línea 116
+

@@ -24,10 +24,10 @@
 		                                        <img ng-src="{{x.image_url}}" alt="" class="mCS_img_loaded">
 		                                    </div>
 		                                    <div class="name-product">
-                                                {{x.post_title}}
-		                                        
-		                                    </div>
-		                                    </div>
+                                                <p>{{x.post_title}}</p>
+		                                        <b>Categoria:</b> <span ng-repeat="cx in x.categorias" class="mr-2">{{cx.name}}</span>
+		                                    </div>    
+                                        </div>
                                         </div>  
                                         <div class="observ_field " >
                                             <b>Observación:</b>        
@@ -96,36 +96,9 @@
 			    <!-- /.col-lg-8 -->
 			    <div class="col-lg-4">
 			        <div class="cart-totals">
-			            <div class="row">
-                            <div class="col-md-6">
-                            <select class="form-control" ng-model='marcaSeleccionada'>
-                                <option value="">Marca</option>
-                                <?php foreach($marcas as $marca){
-                                    
-                                    ?>
-                                    <option value="<?=$marca['ID']?>"><?=$marca['post_title']?></option>
-                                <?php } 
-                                
-                                ?>    
-                            </select>
-                                
-                            </div>
-                            <div class="col-md-6">
-                            <select class="form-control" ng-model="tiendaf">
-                                <option value="">Tienda</option>
-                                        <?php foreach($tiendas as $tienda){
-                                        
-                                            ?>
-                                            <option <?=$tienda->ID?>><?=$tienda->post_title?></option>
-                                        <?php } 
-                                        
-                                        ?>    
-                                </select>        
-                            
-                            </div>
-                        </div>
+			         
 			                
-                        <?=include('panelStats.php')?>
+                        <?php include('panelStats.php'); ?>
 			                <div  class="btn-cart-totals">
                             <button type="button" id="btnSaveOrder" class="btn btn-outline-generic" ng-click="guardarOrden()">
                                    <div class="cart-loader"></div> <span class="title_btn">Enviar</span> 
@@ -133,7 +106,7 @@
                     </div>                
 			                    
 			                </div>
-                            <?=include('modalAddProduct.php')?>
+                            <?php include('modalAddProduct.php'); ?>
 	
 			       
 </div>

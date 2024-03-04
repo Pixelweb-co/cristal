@@ -86,6 +86,79 @@ app.controller("cartSearchController", function ($scope, $http) {
 
 };
 
+
+$scope.setTienda = (id,image_url) => {
+  
+  if(localStorage.getItem("marca_sel")) {
+    
+    var items_order = JSON.parse(localStorage.getItem("OrderCart"));
+    console.log("new ",id);
+    console.log("old ",localStorage.getItem("marca_sel"));
+    if(localStorage.getItem("marca_sel") !== id && items_order != null && items_order.length > 0) { 
+    
+      Swal.fire({  
+        title: 'Ya hay un pedido con la marca seleccionada, desea cancelar el pedido actual e iniciar uno nuevo con esta marca que desea?',  
+        showDenyButton: false,  showCancelButton: true,  
+        confirmButtonText: `Iniciar nuevo pedido`,  
+        cancelButtonText: `Cancelar`,
+      }).then((result) => {  
+      /* Read more about isConfirmed, isDenied below */  
+          if (result.isConfirmed) {    
+            $scope.sresult = [];      
+            console.log("limpiando",$scope.sresult)
+          
+            localStorage.setItem("OrderCart",JSON.stringify([]))
+            localStorage.setItem("marca_sel", id);
+            localStorage.setItem("marca_sel_image", image_url);
+            
+            $scope.marcaSeleccionada = id;
+            console.log("setsel", id);
+            $scope.$apply();
+                
+            jQuery("#filter-area .marco-marca-m").removeClass("selected");
+            jQuery("#menuma-" + id).addClass("selected");      
+            Swal.fire('Marca seleccionada!', '', 'success')  
+
+
+      } else if (result.isDenied) {    
+          
+      //Swal.fire('Changes are not saved', '', 'info')  
+       
+      }
+      });
+
+
+    }else{
+
+          $scope.sresult = [];
+          localStorage.setItem("marca_sel", id);
+          localStorage.setItem("marca_sel_image", image_url);
+          $scope.marcaSeleccionada = id;
+          console.log("new setsel", id);
+
+          jQuery("#filter-area .marco-marca-m").removeClass("selected");
+          jQuery("#menuma-" + id).addClass("selected");    
+            
+    }
+
+  }else{
+  
+    
+  $scope.sresult = [];
+
+  localStorage.setItem("marca_sel", id);
+  localStorage.setItem("marca_sel_image", image_url);
+  $scope.marcaSeleccionada = id;
+  console.log("new setsel", id);
+
+  jQuery("#filter-area .marco-marca-m").removeClass("selected");
+  jQuery("#menuma-" + id).addClass("selected");    
+  
+  }
+  console.log("sresult",$scope.sresult)
+
+};
+
   $scope.buscarProductos = function () {
     jQuery("#primary .cart-loader").show();
 
@@ -175,11 +248,11 @@ app.controller("cartSearchController", function ($scope, $http) {
 
       localStorage.setItem(
         "OrderCart",
-        JSON.stringify([{ ...product_add, cnt: 1 }])
+        JSON.stringify([{ ...product_add, cnt: 1, subtotal: product_add.price }])
       );
     } else {
       var data = JSON.parse(localStorage.getItem("OrderCart"));
-      console.log("carrito", data);
+      console.log("mini carrito", data);
 
       var found = data.find((i) => i.ID == product_add.ID);
 
@@ -207,6 +280,39 @@ app.controller("cartSearchController", function ($scope, $http) {
 
     showMiniCart();
   };
+
+  $scope.setQty = (element, id_item) => {
+    console.log("id_item", id_item);
+    console.log("element", element.target.value);
+    return false
+    var data = JSON.parse(localStorage.getItem("OrderCart"));
+    var found = data.find((i) => i.ID == id_item);
+
+    if (action == "add") {
+      found.cnt = found.cnt + 1;
+    } else {
+      found.cnt = found.cnt - 1;
+    }
+
+    if (found.cnt <= 0) {
+      $scope.removeItem(id_item);
+      return false;
+    }
+
+    found.subtotal = parseInt(found.price) * parseInt(found.cnt);
+    var new_data = data.filter((i) => i.ID != id_item);
+    new_data.push(found);
+    console.log("nwdta_rp", new_data);
+
+    localStorage.setItem("OrderCart", JSON.stringify(new_data));
+
+    console.log("update qty", new_data);
+    $scope.items = new_data;
+    $scope.loadData();
+    $scope.stats = $scope.calculate();
+  };
+
+
 });
 
 
@@ -293,6 +399,38 @@ app.controller("miniCartController", function ($scope, $http) {
     console.log("items", $scope.items);
 
     $scope.totalize();
+    $scope.stats = $scope.calculate();
+  };
+
+  
+  $scope.setQty = (element, id_item) => {
+    console.log("id_item", id_item);
+    console.log("element", element.target.value);
+    return false
+    var data = JSON.parse(localStorage.getItem("OrderCart"));
+    var found = data.find((i) => i.ID == id_item);
+
+    if (action == "add") {
+      found.cnt = found.cnt + 1;
+    } else {
+      found.cnt = found.cnt - 1;
+    }
+
+    if (found.cnt <= 0) {
+      $scope.removeItem(id_item);
+      return false;
+    }
+
+    found.subtotal = parseInt(found.price) * parseInt(found.cnt);
+    var new_data = data.filter((i) => i.ID != id_item);
+    new_data.push(found);
+    console.log("nwdta_rp", new_data);
+
+    localStorage.setItem("OrderCart", JSON.stringify(new_data));
+
+    console.log("update qty", new_data);
+    $scope.items = new_data;
+    $scope.loadData();
     $scope.stats = $scope.calculate();
   };
 

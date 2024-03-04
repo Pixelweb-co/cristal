@@ -22,7 +22,7 @@ $cart_items = $cart->contents();
             </div>
     </div>
     <hr/>
-    <div class="row-fluid overflow-auto" style="height: 100px;">
+    <div class="row-fluid overflow-auto" style="height: 150px;">
         
         <div class="col-md-12  "  ng-repeat="x in items">
                    <div class="row">     
@@ -30,13 +30,13 @@ $cart_items = $cart->contents();
                                 <img class="img-responsive" ng-src="{{x.image_url}}" alt="prewiew" >
                         </div>
                         <div class="col-md-6">
-                            <b ng-if="x.sku != ''">Código: {{x.sku}}</b>
+                            <b>Código: {{x.sku}}</b><br/>
                             <small >{{x.post_title}}</small>
                             <p class="mt-3">
                                  <small>
-                                <input type="number" class="qtyMinicartInput" ng-value="{{x.cnt}}"/>
+                                <input type="number" class="qtyMinicartInput" ng-value="{{x.cnt}}" onchange="setQty(e,x.ID)"/>
                             </small> 
-                            <small>$ {{x.subtotal}}</small></p>
+                            <small><span class="text-success">$</span>{{x.subtotal | currency: ''}}</small></p>
                         </div>
                         <div class="col-md-2 text-center p-1">
                         <button type="button" class="btn btn-outline-danger btn-xs">
@@ -54,11 +54,11 @@ $cart_items = $cart->contents();
     <div class="row">
 
 <div class="col-md-8"><b>Total pedido:</b></div>
-<div class="col-md-4"><b>${{total_order}}</b></div>
+<div class="col-md-4"><b>{{total_order | currency: '$'}}</b></div>
 
 </div>
     <hr/>
-    <?=include('panelStats.php')?>
+    <?php include('panelStats.php')?>
     </div>
     
     <hr/>

@@ -113,7 +113,10 @@
             </button>
             <div class="d-flex align-items-center ml-auto">
             <?php
-            $image_url = 'wp-content/images/catalogo.png';
+            
+          
+            
+            $image_url = get_site_url('wp-content/images/catalogo.png');
             $image_url_pedidos = 'wp-content/images/free-box.png';
             $image_url_avatar = 'wp-content/images/avatar.png';
             $random_name = 'Usuario' . rand(100, 999);
@@ -168,9 +171,9 @@
             </button>
             <div class="d-flex align-items-center ml-auto">
             <?php
-            $image_url = 'wp-content/images/catalogo.png';
-            $image_url_pedidos = 'wp-content/images/free-box.png';
-            $image_url_avatar = 'wp-content/images/avatar.png';
+            $image_url = site_url('wp-content/images/catalogo.png');
+            $image_url_pedidos = site_url('wp-content/images/free-box.png');
+            $image_url_avatar = site_url('wp-content/images/avatar.png');
             $random_name = 'Usuario' . rand(100, 999);
 
             ob_start();
@@ -188,9 +191,9 @@
             $menu_output = ob_get_clean();
             $menu_output = preg_replace('/<a.*?>(.*?)Inicio<\/a>/', '', $menu_output);
 
-            $menu_output = preg_replace('/<a.*?>(.*?)Catalogo<\/a>/', '<a href=""><img src="' . $image_url . '" alt="Catálogo" class="menu-image"></a>', $menu_output);
+            $menu_output = preg_replace('/<a.*?>(.*?)Listado de pedidos<\/a>/', '<a href="'.site_url('index.php/listado-de-pedidos').'"><img src="' . $image_url . '" alt="Catálogo" class="menu-image"></a>', $menu_output);
 
-            $menu_output = preg_replace('/<a.*?>(.*?)hacer_pedido<\/a>/', '<a href="index.php/hacer_pedido/"><img src="' . $image_url_pedidos . '" alt="Hacer Pedidos" class="menu-image"></a>', $menu_output);
+            $menu_output = preg_replace('/<a.*?>(.*?)hacer_pedido<\/a>/', '<a href="'.site_url('index.php/hacer_pedido').'"><img src="' . $image_url_pedidos . '" alt="Hacer Pedidos" class="menu-image"></a>', $menu_output);
             $menu_output = preg_replace('/<a.*?>(.*?)Mi cuenta<\/a>/', '<a href="#"><img src="' . $image_url_avatar . '" alt="Avatar" > ' . $random_name . '</a>', $menu_output);
 
             echo $menu_output;

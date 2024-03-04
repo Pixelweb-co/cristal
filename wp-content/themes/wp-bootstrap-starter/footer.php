@@ -22,7 +22,7 @@
 		<div class="container-fluid pt-3 pb-3 first-row-colo">
 			<div class="row d-flex align-items-stretch">
 				<div class="col-md-2 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
-					<img src="wp-content/images/Logo-crystal-transparente1.png" alt="Imagen" class="img-fluid">
+					<img src="<?=site_url('wp-content/images/Logo-crystal-transparente1.png')?>" alt="Imagen" class="img-fluid">
 
 				</div>
 				<div class="col-md-2 mb-3 d-flex flex-column">
@@ -69,19 +69,19 @@
 					<h2 class="texto-titulo-footer text-center">Redes sociales</h2>
 					<div class="d-flex  mb-3 align-items-center justify-content-center text-center">
 						<a href="url_de_facebook" target="_blank">
-							<img src="wp-content/images/face.png" alt="Facebook" class="mr-2">
+							<img src="<?=site_url('wp-content/images/face.png')?>" alt="Facebook" class="mr-2">
 						</a>
 
 						<a href="url_de_facebook" target="_blank">
-							<img src="wp-content/images/vine.png" alt="Instagram" class="mr-2">
+							<img src="<?=site_url('wp-content/images/vine.png')?>" alt="Instagram" class="mr-2">
 
 						</a>
 						<a href="url_de_facebook" target="_blank">
-							<img src="wp-content/images/in.png" alt="LinkedIn">
+							<img src="<?=site_url('wp-content/images/in.png')?>" alt="LinkedIn">
 
 						</a>
 						<a href="url_de_facebook" target="_blank">
-							<img src="wp-content/images/Vine.png" alt="Vimeo" class="ml-2">
+							<img src="<?=site_url('wp-content/images/Vine.png')?>" alt="Vimeo" class="ml-2">
 
 						</a>
 					</div>
@@ -102,22 +102,22 @@
     </div>
     <div class="col-md-7 align-items-center justify-content-center text-center d-flex">
         <a href="#" taret="_blank">
-            <img src="wp-content/images/gef.png" alt="Gef" class="mr-2">
+            <img src="<?=site_url('wp-content/images/gef.png')?>" alt="Gef" class="mr-2">
         </a>
         <a href="#" target="_blank">
-            <img src="wp-content/images/punto_blanco.png" alt="Punto_blanco" class="mr-2">
+            <img src="<?=site_url('wp-content/images/punto_blanco.png')?>" alt="Punto_blanco" class="mr-2">
         </a>
         <a href="#" target="_blank">
-            <img src="wp-content/images/hcl-logo.png" alt="Baby_fresh" class="mr-2">
+            <img src="<?=site_url('wp-content/images/hcl-logo.png')?>" alt="Baby_fresh" class="mr-2">
         </a>
         <a href="#" target="_blank">
-            <img src="wp-content/images/logo-galax.png" alt="Galax" class="mr-2">
+            <img src="<?=site_url('wp-content/images/logo-galax.png')?>" alt="Galax" class="mr-2">
         </a>
         <a href="#" target="_blank">
-            <img src="wp-content/images/Parfois1.png" alt="Parfois1" class="mr-2">
+            <img src="<?=site_url('wp-content/images/Parfois1.png')?>" alt="Parfois1" class="mr-2">
         </a>
         <a href="#" target="_blank">
-            <img src="wp-content/images/img_casino.png" alt="Casino" class="mr-2">
+            <img src="<?=site_url('wp-content/images/img_casino.png')?>" alt="Casino" class="mr-2">
         </a>
     </div>
 </div>
