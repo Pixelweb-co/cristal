@@ -22,6 +22,7 @@ get_header();
          </div>
         <div>
 
+            <img src="<?=site_url('wp-content/uploads/2024/03/Logo-crystal-2.png')?>"/> 
 
         </div>
 
