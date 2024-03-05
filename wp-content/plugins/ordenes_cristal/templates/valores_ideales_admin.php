@@ -1,9 +1,11 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
+
+
 <?php
     foreach($marcas as $marca){
-        echo "<h3>".$marca->post_title."</h3>";
+        echo "<h3>".$marca['post_title']."</h3>";
 
         echo '<table class="wp-list-table widefat fixed striped">';
     echo '<thead><tr><th>CATEGORÍA</th><th>VALOR IDEAL</th></tr></thead>';
@@ -13,7 +15,7 @@
         if($categoria->slug != 'sin-categorizar'){
         echo '<tr>';
         echo '<td>' . $categoria->name . '</td>';
-        echo '<td><span><input type="text" class=" valores_indicados data-marca="'.$marca->ID.'" data-categoria="'.$categoria->term_id.'" form-control" value="' .get_valor_ideal($valores_ideales,$marca->ID,$categoria->term_id). '" /></span><span id="edit-controls" style="margin-left:10px"><button type="button" class="btn btn-success btn-save-vi" data-marca="'.$marca->ID.'" data-categoria="'.$categoria->term_id.'">Guardar</button></span ><span class="save-confirm" style="color: green;margin-left:15px; display:none"><b>Actualizado</b></span></td>';
+        echo '<td><span><input type="text" class=" valores_indicados data-marca="'.$marca['ID'].'" data-categoria="'.$categoria->term_id.'" form-control" value="' .get_valor_ideal($valores_ideales,$marca['ID'],$categoria->term_id). '" /></span><span id="edit-controls" style="margin-left:10px"><button type="button" class="btn btn-success btn-save-vi" data-marca="'.$marca['ID'].'" data-categoria="'.$categoria->term_id.'">Guardar</button></span ><span class="save-confirm" style="color: green;margin-left:15px; display:none"><b>Actualizado</b></span></td>';
         echo '</tr>';
     }
     }

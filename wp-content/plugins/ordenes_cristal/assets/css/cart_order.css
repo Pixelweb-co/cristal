@@ -446,6 +446,11 @@ input:focus {
     background-color: #FC4004 !important; 
 }
 
+.bg-stats-do{
+    background-color: #CCCCCC !important;
+    color: #000 !important; 
+}
+
 .progress{
     height: 25px !important;
     border-radius: 4px !important;

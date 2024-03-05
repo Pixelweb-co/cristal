@@ -91,6 +91,9 @@ function agregar_estilos_y_scripts() {
     </script>
     <?php
     
+        // Registrar y encolar el archivo JS
+        wp_register_script('dropzone-plugin', plugins_url('assets/js/file-dropzone.js', __FILE__), array('jquery'), '1.0', true);
+        wp_enqueue_script('dropzone-plugin');
 
     // Registrar y encolar el archivo CSS
     wp_register_style('estilos-plugin', plugins_url('assets/css/cart_order.css', __FILE__));
@@ -111,6 +114,10 @@ function agregar_estilos_y_scripts() {
     // Registrar y encolar el archivo JS
     wp_register_script('validate-plugin', plugins_url('assets/js/jquery.validate.js', __FILE__), array('jquery'), '1.0', true);
     wp_enqueue_script('validate-plugin');
+
+
+
+
 
 }
 
@@ -149,6 +156,26 @@ function get_valor_ideal($valores_ideales,$marca_id,$categoria_id){
 
 }
 
+add_filter('logout_redirect', 'custom_logout_redirect');
+
+function custom_logout_redirect($redirect_to) {
+    return home_url('/login');
+}
+
+function restrict_access_to_logged_in_users() {
+    
+    $post_d = get_post();
+
+  
+    if (!is_user_logged_in() && !is_page('login') && $post_d->post_name != 'login' && !is_page('wp-login.php')) {
+        
+        wp_redirect(site_url('/index.php/login'));
+        exit;
+    }
+}
+add_action('template_redirect', 'restrict_access_to_logged_in_users');
+
+
 // Página de administración para mostrar órdenes
 function cristal_pos_valores_ideales_page() {
     global $wpdb;
@@ -180,6 +207,8 @@ function cristal_pos_admin_menu() {
         20
     );
 }
+
+
 
 // Página de administración para mostrar órdenes
 function cristal_pos_ordenes_page() {
@@ -694,16 +723,34 @@ function obtener_marcas(){
 }
 
 
-function obtener_tiendas(){
-    $tiendas = get_posts( array(
-     'post_type'      => 'tiendas',
-     'posts_per_page' => -1,
- ) );
+function obtener_tiendas() {
+    // Define los parámetros de la consulta
+    $args = array(
+        'post_type'      => 'tiendas',
+        'posts_per_page' => -1,
+        'meta_key'       => 'metros_cuadrados', // Especifica el meta campo que deseas recuperar
+    );
 
- return $tiendas;
+    // Realiza la consulta
+    $tiendas = get_posts( $args );
 
+    // Verifica si se encontraron tiendas
+    if ( $tiendas ) {
+        // Itera sobre cada tienda encontrada
+        foreach ( $tiendas as $tienda ) {
+            // Obtén el valor del meta campo 'metros_cuadrados' para cada tienda
+            $metros_cuadrados = get_post_meta( $tienda->ID, 'metros_cuadrados', true );
 
+            // Agrega el valor del meta campo al objeto de la tienda
+            $tienda->metros_cuadrados = $metros_cuadrados;
+        }
+    }
+
+    // Devuelve el array de tiendas con los valores de 'metros_cuadrados' agregados
+    return $tiendas;
 }
+
+
 // Registrar la ruta del endpoint
 function registrar_endpoint_obtener_tiendas() {
     register_rest_route( 'ordenes_cristal/v1', '/obtener_tiendas', array(
@@ -808,6 +855,49 @@ function actualizar_valor_ideal_callback($request) {
         return new WP_REST_Response(array('message' => 'Valor ideal actualizado correctamente'), 200);
     } else {
         return new WP_Error('actualizacion_error', 'Error al actualizar el valor ideal', array('status' => 500));
+    }
+}
+
+
+// Agregar endpoint personalizado para manejar la actualización del valor ideal
+add_action('rest_api_init', 'obtener_valores_ideales');
+
+function obtener_valores_ideales() {
+    register_rest_route('ordenes_cristal/v1', '/obtener_valores_ideales/', array(
+        'methods' => 'POST',
+        'callback' => 'consultar_valores_ideales_callback',
+        'permission_callback' => '__return_true' // Permitir acceso a todos
+    ));
+}
+
+
+
+function consultar_valores_ideales_callback($request) {
+    global $wpdb;
+
+    // Obtener los parámetros enviados en la solicitud
+    $marca_id = $request->get_param('marca');
+    $categorias_string = $request->get_param('categorias');
+    
+    
+    // Realizar la consulta para obtener los valores ideales
+    $query = "
+        SELECT *
+        FROM {$wpdb->prefix}valores_ideales
+        WHERE marca_id = $marca_id
+        AND categoria_id IN ($categorias_string)
+    ";
+
+
+
+    $valores_ideales = $wpdb->get_results($query);
+
+    if ($valores_ideales) {
+        // Devolver los valores ideales encontrados
+        return new WP_REST_Response($valores_ideales, 200);
+    } else {
+        // No se encontraron valores ideales para los parámetros dados
+        return new WP_Error('sin_valores_ideales', 'No se encontraron valores ideales para la marca y categorías indicadas', array('status' => 404));
     }
 }
 
@@ -1005,4 +1095,66 @@ function get_orders_list() {
     }
 
     return $out_data;
+}
+
+// Hook para registrar un shortcode que mostrará el formulario de inicio de sesión
+add_shortcode('custom_login_form', 'custom_login_form_shortcode');
+
+function custom_login_form_shortcode($atts) {
+    if (is_user_logged_in()) {
+        return '<p>Ya estás conectado.</p>';
+    }
+
+    // Mensaje de error si hay algún error de inicio de sesión
+    $error = '';
+    if (isset($_GET['login']) && $_GET['login'] === 'failed') {
+        $error = '<p class="error">Credenciales inválidas. Inténtalo de nuevo.</p>';
+    }
+
+    // Mostrar formulario de inicio de sesión
+    $form = '<form id="login-form">
+    <p>
+        <label for="username">Nombre de usuario:</label>
+        <input type="text" name="username" id="username">
+    </p>
+    <p>
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" id="password">
+    </p>
+    <p>
+        <input type="submit" value="Iniciar sesión">
+    </p>
+
+    <div id="login-error"></div>
+</form>';
+
+    return $error . $form;
+}
+
+add_action('wp_ajax_custom_login', 'custom_login');
+add_action('wp_ajax_nopriv_custom_login', 'custom_login');
+
+function custom_login() {
+    // Comprueba si se ha enviado el formulario
+    if (isset($_POST['username']) && isset($_POST['password'])) {
+        $creds = array(
+            'user_login'    => $_POST['username'],
+            'user_password' => $_POST['password'],
+            'remember'      => true
+        );
+
+        // Iniciar sesión del usuario
+        $user = wp_signon($creds, false);
+
+        if (is_wp_error($user)) {
+            // Si hay un error de inicio de sesión, devuelve un mensaje de error
+            wp_send_json_error(array('message' => $user->get_error_message()));
+        } else {
+            // Si el inicio de sesión es exitoso, devuelve un mensaje de éxito
+            wp_send_json_success(array('message' => 'Inicio de sesión exitoso'));
+        }
+    }
+
+    // Si no se ha enviado el formulario, devuelve un mensaje de error
+    wp_send_json_error(array('message' => 'Error: los campos de inicio de sesión están vacíos'));
 }

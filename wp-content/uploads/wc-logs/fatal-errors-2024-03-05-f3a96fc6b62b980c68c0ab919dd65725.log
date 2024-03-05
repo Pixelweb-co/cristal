@@ -1,0 +1,83 @@
+2024-03-05T15:35:33+00:00 CRITICAL Uncaught TypeError: implode(): Argument #1 ($array) must be of type array, string given in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php:873
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php(873): implode(',', NULL)
+#1 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1193): consultar_valores_ideales_callback(Object(WP_REST_Request))
+#2 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1041): WP_REST_Server->respond_to_request(Object(WP_REST_Request), '/ordenes_crista...', Array, NULL)
+#3 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(431): WP_REST_Server->dispatch(Object(WP_REST_Request))
+#4 D:\xampp\htdocs\demowp\wp-includes\rest-api.php(424): WP_REST_Server->serve_request('/ordenes_crista...')
+#5 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(324): rest_api_loaded(Object(WP))
+#6 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#7 D:\xampp\htdocs\demowp\wp-includes\plugin.php(565): WP_Hook->do_action(Array)
+#8 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(418): do_action_ref_array('parse_request', Array)
+#9 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(813): WP->parse_request('')
+#10 D:\xampp\htdocs\demowp\wp-includes\functions.php(1336): WP->main('')
+#11 D:\xampp\htdocs\demowp\wp-blog-header.php(16): wp()
+#12 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#13 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php en la línea 873
+
+2024-03-05T15:35:52+00:00 CRITICAL Uncaught TypeError: implode(): Argument #1 ($array) must be of type array, string given in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php:873
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php(873): implode(',', NULL)
+#1 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1193): consultar_valores_ideales_callback(Object(WP_REST_Request))
+#2 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1041): WP_REST_Server->respond_to_request(Object(WP_REST_Request), '/ordenes_crista...', Array, NULL)
+#3 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(431): WP_REST_Server->dispatch(Object(WP_REST_Request))
+#4 D:\xampp\htdocs\demowp\wp-includes\rest-api.php(424): WP_REST_Server->serve_request('/ordenes_crista...')
+#5 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(324): rest_api_loaded(Object(WP))
+#6 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#7 D:\xampp\htdocs\demowp\wp-includes\plugin.php(565): WP_Hook->do_action(Array)
+#8 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(418): do_action_ref_array('parse_request', Array)
+#9 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(813): WP->parse_request('')
+#10 D:\xampp\htdocs\demowp\wp-includes\functions.php(1336): WP->main('')
+#11 D:\xampp\htdocs\demowp\wp-blog-header.php(16): wp()
+#12 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#13 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php en la línea 873
+
+2024-03-05T15:36:39+00:00 CRITICAL Uncaught TypeError: implode(): Argument #2 ($array) must be of type ?array, string given in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php:873
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php(873): implode(',', '18')
+#1 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1193): consultar_valores_ideales_callback(Object(WP_REST_Request))
+#2 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1041): WP_REST_Server->respond_to_request(Object(WP_REST_Request), '/ordenes_crista...', Array, NULL)
+#3 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(431): WP_REST_Server->dispatch(Object(WP_REST_Request))
+#4 D:\xampp\htdocs\demowp\wp-includes\rest-api.php(424): WP_REST_Server->serve_request('/ordenes_crista...')
+#5 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(324): rest_api_loaded(Object(WP))
+#6 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#7 D:\xampp\htdocs\demowp\wp-includes\plugin.php(565): WP_Hook->do_action(Array)
+#8 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(418): do_action_ref_array('parse_request', Array)
+#9 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(813): WP->parse_request('')
+#10 D:\xampp\htdocs\demowp\wp-includes\functions.php(1336): WP->main('')
+#11 D:\xampp\htdocs\demowp\wp-blog-header.php(16): wp()
+#12 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#13 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php en la línea 873
+
+2024-03-05T15:37:18+00:00 CRITICAL Uncaught TypeError: implode(): Argument #2 ($array) must be of type ?array, string given in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php:873
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php(873): implode(',', '18')
+#1 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1193): consultar_valores_ideales_callback(Object(WP_REST_Request))
+#2 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1041): WP_REST_Server->respond_to_request(Object(WP_REST_Request), '/ordenes_crista...', Array, NULL)
+#3 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(431): WP_REST_Server->dispatch(Object(WP_REST_Request))
+#4 D:\xampp\htdocs\demowp\wp-includes\rest-api.php(424): WP_REST_Server->serve_request('/ordenes_crista...')
+#5 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(324): rest_api_loaded(Object(WP))
+#6 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#7 D:\xampp\htdocs\demowp\wp-includes\plugin.php(565): WP_Hook->do_action(Array)
+#8 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(418): do_action_ref_array('parse_request', Array)
+#9 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(813): WP->parse_request('')
+#10 D:\xampp\htdocs\demowp\wp-includes\functions.php(1336): WP->main('')
+#11 D:\xampp\htdocs\demowp\wp-blog-header.php(16): wp()
+#12 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#13 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php en la línea 873
+
+2024-03-05T20:10:46+00:00 CRITICAL Uncaught Error: Call to undefined function the_slug() in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php:160
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(324): restrict_access_to_logged_in_users('')
+#1 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#2 D:\xampp\htdocs\demowp\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#3 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(13): do_action('template_redire...')
+#4 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#5 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#6 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php en la línea 160
+

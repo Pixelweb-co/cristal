@@ -46,7 +46,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
                                 <?php foreach ($tiendas as $tienda) {
 
                                 ?>
-                                    <option <?= $tienda->ID ?>><?= $tienda->post_title ?></option>
+                                    <option value="<?= $tienda->metros_cuadrados ?>"><?= $tienda->post_title ?></option>
                                 <?php }
 
                                 ?>

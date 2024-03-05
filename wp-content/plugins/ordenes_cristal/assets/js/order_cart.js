@@ -191,6 +191,7 @@ $scope.setTienda = (id,image_url) => {
     }
     if ($scope.tiendaSeleccionada) {
       parametros.tienda = $scope.tiendaSeleccionada;
+      localStorage.setItem('tiendaSeleccionada',$scope.tiendaSeleccionada);
     }
     console.log("parametros", parametros);
     // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
@@ -284,7 +285,6 @@ $scope.setTienda = (id,image_url) => {
   $scope.setQty = (element, id_item) => {
     console.log("id_item", id_item);
     console.log("element", element.target.value);
-    return false
     var data = JSON.parse(localStorage.getItem("OrderCart"));
     var found = data.find((i) => i.ID == id_item);
 
@@ -309,7 +309,7 @@ $scope.setTienda = (id,image_url) => {
     console.log("update qty", new_data);
     $scope.items = new_data;
     $scope.loadData();
-    $scope.stats = $scope.calculate();
+    $scope.calculate();
   };
 
 
@@ -329,6 +329,7 @@ app.controller("miniCartController", function ($scope, $http) {
   $scope.totalize = () => {
     console.log("totalize");
     $scope.total_order = 0;
+
     var data = JSON.parse(localStorage.getItem("OrderCart"));
     if (!data) {
       return false;
@@ -340,6 +341,7 @@ app.controller("miniCartController", function ($scope, $http) {
       $scope.total_order += parseInt(item.subtotal);
     });
   };
+
 
   $scope.calculate = () => {
     // Objeto para almacenar los totales por categoría
@@ -399,7 +401,7 @@ app.controller("miniCartController", function ($scope, $http) {
     console.log("items", $scope.items);
 
     $scope.totalize();
-    $scope.stats = $scope.calculate();
+    $scope.calculate();
   };
 
   
@@ -439,8 +441,11 @@ app.controller("miniCartController", function ($scope, $http) {
 
 app.controller("cartController", function ($scope, $http) {
   $scope.total_order = 0;
-  $file_order_upload = null;
-
+  $scope.stats = [];
+  $scope.file_order_upload = null;
+  $scope.links = [];
+  $scope.linkError = null;
+  $scope.valores_ideales = [];
   // Obtener las tiendas desde el endpoint
   $http
     .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
@@ -453,11 +458,43 @@ app.controller("cartController", function ($scope, $http) {
       console.error("Error al obtener las tiendas:", error);
     });
 
-  // Función para filtrar las tiendas según la opción seleccionada en el select
+  
+  
+
+  
+  
+    // Función para filtrar las tiendas según la opción seleccionada en el select
   $scope.filtrarTiendas = function () {
     // Realizar alguna acción con la tienda seleccionada (por ejemplo, realizar otra llamada al servidor)
     console.log("Tienda seleccionada:", $scope.filtroTienda);
   };
+
+  
+  $scope.validarURL = (url) =>{
+    // Expresión regular para validar una URL
+    var urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+
+    // Verifica si la URL cumple con el formato esperado
+    if (urlRegex.test(url)) {
+
+        return true; // La URL es válida
+    } else {
+        return false; // La URL no es válida
+        
+    }
+}
+
+  $scope.addLink = () => {
+    var link = document.getElementById("urlAdd").value;
+    console.log(link)
+    if($scope.validarURL(link)){
+      
+      $scope.links.push(link);
+      document.getElementById("urlAdd").value = ''
+
+    }else{
+      $scope.linkError = 'Agrega un enlace valido'
+    }}
 
   $scope.removeItem = function (id) {
     // Encuentra el índice del elemento con el ID especificado
@@ -478,17 +515,20 @@ app.controller("cartController", function ($scope, $http) {
     }
     // Recalcula el total del pedido
     $scope.totalize();
-    $scope.stats = $scope.calculate();
+    $scope.calculate();
   };
 
   $scope.loadData = function () {
-    $scope.items =
+    
+    $scope.items = $scope.ordenarPorPropiedad(
       localStorage.getItem("OrderCart") != null
         ? JSON.parse(localStorage.getItem("OrderCart"))
-        : [];
+        : []
+        , 'ID', true);
+
 
     $scope.totalize();
-    $scope.stats = $scope.calculate();
+    $scope.calculate();
   };
 
   $scope.totalize = () => {
@@ -506,9 +546,14 @@ app.controller("cartController", function ($scope, $http) {
     });
   };
 
-  $scope.calculate = () => {
+  $scope.calculate = async () => {
+    // Convertir el objeto totalsByCategory a un array de objetos
+    var result = [];
+    
+    var id_C = 0;
     // Objeto para almacenar los totales por categoría
     var totalsByCategory = {};
+    var idsByCategory = {};
 
     // Obtener los datos del carrito del almacenamiento local
     var cartData = JSON.parse(localStorage.getItem("OrderCart"));
@@ -517,7 +562,26 @@ app.controller("cartController", function ($scope, $http) {
     if (!cartData || cartData.length === 0) {
       return [];
     }
-    var id_C = 0;
+
+    //obtener todas las categorias del cart
+    var categoriasCart = cartData.map((item) => (item.categorias[0].term_id))
+
+
+    jQuery("#statsPanel .cart-loader").show();
+    //Lógica para realizar la búsqueda de valores ideales segun categorias seleccionadas
+    await $http({
+        method : "POST",
+        url : base_url+'/wp-json/ordenes_cristal/v1/obtener_valores_ideales',
+        params: {categorias:categoriasCart.join(','),marca:localStorage.getItem("marca_sel")},
+        headers:{'X-WP-Nonce' : nonce},
+    }).then(function (response) {
+        // Manejar la respuesta de la búsqueda de productos
+        $scope.valores_ideales = response.data;
+        console.log("result ideales ",response.data);
+    
+    
+    console.log("catcart ",categoriasCart)
+
     // Calcular los totales por categoría
     cartData.forEach((item) => {
       // Obtener las categorías asociadas al producto
@@ -528,11 +592,12 @@ app.controller("cartController", function ($scope, $http) {
         categories.forEach((category) => {
           // Obtener el nombre de la categoría
           var categoryName = category.name;
-          if (categoryName != "Sin categorizar") {
-            id_C = category.ID;
+          if (categoryName != "Sin categorizar" || categoryName != 'Uncategorized') {
+            id_C = category.term_id;
             // Verificar si ya hay un total para esta categoría
             if (!totalsByCategory[categoryName]) {
               totalsByCategory[categoryName] = 0;
+              idsByCategory[categoryName] = category.term_id;
             }
 
             // Incrementar el total de la categoría con el subtotal del producto
@@ -542,18 +607,68 @@ app.controller("cartController", function ($scope, $http) {
       }
     });
 
-    // Convertir el objeto totalsByCategory a un array de objetos
-    var result = [];
+
+    console.log("videal",$scope.valores_ideales);
     Object.keys(totalsByCategory).forEach((categoryName) => {
+
+      var metro_cuadrado_total_categoria = totalsByCategory[categoryName] / parseInt(localStorage.getItem('tiendaSeleccionada'));
+      var valor_ideal = $scope.valores_ideales.find((val) => val.marca_id == localStorage.getItem('marca_sel') && val.categoria_id == idsByCategory[categoryName]).valor_ideal;
+      var valor_restante = valor_ideal - metro_cuadrado_total_categoria;
+      
+      var porcentaje_utilizado = metro_cuadrado_total_categoria / valor_ideal * 100;
+      var porcentaje_restante = 100 - ((totalsByCategory[categoryName] / parseInt(localStorage.getItem('tiendaSeleccionada'))) / parseInt($scope.valores_ideales.find((val) => val.marca_id == localStorage.getItem('marca_sel') && val.categoria_id == idsByCategory[categoryName]).valor_ideal) * 100)
+
+      if(porcentaje_utilizado >= 80){
+        porcentaje_utilizado = 80;
+        porcentaje_restante = 20;
+      }
+
+      var overvalue = false
+
+      if(metro_cuadrado_total_categoria > valor_ideal){
+        overvalue = true
+      }
+
+
       result.push({
-        ID: id_C,
+        ID: idsByCategory[categoryName],
         title: categoryName, // Usando el nombre de la categoría como título
+        metro_cuadrado_total_categoria: metro_cuadrado_total_categoria,
         total_cat: totalsByCategory[categoryName],
-      });
+        valor_restante: valor_restante,
+        valor_ideal: valor_ideal,
+        porcentaje_utilizado: porcentaje_utilizado,
+        porcentaje_restante: porcentaje_restante,
+        overvalue: overvalue 
     });
+    
+  });
+    
+
+
     console.log("res por cat", result);
-    return result;
-  };
+    $scope.stats = $scope.ordenarPorPropiedad(result,'title',true);
+    jQuery("#statsPanel .cart-loader").hide();
+  });
+
+  }
+
+  $scope.ordenarPorPropiedad = (array, propiedad, ascendente = true) => {
+    return array.sort((a, b) => {
+        const valorA = a[propiedad];
+        const valorB = b[propiedad];
+        let comparacion = 0;
+        
+        if (valorA > valorB) {
+            comparacion = 1;
+        } else if (valorA < valorB) {
+            comparacion = -1;
+        }
+
+        return ascendente ? comparacion : comparacion * -1;
+    });
+}
+
 
 
   $scope.setObservation = (item_id, observation) =>{
@@ -617,7 +732,7 @@ app.controller("cartController", function ($scope, $http) {
     }
 
     $scope.loadData();
-    $scope.stats = $scope.calculate();
+   $scope.calculate();
   };
 
   $scope.guardarOrden = () => {
@@ -699,7 +814,7 @@ jQuery.ajax({
     console.log("update qty", new_data);
     $scope.items = new_data;
     $scope.loadData();
-    $scope.stats = $scope.calculate();
+    $scope.calculate();
   };
 
     // Función para generar un nuevo ID único para un producto
@@ -756,7 +871,7 @@ jQuery.ajax({
 
     // Recargar los datos del carrito
     $scope.loadData();
-    $scope.stats = $scope.calculate();
+    $scope.calculate();
   };
 
   $scope.marcaSeleccionada = "";
@@ -807,7 +922,7 @@ function showMiniCart() {
     scope.$apply(function () {
       // Llamar a la función loadData en el controlador correspondiente para actualizar los datos del mini carrito
       scope.loadData();
-      scope.stats = scope.calculate();
+      scope.calculate();
     });
   });
 
@@ -828,6 +943,9 @@ function hideMiniCart() {
 }
 
 jQuery(document).ready(function ($) {
+
+
+  
   $(document).on("click", "#cartController .obs-toggle", function () {
     if ($(this).find("i").hasClass("fa-caret-up")) {
       $(this).closest("tbody").find(".observ_field").hide();
@@ -1031,3 +1149,68 @@ jQuery(".image-upload-wrap").bind("dragover", function () {
 jQuery(".image-upload-wrap").bind("dragleave", function () {
   jQuery(".image-upload-wrap").removeClass("image-dropping");
 });
+
+///dropzone
+
+var myDropzone = new FileDropzone({
+  target: '#box',
+  fileHoverClass: 'entered',
+  clickable: true,
+  multiple: true,
+  forceReplace: false,
+  paramName: 'my-file',
+  accept: '',
+  onChange: function () {
+    var files = this.getFiles()
+    var elem = this.element.find('.files')
+    elem.empty()
+    files.forEach(function (item) {
+      elem.append('<div class="file-name" data-id="' + item.id + '">' + item.name + '</div>')
+    })
+
+    console.log('files multi',files)
+
+    angular.element(document).ready(function () {
+      // Actualizar el valor de $scope.file_order_upload en el controlador de AngularJS
+      var scope_cart = angular
+        .element(document.getElementById("cartController"))
+        .scope();
+      console.log(scope_cart);
+      scope_cart.$apply(() => {
+        scope_cart.file_order_upload = files;
+        console.log(scope_cart.file_order_upload);
+      });
+    });
+
+  },
+  onEnter: function () {
+    console.log('enter')
+  },
+  onLeave: function () {
+    console.log('leave')
+  },
+  onHover: function () {
+    console.log('hover')
+  },
+  onDrop: function () {
+    console.log('drop')
+  },
+  onFolderFound: function (folders) {
+    console.log('' + folders.length + ' folders ignored. Change noFolder option to true to accept folders.')
+  },
+  onInvalid: function (files) {
+    console.log('file invalid')
+    console.log(files)
+  },
+  beforeAdd: function (files) {
+    for (var i = 0, len = files.length; i < len; i++) {
+      let file = files[i]
+      file.id = new Date().getTime()
+      if (/fuck/.test(file.name)) {
+        return false
+      }
+    }
+    return true
+  }
+})
+

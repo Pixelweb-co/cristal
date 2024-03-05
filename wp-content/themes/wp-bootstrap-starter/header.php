@@ -34,8 +34,12 @@
     }
 
     global $post;
-    $post_slug = $post->post_name;
-
+    if(isset($post->post_name)){
+        $post_slug = $post->post_name;
+    }else{
+        $post_slug = '';    
+    }   
+     
     ?>
 
     <div id="page" class="site">
@@ -149,6 +153,8 @@
     </div>
 </header> -->
 
+<?php if ($post_slug != 'login') { ?>
+          
 <header id="masthead" class="site-header navbar-static-top <?php echo wp_bootstrap_starter_bg_class(); ?>" role="banner">
     <div class="container">
         <nav class="navbar navbar-expand-xl p-0">
@@ -202,6 +208,8 @@
         </nav>
     </div>
 </header>
+
+<?php } ?>
 
 
 
@@ -265,6 +273,11 @@
 
 
                     <?php endif; ?>
+                    <?php
+                        if ($post_slug != 'login') {
+                        ?>
+                       
                     <div class="container-fluid banner-search">
 
                     </div>
+                    <?php } ?>
