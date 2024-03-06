@@ -83,7 +83,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
 
                 <div ng-if="sresult.length == 0 " class="d-flex  align-items-center justify-content-center text-center" style="height: 35em;" role="alert">
 
-                    <img src="wp-content/images/logo_1.png" alt="Logo" style="margin-bottom: 3%;">
+                    <img src="<?=site_url('wp-content/images/logo_1.png')?>" alt="Logo" style="margin-bottom: 3%;">
                     <p class="no-search"> Seleccione una tienda y una marca para obtener el listado </p>
 
                 </div>
