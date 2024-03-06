@@ -321,7 +321,7 @@ input:focus {
 /* file upload */
 .file-upload {
     background-color: #ffffff;
-    width: 600px;
+    width: 100%;
     padding: 20px;
   }
   
@@ -489,4 +489,14 @@ input:focus {
     color: #000 !important;
     border: 1px solid #000 !important;
 
+}
+
+.files{
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+}
+
+.files .file-name{
+    color: #383838;
 }

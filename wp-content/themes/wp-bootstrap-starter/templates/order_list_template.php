@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Catalog Template
+Template Name: Order-list-template
 */
 
 get_header();

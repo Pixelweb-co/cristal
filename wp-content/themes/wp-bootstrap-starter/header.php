@@ -141,7 +141,7 @@
             $menu_output = preg_replace('/<a.*?>(.*?)Inicio<\/a>/', '', $menu_output);
             
 
-            $menu_output = preg_replace('/<a.*?>(.*?)Catalog1<\/a>/', '<a href=""><img src="' . $image_url_catalogo . '" alt="catal"></a>', $menu_output);
+            $menu_output = preg_replace('/<a.*?>(.*?)Listado de pedidos<\/a>/', '<a href=""><img src="' . $image_url_catalogo . '" alt="catal"></a>', $menu_output);
             $menu_output = preg_replace('/<a.*?>(.*?)Catalogo<\/a>/', '<a href=""><img src="' . $image_url . '" alt="Catálogo"></a>', $menu_output);
 
             $menu_output = preg_replace('/<a.*?>(.*?)hacer_pedido<\/a>/', '<a href="index.php/hacer_pedido/"><img src="' . $image_url_pedidos . '" alt="Hacer Pedidos"></a>', $menu_output);
@@ -179,8 +179,8 @@
             </button>
             <div class="d-flex align-items-center ml-auto">
             <?php
-                        $image_url = site_url('wp-content/images/catalogo.png');
-            $image_url = site_url('wp-content/images/catalogo.png');
+            //$image_url = site_url('wp-content/images/catalogo.png');
+            $image_url_listado = site_url('wp-content/images/catalogo.png');
             $image_url_pedidos = site_url('wp-content/images/free-box.png');
             $image_url_avatar = site_url('wp-content/images/avatar.png');
             $random_name = 'Usuario' . rand(100, 999);
@@ -200,7 +200,7 @@
             $menu_output = ob_get_clean();
             $menu_output = preg_replace('/<a.*?>(.*?)Inicio<\/a>/', '', $menu_output);
 
-            $menu_output = preg_replace('/<a.*?>(.*?)Listado de pedidos<\/a>/', '<a href="'.site_url('index.php/listado-de-pedidos').'"><img src="' . $image_url . '" alt="Catálogo" class="menu-image"></a>', $menu_output);
+            $menu_output = preg_replace('/<a.*?>(.*?)Listado de pedidos<\/a>/', '<a href="'.site_url('index.php/listado-de-pedidos').'"><img src="' . $image_url_listado . '" alt="Listado de pedidos" class="menu-image"></a>', $menu_output);
 
             $menu_output = preg_replace('/<a.*?>(.*?)hacer_pedido<\/a>/', '<a href="'.site_url('index.php/hacer_pedido').'"><img src="' . $image_url_pedidos . '" alt="Hacer Pedidos" class="menu-image"></a>', $menu_output);
             $menu_output = preg_replace('/<a.*?>(.*?)Mi cuenta<\/a>/', '<a href="#"><img src="' . $image_url_avatar . '" alt="Avatar" > ' . $random_name . '</a>', $menu_output);
@@ -219,7 +219,7 @@
 
             <!-- #masthead -->
             <?php if (is_front_page() && !get_theme_mod('header_banner_visibility')) : ?>
-                <div id="page-sub-header" <?php if (has_header_image()) { ?>style="background-image: url('<?php header_image(); ?>');" <?php } ?>>
+                <!-- <div id="page-sub-header" <?php if (has_header_image()) { ?>style="background-image: url('<?php header_image(); ?>');" <?php } ?>>
                     <div class="container">
                         <h1>
                             <?php
@@ -241,7 +241,7 @@
                         </p>
                         <a href="#content" class="page-scroller"><i class="fa fa-fw fa-angle-down"></i></a>
                     </div>
-                </div>
+                </div> -->
             <?php endif; ?>
 
             <script>

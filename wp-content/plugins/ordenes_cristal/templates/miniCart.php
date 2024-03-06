@@ -53,8 +53,8 @@ $cart_items = $cart->contents();
     <hr/>
     <div class="row">
 
-<div class="col-md-8"><b>Total pedido:</b></div>
-<div class="col-md-4"><b>{{total_order | currency: '$'}}</b></div>
+<div class="col-md-7"><b>Total pedido:</b></div>
+<div class="col-md-5"><b>{{total_order | currency: '$'}}</b></div>
 
 </div>
     <hr/>

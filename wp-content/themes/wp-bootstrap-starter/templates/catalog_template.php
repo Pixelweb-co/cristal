@@ -103,14 +103,13 @@ $productos_encontrados = buscar_productos('', null, null, null);
                                 </h4>
                                 <p class="group inner list-group-item-text">
                                     {{r.post.content}}
-                                    Base en acrílico cristal calibre 5 mm, adhesivos colores corporativos, respaldo en mdf calibre 4mm y cinta de espuma. Área aviso 30 cm x 15 cm, Plotter según arte, adhesivo fotoluminiscente.
-                                </p>
+                                    </p>
                                 <div class="row">
                                     <div class="col-xs-12 col-md-12">
-                                        <p class="lead-1">
-                                            Mobiliario
+                                        <p class="lead-1"  ng-repeat="c in r.categorias">
+                                            {{c.name}}
                                         </p>
-                                        <p class="lead mt-2">
+                                        <p class="lead mt-2" >
                                             {{r.price | currency: '$'}}
                                         </p>
                                     </div>
@@ -118,7 +117,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
                                 </div>
                             </div>
                             <div class="product-code position-absolute top-0 start-0 p-2">
-                                <p class="m-0">Código: 340006974 </p>
+                                <p class="m-0">Código:  {{r.sku}} </p>
                             </div>
                             <div class="overlay">
                                 <button class="btn btn-outline-generic" ng-click="addCart(r.ID)">Agregar a la orden</button>

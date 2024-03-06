@@ -189,9 +189,20 @@ $scope.setTienda = (id,image_url) => {
     if ($scope.nombreProducto) {
       parametros.nombre = $scope.nombreProducto;
     }
+
+    
     if ($scope.tiendaSeleccionada) {
       parametros.tienda = $scope.tiendaSeleccionada;
       localStorage.setItem('tiendaSeleccionada',$scope.tiendaSeleccionada);
+    }else{
+      Swal.fire({
+        title: "Te falta seleccionar la tienda",
+        text: "Para realizar la busqueda debes selecionar una tienda de el listado",
+        icon: "info"
+      });
+      jQuery("#primary .cart-loader").hide();
+
+      return false;
     }
     console.log("parametros", parametros);
     // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
@@ -222,7 +233,7 @@ $scope.setTienda = (id,image_url) => {
         marca: [],
         post_content: "",
         subtotal: 0,
-        sku: "",
+        sku: 0,
         ID: 74800,
       };
     }
@@ -458,8 +469,39 @@ app.controller("cartController", function ($scope, $http) {
       console.error("Error al obtener las tiendas:", error);
     });
 
+
+    
+  $scope.get_valores_ideales_order = async function() {
+    // Obtener los datos del carrito del almacenamiento local
+    var cartData = JSON.parse(localStorage.getItem("OrderCart"));
+
+    // Verificar si hay datos en el carrito
+    if (!cartData || cartData.length === 0) {
+      return [];
+    }
+
+    //obtener todas las categorias del cart
+    var categoriasCart = cartData.map((item) => (item.categorias[0].term_id))
+    jQuery("#statsPanel .cart-loader").show();
+
+        //Lógica para realizar la búsqueda de valores ideales segun categorias seleccionadas
+   await $http({
+     method : "POST",
+     url : base_url+'/wp-json/ordenes_cristal/v1/obtener_valores_ideales',
+     params: {categorias:categoriasCart.join(','),marca:localStorage.getItem("marca_sel")},
+     headers:{'X-WP-Nonce' : nonce},
+ }).then(function (response) {
+     // Manejar la respuesta de la búsqueda de productos
+     $scope.valores_ideales = response.data;
+     console.log("result ideales ",response.data);
+     $scope.loadData();
+
+ })
+
+
+ }
   
-  
+    $scope.get_valores_ideales_order()
 
   
   
@@ -546,6 +588,7 @@ app.controller("cartController", function ($scope, $http) {
     });
   };
 
+
   $scope.calculate = async () => {
     // Convertir el objeto totalsByCategory a un array de objetos
     var result = [];
@@ -559,29 +602,13 @@ app.controller("cartController", function ($scope, $http) {
     var cartData = JSON.parse(localStorage.getItem("OrderCart"));
 
     // Verificar si hay datos en el carrito
-    if (!cartData || cartData.length === 0) {
+    if (!cartData || cartData.length === 0 && $scope.valores_ideales.left.length > 0){
       return [];
     }
 
-    //obtener todas las categorias del cart
-    var categoriasCart = cartData.map((item) => (item.categorias[0].term_id))
-
-
-    jQuery("#statsPanel .cart-loader").show();
-    //Lógica para realizar la búsqueda de valores ideales segun categorias seleccionadas
-    await $http({
-        method : "POST",
-        url : base_url+'/wp-json/ordenes_cristal/v1/obtener_valores_ideales',
-        params: {categorias:categoriasCart.join(','),marca:localStorage.getItem("marca_sel")},
-        headers:{'X-WP-Nonce' : nonce},
-    }).then(function (response) {
-        // Manejar la respuesta de la búsqueda de productos
-        $scope.valores_ideales = response.data;
-        console.log("result ideales ",response.data);
     
     
-    console.log("catcart ",categoriasCart)
-
+    
     // Calcular los totales por categoría
     cartData.forEach((item) => {
       // Obtener las categorías asociadas al producto
@@ -642,7 +669,7 @@ app.controller("cartController", function ($scope, $http) {
         overvalue: overvalue 
     });
     
-  });
+  
     
 
 
@@ -851,7 +878,7 @@ jQuery.ajax({
        cnt : parseInt(formData.cnt),
        price : parseInt(formData.price),
        categorias: [categorias_data.find(c=>c.term_id == formData.categorias)],
-       marca: formData.marca,
+       
        observacion: formData.observacion,
        sku: formData.sku,
        image_url: plugins_url+'/ordenes_cristal/assets/img/product-placeholder.png',
@@ -870,7 +897,7 @@ jQuery.ajax({
     localStorage.setItem("OrderCart", JSON.stringify(cartData));
 
     // Recargar los datos del carrito
-    $scope.loadData();
+    $scope.get_valores_ideales_order()
     $scope.calculate();
   };
 
@@ -909,7 +936,10 @@ jQuery.ajax({
     });
   };
 
-  $scope.loadData();
+  
+
+
+
 });
 
 function showMiniCart() {
@@ -1162,10 +1192,10 @@ var myDropzone = new FileDropzone({
   accept: '',
   onChange: function () {
     var files = this.getFiles()
-    var elem = this.element.find('.files')
+    var elem = jQuery('#files')
     elem.empty()
     files.forEach(function (item) {
-      elem.append('<div class="file-name" data-id="' + item.id + '">' + item.name + '</div>')
+      elem.append('<div class="file-name" data-id="' + item.id + '">' + item.name + ' <button type="button" class="btn  btn-xs" ng-click="removeFile('+item.id+')"><i class="fa fa-trash" aria-hidden="true"></i></button></div>')
     })
 
     console.log('files multi',files)

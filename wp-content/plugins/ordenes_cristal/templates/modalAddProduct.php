@@ -27,20 +27,6 @@
                                     <textarea name="post_content" class="form-control"></textarea>
                                 </div>
 
-                                <div class="form-group">
-                                    <label>Marca</label>
-                                    <select name="marca" class="form-control" ng-model='marcaSeleccionada'>
-                                        <option value="">Marca</option>
-                                        <?php foreach ($marcas as $marca) {
-
-                                        ?>
-                                            <option value="<?= $marca['ID'] ?>"><?= $marca['post_title'] ?></option>
-                                        <?php }
-
-                                        ?>
-                                    </select>
-
-                                </div>
 
                                 <div class="form-group">
                                     <label>Categoria</label>

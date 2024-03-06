@@ -86,19 +86,21 @@
                                     <h3>Seleccione un archivo y arrastrelo aqui</h3>
                                 </div>
                             </div>
-                            <div class="files"></div>
+                           
                         </div>
+
+                        <div class="files" id="files"></div>
 
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="enlaces-panel" style="padding-top: 20px;">
                         <div class="container">
-                            <div class="row">
+                            <div class="row " style="margin-bottom: 30px;">
                                 <div class="col-md-6"><b>Agregar enlaces:</b></div>
                                 <div class="col-md-6 text-right"> </div>
                             </div>
-                            
+
                             <div class="row" ng-repeat="l in links">
                                 <div class="col-md-6"><a href="#">{{l}}</a></div>
                                 <div class="col-md-6 text-right">
@@ -107,17 +109,18 @@
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-10">
 
-                                    <input type="text" class="form-control" id="urlAdd" placeholder="Escribe o pega tu enlace aqui!"/>
+                                    <input type="text" class="form-control" id="urlAdd" placeholder="Escribe o pega tu enlace aqui!" />
                                 </div>
                                 <div class="col-md-2 text-right">
-                                    
-                                <button type="button" class="btn  btn-xs" ng-click="addLink()">
+
+                                    <button type="button" class="btn  btn-xs" ng-click="addLink()">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
-                                    </button></div>
+                                    </button>
+                                </div>
 
                                 <div class="col-md-12" ng-if="linkError" style="color:red">
                                     {{linkError}}
