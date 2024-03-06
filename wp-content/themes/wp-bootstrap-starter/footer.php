@@ -84,7 +84,7 @@ if (isset($post->post_name)) {
 							</a>
 
 							<a href="url_de_facebook" target="_blank">
-								<img src="<?= site_url('wp-content/images/vine.png') ?>" alt="Instagram" class="mr-2">
+								<img src="<?= site_url('wp-content/images/instagram.jpeg') ?>" style="width:26px;height:26px" alt="Instagram" class="mr-2">
 
 							</a>
 							<a href="url_de_facebook" target="_blank">
@@ -98,7 +98,7 @@ if (isset($post->post_name)) {
 						</div>
 						<p>Encuéntranos como Crystal S.A.S</p>
 						<div class="d-flex  justify-content-center text-center">
-							<img src="wp-content/images/telefono.png" alt="Teléfono" class="image-telefono">
+							<img src="<?=site_url('wp-content/images/telefono.png')?>" alt="Teléfono" class="image-telefono">
 							<p class="num-telefono">(604) 604 96 00</p>
 						</div>
 					</div>
