@@ -1149,60 +1149,7 @@ function handle_order_save_request($request)
             // }
 
 
-            $marca = $newOrder['marca'];
-            $image_marca = $newOrder['image_marca'];
-            $name_marca = $newOrder['name_marca'];
-            $links = $params['links'];
-            // Insertar la nueva orden en la tabla de órdenes
-            $wpdb->insert(
-                $orden_table_name,
-                array(
-                    'fecha_orden' => $fecha_actual,
-                    'cliente' => $user_id,
-                    'totalOrden' => $totalOrden,
-                    'ficheros_adjunto' => $file_name,
-                    'marca' => $marca,
-                    'image_marca' => $image_marca,
-                    'name_marca' => $name_marca,
-                    'links'=>$links
-                )
-            );
-
-
-            // Obtener el ID de la orden recién creada
-            $order_id = $wpdb->insert_id;
-
-            // Guardar los ítems de la orden en la tabla de items de la orden
-            foreach ($newOrder['items'] as $item) {
-                $wpdb->insert(
-                    $orden_items_table_name,
-                    array(
-                        'order_id' => $order_id,
-                        'ID' => $item['ID'],
-                        'post_title' => $item['post_title'],
-                        'post_content' => $item['post_content'],
-                        'cnt' => $item['cnt'],
-                        'observacion' => $item['observacion'],
-                        
-                        'price' => $item->price,
-                        'categorias' => json_encode($item->categorias),
-                        'subtotal' => $item->subtotal,
-                        'sku' => $item->sku,
-                        'image_url' => $item->image_url
-                    )
-                );
-            }
-
            
-
-            return array('success' => true, 'message' => 'Order saved successfully', 'order_id' => $order_id);
-        } else {
-            return array('success' => false, 'message' => 'User not logged in');
-        }
-    } else {
-        // Si faltan datos de la orden, devolver un mensaje de error
-        return array('success' => false, 'message' => 'Error: Missing order data');
-    }
 }
 
 
