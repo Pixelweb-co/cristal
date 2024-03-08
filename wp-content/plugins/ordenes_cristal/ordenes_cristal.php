@@ -1147,6 +1147,14 @@ function agregar_columna_marca_csv($columns) {
     return $columns;
 }
 
+// Registrar el campo de metadatos 'Marca' para la importación
+add_filter('woocommerce_product_importer_meta_keys', 'registrar_meta_marca_importacion');
+
+function registrar_meta_marca_importacion($meta_keys) {
+    $meta_keys['_marca_producto'] = 'marca';
+    return $meta_keys;
+}
+
 // Procesar la importación de la marca desde el archivo CSV
 add_filter('woocommerce_product_import_pre_insert_product_object', 'procesar_importacion_marca', 10, 2);
 function procesar_importacion_marca($object, $data) {
