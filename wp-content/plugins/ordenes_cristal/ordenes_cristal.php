@@ -573,13 +573,26 @@ function obtener_marcas_disponibles()
 
     return $options;
 }
-
+// Agregar columna de marca en el listado de productos
+function agregar_columna_marca($columns)
+{
+    // Asegúrate de obtener el índice de la columna de categoría
+    $category_column_index = array_search('product_cat', array_keys($columns));
+    
+    // Insertar la columna de marca después de la columna de categoría
+    $new_columns = array_slice($columns, 0, $category_column_index + 1, true) +
+                   array('marca' => 'Marca') +
+                   array_slice($columns, $category_column_index + 1, null, true);
+    
+    return $new_columns;
+}
+add_filter('manage_edit-product_columns', 'agregar_columna_marca');
 
 // Mostrar la marca en la columna personalizada
 function mostrar_marca_en_columna($column, $post_id)
 {
     if ($column === 'marca') {
-        $marca_id = get_post_meta($post_id, '_marca_id', true);
+        $marca_id = get_post_meta($post_id, '_marca_producto', true);
         if ($marca_id) {
             $marca = get_post($marca_id);
             if ($marca) {
@@ -592,6 +605,92 @@ function mostrar_marca_en_columna($column, $post_id)
 }
 add_action('manage_product_posts_custom_column', 'mostrar_marca_en_columna', 10, 2);
 
+// Establecer el ancho de la columna de marca
+function estilo_ancho_columna_marca()
+{
+    echo '<style type="text/css">
+        .column-marca {
+            width: 200px !important;
+        }
+    </style>';
+}
+add_action('admin_head', 'estilo_ancho_columna_marca');
+
+// Permitir ordenar por la columna de marca
+function ordenar_por_marca($columns)
+{
+    $columns['marca'] = 'marca';
+    return $columns;
+}
+add_filter('manage_edit-product_sortable_columns', 'ordenar_por_marca');
+
+// Personalizar la consulta para ordenar por marca
+function orden_personalizada_por_marca($query)
+{
+    if (!is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    if ($query->get('orderby') === 'marca') {
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_key', '_marca_producto');
+    }
+}
+add_action('pre_get_posts', 'orden_personalizada_por_marca');
+
+// Agregar campo de marca en la edición rápida de productos
+add_action('quick_edit_custom_box', 'mostrar_campo_marca_edicion_rapida', 10, 2);
+
+function mostrar_campo_marca_edicion_rapida($column_name, $post_type) {
+    if ($post_type === 'product' && $column_name === 'marca') {
+        global $post;
+        $marca_id = get_post_meta($post->ID, '_marca_producto', true);
+        
+        echo '
+        <fieldset class="inline-edit-col-right">
+            <div class="inline-edit-col">
+                <label>
+                    <span class="title">' . __('Marca', 'woocommerce') . '</span>
+                    <span class="input-text-wrap">
+                        <select name="marca" class="select">';
+                        // Obtener todas las marcas
+                        $marcas = get_posts(array(
+                            'post_type' => 'marcas',
+                            'numberposts' => -1,
+                            'orderby' => 'title',
+                            'order' => 'ASC'
+                        ));
+                        foreach ($marcas as $marca) {
+                            echo '<option value="' . $marca->ID . '" ' . selected($marca->ID, $marca_id, false) . '>' . $marca->post_title . '</option>';
+                        }
+                        echo '</select>
+                    </span>
+                </label>
+            </div>
+        </fieldset>';
+    }
+}
+
+// Guardar la marca en la edición rápida de productos
+add_action('save_post', 'guardar_marca_edicion_rapida');
+
+function guardar_marca_edicion_rapida($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (isset($_REQUEST['marca'])) {
+        $marca_id = sanitize_text_field($_REQUEST['marca']);
+        update_post_meta($post_id, '_marca_producto', $marca_id);
+    }
+}
+
+// Cargar jQuery en la interfaz de edición rápida
+add_action('admin_print_scripts-edit.php', 'cargar_jquery_edicion_rapida');
+
+function cargar_jquery_edicion_rapida() {
+    wp_enqueue_script('jquery');
+}
 
 
 // Registrar endpoint personalizado para buscar productos por POST
@@ -1042,8 +1141,8 @@ function validate_nonce( $nonce_name ){
 
 
 // Agregar la columna 'Marca' a las columnas permitidas en la importación CSV
-add_filter('woocommerce_csv_product_import_mapping_default_columns', 'agregar_columna_marca');
-function agregar_columna_marca($columns) {
+add_filter('woocommerce_csv_product_import_mapping_default_columns', 'agregar_columna_marca_csv');
+function agregar_columna_marca_csv($columns) {
     $columns['marca'] = 'Marca';
     return $columns;
 }
@@ -1100,6 +1199,109 @@ function handle_order_save_request($request)
     $params = $request->get_params();
     
     //die();
+
+    // Verificar si se enviaron los datos de la orden
+    if (isset($params['order'])) {
+        // Si el usuario está logueado, obtener su ID
+
+        $newOrder = json_decode(base64_decode($params['order']));
+        
+
+        $user = wp_get_current_user();
+
+        $user_id = $user->ID;
+
+        if ($user_id) {
+            global $wpdb;
+            $orden_table_name = $wpdb->prefix . 'orden';
+            $orden_items_table_name = $wpdb->prefix . 'orden_items';
+
+            // Crear una nueva orden
+            $fecha_actual = current_time('mysql'); // Obtener la fecha y hora actuales en formato MySQL
+            $totalOrden = $newOrder->total_order; // El total de la orden
+
+            $file_name = '';
+
+              // Si se adjuntó un archivo, guardarlo relacionado con la orden
+             if (isset($params['file_order'])) {
+               // print_r($_FILES);
+                //echo "tiene filesystem";
+
+                foreach ($params['file_order'] as $file_order_upload){
+                  //  echo "namefile ".$file_order_upload['name'];
+                // Obtener el directorio de subidas de WordPress
+                $upload_dir = wp_upload_dir();
+                $base_dir = $upload_dir['basedir'];
+                $ordenes_cristal_dir = $base_dir . '/ordenes_cristal';
+
+                // Verificar si la carpeta ordenes_cristal existe, si no, crearla
+                if (!file_exists($ordenes_cristal_dir)) {
+                    mkdir($ordenes_cristal_dir, 0755, true); // Crear la carpeta con permisos 0755
+                }
+
+                // Guardar el archivo adjunto en la carpeta uploads/ordenes_cristal
+                $file_path = $ordenes_cristal_dir . '/' . $file_order_upload['name'];
+                move_uploaded_file($file_order_upload['tmp_name'], $file_path);
+
+            }
+            
+            }
+
+
+            $marca = $newOrder['marca'];
+            $image_marca = $newOrder['image_marca'];
+            $name_marca = $newOrder['name_marca'];
+            $links = $params['links'];
+            // Insertar la nueva orden en la tabla de órdenes
+            $wpdb->insert(
+                $orden_table_name,
+                array(
+                    'fecha_orden' => $fecha_actual,
+                    'cliente' => $user_id,
+                    'totalOrden' => $totalOrden,
+                    'ficheros_adjunto' => $file_name,
+                    'marca' => $marca,
+                    'image_marca' => $image_marca,
+                    'name_marca' => $name_marca,
+                    'links'=>$links
+                )
+            );
+
+
+            // Obtener el ID de la orden recién creada
+            $order_id = $wpdb->insert_id;
+
+            // Guardar los ítems de la orden en la tabla de items de la orden
+            foreach ($newOrder['items'] as $item) {
+                $wpdb->insert(
+                    $orden_items_table_name,
+                    array(
+                        'order_id' => $order_id,
+                        'ID' => $item['ID'],
+                        'post_title' => $item['post_title'],
+                        'post_content' => $item['post_content'],
+                        'cnt' => $item['cnt'],
+                        'observacion' => $item['observacion'],
+                        
+                        'price' => $item->price,
+                        'categorias' => json_encode($item->categorias),
+                        'subtotal' => $item->subtotal,
+                        'sku' => $item->sku,
+                        'image_url' => $item->image_url
+                    )
+                );
+            }
+
+           
+
+            return array('success' => true, 'message' => 'Order saved successfully', 'order_id' => $order_id);
+        } else {
+            return array('success' => false, 'message' => 'User not logged in');
+        }
+    } else {
+        // Si faltan datos de la orden, devolver un mensaje de error
+        return array('success' => false, 'message' => 'Error: Missing order data');
+    }
 }
 
 
