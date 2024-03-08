@@ -12,6 +12,21 @@ Author: Tu Nombre
 */
 
 
+//desactivar plugin
+register_deactivation_hook( __FILE__, 'my_plugin_remove_database' );
+function my_plugin_remove_database() {
+     global $wpdb;
+     $table_name_order_items = $wpdb->prefix . 'orden_items';
+     $sql = "DROP TABLE IF EXISTS $table_name_order_items";
+     $wpdb->query($sql);
+    
+     $table_name_order = $wpdb->prefix . 'orden';
+     $sql = "DROP TABLE IF EXISTS $table_name_order";
+     $wpdb->query($sql);
+    
+
+    }  
+
 // Activar el plugin
 register_activation_hook(__FILE__, 'cristal_pos_activate');
 
@@ -1048,15 +1063,17 @@ function handle_order_save_request($request)
 {
    
 
-    //print_r($_FILES);
+     // Obtener los datos del cuerpo de la solicitud
+    $params = $request->get_params();
+    print_r($params['links']);
     //die();
 
     // Verificar si se enviaron los datos de la orden
-    if (isset($_POST['order'])) {
+    if (isset($params['order'])) {
         // Si el usuario está logueado, obtener su ID
 
-        $newOrder = json_decode(base64_decode($_POST['order']));
-
+        $newOrder = json_decode(base64_decode($params['order']));
+        
 
         $user = wp_get_current_user();
 
@@ -1074,11 +1091,11 @@ function handle_order_save_request($request)
             $file_name = '';
 
               // Si se adjuntó un archivo, guardarlo relacionado con la orden
-             if (isset($_FILES)) {
+             if (isset($params['file_order'])) {
                // print_r($_FILES);
                 //echo "tiene filesystem";
 
-                foreach ($_FILES['file_order'] as $file_order_upload){
+                foreach ($params['file_order'] as $file_order_upload){
                   //  echo "namefile ".$file_order_upload['name'];
                 // Obtener el directorio de subidas de WordPress
                 $upload_dir = wp_upload_dir();
@@ -1102,7 +1119,7 @@ function handle_order_save_request($request)
             $marca = $newOrder->marca;
             $image_marca = $newOrder->image_marca;
             $name_marca = $newOrder->name_marca;
-            $links = $_POST['links'];
+            $links = $params['links'];
             // Insertar la nueva orden en la tabla de órdenes
             $wpdb->insert(
                 $orden_table_name,
