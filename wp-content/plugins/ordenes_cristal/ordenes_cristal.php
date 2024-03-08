@@ -1056,32 +1056,39 @@ function agregar_columna_marca($columns) {
     return $columns;
 }
 
-
 // Procesar la importación de la marca desde el archivo CSV
 add_filter('woocommerce_product_import_pre_insert_product_object', 'procesar_importacion_marca', 10, 2);
 
 function procesar_importacion_marca($object, $data) {
     if (isset($data['marca'])) {
         $marca_name = $data['marca'];
-        
-        // Buscar la marca por el nombre en el tipo de publicación 'marca'
+
+        // Buscar la marca por el nombre en el tipo de publicación 'marcas'
         $marca_query = new WP_Query(array(
             'post_type' => 'marcas',
             'posts_per_page' => 1,
             'title' => $marca_name,
             'fields' => 'ids'
         ));
-        
-        if ($marca_query->have_posts()) {
+
+        // Si no se encuentra la marca, crearla
+        if (!$marca_query->have_posts()) {
+            $marca_id = wp_insert_post(array(
+                'post_type' => 'marcas',
+                'post_title' => $marca_name,
+                'post_status' => 'publish'
+            ));
+        } else {
             $marca_id = $marca_query->posts[0];
-            // Asociar la marca al producto
-            update_post_meta($object->get_id(), '_marca_producto', $marca_id);
         }
+
+        // Asociar la marca al producto
+        update_post_meta($object->get_id(), '_marca_producto', $marca_id);
+
         wp_reset_postdata(); // Restablecer los datos del post
     }
     return $object;
 }
-
 
 // Registrar la ruta del endpoint para guardar la orden
 function registrar_endpoint_guardar_orden()
