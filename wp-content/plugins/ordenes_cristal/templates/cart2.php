@@ -147,8 +147,12 @@
 
 
             <?php include('panelStats.php'); ?>
-            <div class="btn-cart-totals">
-                <button type="button" id="btnSaveOrder" class="btn btn-outline-generic" ng-click="guardarOrden()">
+            <div class="btn-cart-totals flex-d">
+                <button type="button" id="btnSaveOrder" class="btn btn-outline-generic ml-10" ng-click="guardarOrden()">
+                    <div class="cart-loader"></div> <span class="title_btn">Guardar pedido</span>
+                </button>
+
+                <button type="button" id="btnSaveOrder" class="btn btn-outline-generic mr-10" ng-click="enviarOrden()">
                     <div class="cart-loader"></div> <span class="title_btn">Enviar</span>
                 </button>
             </div>
