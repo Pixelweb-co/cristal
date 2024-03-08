@@ -1100,56 +1100,6 @@ function handle_order_save_request($request)
     $params = $request->get_params();
     
     //die();
-
-    // Verificar si se enviaron los datos de la orden
-    if (isset($params['order'])) {
-        // Si el usuario está logueado, obtener su ID
-
-        $newOrder = json_decode(base64_decode($params['order']));
-        
-
-        $user = wp_get_current_user();
-
-        $user_id = $user->ID;
-
-        if ($user_id) {
-            global $wpdb;
-            $orden_table_name = $wpdb->prefix . 'orden';
-            $orden_items_table_name = $wpdb->prefix . 'orden_items';
-
-            // Crear una nueva orden
-            $fecha_actual = current_time('mysql'); // Obtener la fecha y hora actuales en formato MySQL
-            $totalOrden = $newOrder->total_order; // El total de la orden
-
-            $file_name = '';
-
-              // Si se adjuntó un archivo, guardarlo relacionado con la orden
-            //  if (isset($params['file_order'])) {
-            //    // print_r($_FILES);
-            //     //echo "tiene filesystem";
-
-            //     foreach ($params['file_order'] as $file_order_upload){
-            //       //  echo "namefile ".$file_order_upload['name'];
-            //     // Obtener el directorio de subidas de WordPress
-            //     $upload_dir = wp_upload_dir();
-            //     $base_dir = $upload_dir['basedir'];
-            //     $ordenes_cristal_dir = $base_dir . '/ordenes_cristal';
-
-            //     // Verificar si la carpeta ordenes_cristal existe, si no, crearla
-            //     if (!file_exists($ordenes_cristal_dir)) {
-            //         mkdir($ordenes_cristal_dir, 0755, true); // Crear la carpeta con permisos 0755
-            //     }
-
-            //     // Guardar el archivo adjunto en la carpeta uploads/ordenes_cristal
-            //     $file_path = $ordenes_cristal_dir . '/' . $file_order_upload['name'];
-            //     move_uploaded_file($file_order_upload['tmp_name'], $file_path);
-
-            // }
-            
-            // }
-
-
-           
 }
 
 
