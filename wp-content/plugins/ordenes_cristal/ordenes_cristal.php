@@ -761,6 +761,7 @@ function obtener_marcas()
         'posts_per_page' => -1,
     ));
 
+
     $marcas_con_imagenes = array();
 
     foreach ($marcas as $marca) {
@@ -1046,6 +1047,25 @@ function validate_nonce( $nonce_name ){
     }
 }
 
+// Agregar la columna 'Marca' a las columnas permitidas en la importación CSV
+add_filter('woocommerce_csv_product_import_mapping_default_columns', 'agregar_columna_marca');
+
+function agregar_columna_marca($columns) {
+    $columns['marca'] = 'Marca';
+    return $columns;
+}
+
+// Procesar la importación de la marca desde el archivo CSV
+add_filter('woocommerce_product_import_pre_insert_product_object', 'procesar_importacion_marca', 10, 2);
+
+function procesar_importacion_marca($object, $data) {
+    if (isset($data['marca'])) {
+        $object->update_meta_data('_marca', $data['marca']);
+    }
+    return $object;
+}
+
+
 
 
 // Registrar la ruta del endpoint para guardar la orden
@@ -1065,7 +1085,7 @@ function handle_order_save_request($request)
 
      // Obtener los datos del cuerpo de la solicitud
     $params = $request->get_params();
-    print_r($params['links']);
+    
     //die();
 
     // Verificar si se enviaron los datos de la orden
