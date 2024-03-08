@@ -1060,11 +1060,18 @@ add_filter('woocommerce_product_import_pre_insert_product_object', 'procesar_imp
 
 function procesar_importacion_marca($object, $data) {
     if (isset($data['marca'])) {
-        $object->update_meta_data('_marca', $data['marca']);
+        $marca_name = $data['marca'];
+        // Buscar la marca por el nombre en la taxonomía 'marca'
+        $marca = get_term_by('name', $marca_name, 'marca');
+        
+        if ($marca && !is_wp_error($marca)) {
+            $marca_id = $marca->term_id;
+            // Asociar la marca al producto mediante la taxonomía 'marca'
+            wp_set_object_terms($object->get_id(), $marca_id, 'marca');
+        }
     }
     return $object;
 }
-
 
 
 
