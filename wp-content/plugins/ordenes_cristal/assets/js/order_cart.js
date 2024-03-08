@@ -789,7 +789,6 @@ jQuery.ajax({
   url: base_url+'/wp-json/ordenes_cristal/v1/guardar_orden',
   type: 'POST',
   data: formData,
-  dataType: 'json',
   processData: false,  // Evitar el procesamiento automático de datos
 beforeSend: function ( xhr ) {
     xhr.setRequestHeader( 'X-WP-Nonce',nonce );
