@@ -574,13 +574,6 @@ function obtener_marcas_disponibles()
     return $options;
 }
 
-// Agregar columna de marca en el listado de productos
-function agregar_columna_marca($columns)
-{
-    $columns['marca'] = 'Marca';
-    return $columns;
-}
-add_filter('manage_edit-product_columns', 'agregar_columna_marca');
 
 // Mostrar la marca en la columna personalizada
 function mostrar_marca_en_columna($column, $post_id)
@@ -1050,7 +1043,6 @@ function validate_nonce( $nonce_name ){
 
 // Agregar la columna 'Marca' a las columnas permitidas en la importación CSV
 add_filter('woocommerce_csv_product_import_mapping_default_columns', 'agregar_columna_marca');
-
 function agregar_columna_marca($columns) {
     $columns['marca'] = 'Marca';
     return $columns;
@@ -1058,7 +1050,6 @@ function agregar_columna_marca($columns) {
 
 // Procesar la importación de la marca desde el archivo CSV
 add_filter('woocommerce_product_import_pre_insert_product_object', 'procesar_importacion_marca', 10, 2);
-
 function procesar_importacion_marca($object, $data) {
     if (isset($data['marca'])) {
         $marca_name = $data['marca'];
@@ -1158,9 +1149,9 @@ function handle_order_save_request($request)
             }
 
 
-            $marca = $newOrder->marca;
-            $image_marca = $newOrder->image_marca;
-            $name_marca = $newOrder->name_marca;
+            $marca = $newOrder['marca'];
+            $image_marca = $newOrder['image_marca'];
+            $name_marca = $newOrder['name_marca'];
             $links = $params['links'];
             // Insertar la nueva orden en la tabla de órdenes
             $wpdb->insert(
@@ -1182,16 +1173,16 @@ function handle_order_save_request($request)
             $order_id = $wpdb->insert_id;
 
             // Guardar los ítems de la orden en la tabla de items de la orden
-            foreach ($newOrder->items as $item) {
+            foreach ($newOrder['items'] as $item) {
                 $wpdb->insert(
                     $orden_items_table_name,
                     array(
                         'order_id' => $order_id,
-                        'ID' => $item->ID,
-                        'post_title' => $item->post_title,
-                        'post_content' => $item->post_content,
-                        'cnt' => $item->cnt,
-                        'observacion' => $item->observacion,
+                        'ID' => $item['ID'],
+                        'post_title' => $item['post_title'],
+                        'post_content' => $item['post_content'],
+                        'cnt' => $item['cnt'],
+                        'observacion' => $item['observacion'],
                         
                         'price' => $item->price,
                         'categorias' => json_encode($item->categorias),
