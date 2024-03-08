@@ -13,9 +13,10 @@ app.controller("cartSearchController", function ($scope, $http) {
   $scope.nombreProducto = null;
   $scope.tiendaSeleccionada = null;
   $scope.sresult = [];
+  $scope.marcaNameSel = null;
 
-  $scope.setMarca = (id,image_url) => {
-  
+  $scope.setMarca = (id,image_url,name_marca) => {
+    $scope.marcaNameSel= name_marca
     if(localStorage.getItem("marca_sel")) {
       
       var items_order = JSON.parse(localStorage.getItem("OrderCart"));
@@ -37,6 +38,7 @@ app.controller("cartSearchController", function ($scope, $http) {
               localStorage.setItem("OrderCart",JSON.stringify([]))
               localStorage.setItem("marca_sel", id);
               localStorage.setItem("marca_sel_image", image_url);
+              localStorage.setItem("name_marca", name_marca);
               
               $scope.marcaSeleccionada = id;
               console.log("setsel", id);
@@ -60,6 +62,7 @@ app.controller("cartSearchController", function ($scope, $http) {
             $scope.sresult = [];
             localStorage.setItem("marca_sel", id);
             localStorage.setItem("marca_sel_image", image_url);
+            localStorage.setItem("name_marca", name_marca);
             $scope.marcaSeleccionada = id;
             console.log("new setsel", id);
 
@@ -75,6 +78,7 @@ app.controller("cartSearchController", function ($scope, $http) {
 
     localStorage.setItem("marca_sel", id);
     localStorage.setItem("marca_sel_image", image_url);
+    localStorage.setItem("name_marca", name_marca);
     $scope.marcaSeleccionada = id;
     console.log("new setsel", id);
 
@@ -110,6 +114,7 @@ $scope.setTienda = (id,image_url) => {
             localStorage.setItem("OrderCart",JSON.stringify([]))
             localStorage.setItem("marca_sel", id);
             localStorage.setItem("marca_sel_image", image_url);
+            localStorage.setItem("name_marca", name_marca);
             
             $scope.marcaSeleccionada = id;
             console.log("setsel", id);
@@ -133,6 +138,7 @@ $scope.setTienda = (id,image_url) => {
           $scope.sresult = [];
           localStorage.setItem("marca_sel", id);
           localStorage.setItem("marca_sel_image", image_url);
+          localStorage.setItem("name_marca", name_marca);
           $scope.marcaSeleccionada = id;
           console.log("new setsel", id);
 
@@ -148,6 +154,7 @@ $scope.setTienda = (id,image_url) => {
 
   localStorage.setItem("marca_sel", id);
   localStorage.setItem("marca_sel_image", image_url);
+  localStorage.setItem("name_marca", name_marca);
   $scope.marcaSeleccionada = id;
   console.log("new setsel", id);
 
@@ -162,6 +169,7 @@ $scope.setTienda = (id,image_url) => {
   $scope.buscarProductos = function () {
     jQuery("#primary .cart-loader").show();
 
+   
     $marca_sel = localStorage.getItem("marca_sel");
 
     if(!$marca_sel) {
@@ -221,23 +229,13 @@ $scope.setTienda = (id,image_url) => {
     });
   };
 
-  $scope.addCart = (id_item, newProduct = false) => {
-    if (!newProduct) {
-      var product_add = $scope.sresult.find((p) => p.ID === id_item);
-    } else {
-      var product_add = {
-        post_title: "",
-        cnt: 0,
-        categorias: [],
-        price: 0,
-        marca: [],
-        post_content: "",
-        subtotal: 0,
-        sku: 0,
-        ID: 74800,
-      };
-    }
+  $scope.addCart = (id_item,el ) => {
+    
+    console.log(el.target)
 
+
+      var product_add = $scope.sresult.find((p) => p.ID === id_item);
+      var qty = parseInt(jQuery(el.target).closest(".card-body").find(".qtyMinicartInput").val());
     console.log("padd", product_add);
 
     // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
@@ -260,7 +258,7 @@ $scope.setTienda = (id,image_url) => {
 
       localStorage.setItem(
         "OrderCart",
-        JSON.stringify([{ ...product_add, cnt: 1, subtotal: product_add.price }])
+        JSON.stringify([{ ...product_add, cnt: qty, subtotal: product_add.price }])
       );
     } else {
       var data = JSON.parse(localStorage.getItem("OrderCart"));
@@ -271,13 +269,13 @@ $scope.setTienda = (id,image_url) => {
       if (!found) {
         console.log("no found", found);
 
-        data.push({ ...product_add, cnt: 1, subtotal: product_add.price });
+        data.push({ ...product_add, cnt: qty, subtotal: product_add.price });
 
         localStorage.setItem("OrderCart", JSON.stringify(data));
       } else {
         console.log("founddd ", found);
 
-        found.cnt = parseInt(found.cnt) + 1;
+        found.cnt = parseInt(found.cnt) + qty;
         found.subtotal = parseInt(found.price) * parseInt(found.cnt);
 
         var new_data = data.filter((i) => i.ID != product_add.ID);
@@ -289,8 +287,14 @@ $scope.setTienda = (id,image_url) => {
         console.log("actr localstorass", new_data);
       }
     }
-
-    showMiniCart();
+    new Noty({
+      type: 'success',
+      layout: 'bottomRight',
+      text: "<b>Se agrego el producto al pedido correctamente!<br/>",
+      timeout: 3000
+    }).show()
+    
+  
   };
 
   $scope.setQty = (element, id_item) => {
@@ -635,7 +639,7 @@ app.controller("cartController", function ($scope, $http) {
     });
 
 
-    console.log("videal",$scope.valores_ideales);
+  
     Object.keys(totalsByCategory).forEach((categoryName) => {
 
       var metro_cuadrado_total_categoria = totalsByCategory[categoryName] / parseInt(localStorage.getItem('tiendaSeleccionada'));
@@ -768,24 +772,31 @@ app.controller("cartController", function ($scope, $http) {
     jQuery('#btnSaveOrder div.cart-loader').show();
 
 var image_marca = localStorage.getItem("marca_sel_image");
-
+var name_marca = localStorage.getItem("name_marca");
 var marca_sel = localStorage.getItem("marca_sel");
 
+console.log("dzn", myDropzone)
 
   var formData = new FormData();
-  formData.append('file_order', $scope.file_order_upload);
-  formData.append('order', btoa(JSON.stringify({items:$scope.items,total_order:$scope.total_order,marca:marca_sel,image_marca:image_marca})));
-
-    console.log(formData);
+  formData.append('file_order', myDropzone.getFiles());
+  formData.append('order', btoa(JSON.stringify({items:$scope.items,total_order:$scope.total_order,marca:marca_sel,image_marca:image_marca,name_marca:name_marca})));
+  formData.append('links', JSON.stringify($scope.links))
+    
+  console.log("to send ",formData);
 
     // Realizar la solicitud AJAX
 jQuery.ajax({
   url: base_url+'/wp-json/ordenes_cristal/v1/guardar_orden',
   type: 'POST',
-  headers:{'X-WP-Nonce' : nonce},
   data: formData,
+  dataType: 'json',
   processData: false,  // Evitar el procesamiento automático de datos
-  contentType: false,  // Evitar la configuración automática del tipo de contenido
+beforeSend: function ( xhr ) {
+    xhr.setRequestHeader( 'X-WP-Nonce',nonce );
+    //xhr.setRequestHeader( 'Content-Type', 'multipart/form-data; charset=utf-8; boundary=' + Math.random().toString().substr(2) );
+    
+  },
+ 
   success: function(response) {
       console.log('El archivo se ha subido correctamente.');
       // Manejar la respuesta del servidor si es necesario
@@ -797,9 +808,10 @@ jQuery.ajax({
   localStorage.removeItem("marca_sel");
 
   localStorage.removeItem("marca_sel_image");
+  localStorage.removeItem("name_marca");
   
 
-  location.href = base_url+'/index.php/listado-de-pedidos/'
+  //location.href = base_url+'/index.php/listado-de-pedidos/'
 
   },
   error: function(xhr, status, error) {
@@ -1182,6 +1194,8 @@ jQuery(".image-upload-wrap").bind("dragleave", function () {
 
 ///dropzone
 
+if(jQuery("#box").length > 0) {
+
 var myDropzone = new FileDropzone({
   target: '#box',
   fileHoverClass: 'entered',
@@ -1243,4 +1257,24 @@ var myDropzone = new FileDropzone({
     return true
   }
 })
+}
+
+const addTocart = (id_item,e) => {
+
+console.log("adding",e)
+  var qty = 1
+
+  angular.element(document).ready(function () {
+    // Actualizar el valor de $scope.file_order_upload en el controlador de AngularJS
+    var scope_cart = angular
+      .element(document.getElementById("cartController"))
+      .scope();
+    console.log(scope_cart);
+    scope_cart.$apply(() => {
+      scope_cart.addCart(id_item,qty);
+    });
+  });
+
+
+}
 

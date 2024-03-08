@@ -500,3 +500,10 @@ input:focus {
 .files .file-name{
     color: #383838;
 }
+
+.text-item-block{
+    color:#000;
+    font-weight: 400;
+    padding: 6px;
+    font-family: Arial, Helvetica, sans-serif;
+}

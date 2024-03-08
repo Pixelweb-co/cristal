@@ -1,12 +1,6 @@
 <?php
 
 
-/*
-Plugin Name: Cristal POS
-Description: Plugin para gestionar órdenes de productos
-Version: 1.0
-Author: Tu Nombre
-*/
 
 require_once('classes/cart.php');
 
@@ -34,10 +28,16 @@ function cristal_pos_activate()
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         fecha_orden datetime NOT NULL,
         cliente varchar(100) NOT NULL,
+        cliente_name varchar(255) NOT NULL,
         totalOrden decimal(10,2) NOT NULL,
         fichero_adjunto varchar(100) NOT NULL,
         marca varchar(100) NOT NULL,
         image_marca varchar(100) NOT NULL,
+        name_marca varchar(100) NOT NULL,
+        links varchar(255) NOT NULL,
+        is_send varchar(255) NOT NULL,
+        tienda varchar(255) NOT NULL,
+        tienda_name varchar(255) NOT NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";
 
@@ -108,14 +108,32 @@ function agregar_estilos_y_scripts()
     wp_register_style('cart_order-plugin', plugins_url('assets/css/cart_order.css', __FILE__));
     wp_enqueue_style('cart_order-plugin');
 
+
+
     // Registrar y encolar el archivo JS
     wp_register_script('order-plugin', plugins_url('assets/js/order_cart.js', __FILE__), array('jquery'), '1.0', true);
     wp_enqueue_script('order-plugin');
 
+    wp_localize_script('order-plugin',
+                        'dcmsUpload',
+                        [ 'ajaxurl'=>admin_url('admin-ajax.php'),
+                          'nonce' => wp_create_nonce('ajax-nonce-upload')]);
 
     // Registrar y encolar el archivo JS
     wp_register_script('validate-plugin', plugins_url('assets/js/jquery.validate.js', __FILE__), array('jquery'), '1.0', true);
     wp_enqueue_script('validate-plugin');
+
+    // Registrar y encolar el archivo JS noty
+    wp_register_script('noty-plugin', plugins_url('assets/js/noty/noty.min.js', __FILE__), array('jquery'), '1.0', true);
+    wp_enqueue_script('noty-plugin');
+
+
+  wp_register_style('noty-plugin-css', plugins_url('assets/js/noty/noty.css', __FILE__));
+  wp_enqueue_style('noty-plugin-css');
+
+  wp_register_style('noty-plugin-css-theme', plugins_url('assets/js/noty/themes/mint.css', __FILE__));
+    wp_enqueue_style('noty-plugin-css-theme');
+
 }
 
 // Llamar a la función 'agregar_estilos_y_scripts' para que se ejecute cuando WordPress cargue los scripts y estilos
@@ -1000,6 +1018,21 @@ function guardar_valor_marca_producto($post_id)
 add_action('woocommerce_process_product_meta', 'guardar_valor_marca_producto');
 
 
+
+// Nonce validation
+function validate_nonce( $nonce_name ){
+    if ( ! wp_verify_nonce( $_POST['nonce'], $nonce_name ) ) {
+        $res = [
+            'status' => 0,
+            'message' => '✋ Error nonce validation!!'
+        ];
+        echo json_encode($res);
+        wp_die();
+    }
+}
+
+
+
 // Registrar la ruta del endpoint para guardar la orden
 function registrar_endpoint_guardar_orden()
 {
@@ -1013,8 +1046,10 @@ add_action('rest_api_init', 'registrar_endpoint_guardar_orden');
 // Función para manejar las solicitudes POST al endpoint /order-save
 function handle_order_save_request($request)
 {
-    // Obtener los datos del cuerpo de la solicitud
-    $params = $request->get_params();
+   
+
+    //print_r($_FILES);
+    //die();
 
     // Verificar si se enviaron los datos de la orden
     if (isset($_POST['order'])) {
@@ -1040,11 +1075,11 @@ function handle_order_save_request($request)
 
               // Si se adjuntó un archivo, guardarlo relacionado con la orden
              if (isset($_FILES)) {
-                print_r($_FILES);
-                echo "tiene filesystem";
+               // print_r($_FILES);
+                //echo "tiene filesystem";
 
                 foreach ($_FILES['file_order'] as $file_order_upload){
-                    echo "namefile ".$file_order_upload['name'];
+                  //  echo "namefile ".$file_order_upload['name'];
                 // Obtener el directorio de subidas de WordPress
                 $upload_dir = wp_upload_dir();
                 $base_dir = $upload_dir['basedir'];
@@ -1066,7 +1101,8 @@ function handle_order_save_request($request)
 
             $marca = $newOrder->marca;
             $image_marca = $newOrder->image_marca;
-
+            $name_marca = $newOrder->name_marca;
+            $links = $_POST['links'];
             // Insertar la nueva orden en la tabla de órdenes
             $wpdb->insert(
                 $orden_table_name,
@@ -1076,7 +1112,9 @@ function handle_order_save_request($request)
                     'totalOrden' => $totalOrden,
                     'ficheros_adjunto' => $file_name,
                     'marca' => $marca,
-                    'image_marca' => $image_marca
+                    'image_marca' => $image_marca,
+                    'name_marca' => $name_marca,
+                    'links'=>$links
                 )
             );
 

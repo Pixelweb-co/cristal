@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div style="padding-top: 20px;"><b>Adjuntar documentos e imagenes:</b></div>
-                    <div class="file-upload">
+                    <div class="file-upload" id="file-upload">
 
 
                         <div id="box" class="animated bounceIn image-upload-wrap">

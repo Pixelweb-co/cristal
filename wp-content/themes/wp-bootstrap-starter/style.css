@@ -1352,11 +1352,11 @@ text-align: left;
     align-items: center;
 }
 
-.thumbnail.card:hover .overlay {
+.img-event:hover .overlay {
     opacity: 1;
 }
 
-.thumbnail.card .overlay button {
+.img-event .overlay button {
     display: none;
     background-color: #FFFFFF;
     border: none;
@@ -1369,9 +1369,6 @@ text-align: left;
     text-align: center;
 }
 
-.thumbnail.card:hover .overlay button {
-    display: block;
-}
 
 
 

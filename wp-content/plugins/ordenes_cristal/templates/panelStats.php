@@ -2,7 +2,7 @@
             
             <ul class="list-group mt-3 list-stats">
                 <li class="list-group-item" ng-repeat="st in stats">
-                    <span class="text-item-title-cat"> <b>{{st.title}}:</b> {{st.total_cat.total  | currency: '$'}}</span>
+                    <span class="text-item-title-cat"> <b>{{st.title}}:</b> {{st.total_cat  | currency: '$'}}</span>
                     <div class="chart1">
                     <div class="progress">
                       <div class="progress-bar bg-stats-vi" role="progressbar" ng-style="{'width': st.porcentaje_utilizado + '%'}" ng-aria-valuenow="{'width': st.porcentaje_utilizado + '%'}" aria-valuemin="0" aria-valuemax="100"><span>{{st.metro_cuadrado_total_categoria  | currency: '$'}}</span></div>
@@ -16,12 +16,4 @@
             <div style="margin-left:44%"><div class="cart-loader"></div></div>
 
             </div>
-         
-
-<script type="text/javascript">
-
-jQuery(document).ready(function($) {
-
-})
-</script>
-
+        

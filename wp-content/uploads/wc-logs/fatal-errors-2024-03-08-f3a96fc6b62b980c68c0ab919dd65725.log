@@ -1,0 +1,33 @@
+2024-03-08T04:34:11+00:00 CRITICAL Uncaught TypeError: Cannot access offset of type string on string in D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php:1078
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1193): handle_order_save_request(Object(WP_REST_Request))
+#1 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(1041): WP_REST_Server->respond_to_request(Object(WP_REST_Request), '/ordenes_crista...', Array, NULL)
+#2 D:\xampp\htdocs\demowp\wp-includes\rest-api\class-wp-rest-server.php(431): WP_REST_Server->dispatch(Object(WP_REST_Request))
+#3 D:\xampp\htdocs\demowp\wp-includes\rest-api.php(424): WP_REST_Server->serve_request('/ordenes_crista...')
+#4 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(324): rest_api_loaded(Object(WP))
+#5 D:\xampp\htdocs\demowp\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#6 D:\xampp\htdocs\demowp\wp-includes\plugin.php(565): WP_Hook->do_action(Array)
+#7 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(418): do_action_ref_array('parse_request', Array)
+#8 D:\xampp\htdocs\demowp\wp-includes\class-wp.php(813): WP->parse_request('')
+#9 D:\xampp\htdocs\demowp\wp-includes\functions.php(1336): WP->main('')
+#10 D:\xampp\htdocs\demowp\wp-blog-header.php(16): wp()
+#11 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#12 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\plugins\ordenes_cristal\ordenes_cristal.php en la línea 1078
+
+2024-03-08T12:20:46+00:00 CRITICAL Uncaught Error: Call to undefined function obtener_marcas() in D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php:8
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(106): include()
+#1 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#3 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php en la línea 8
+
+2024-03-08T12:20:46+00:00 CRITICAL Uncaught Error: Call to undefined function obtener_marcas() in D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php:8
+Stack trace:
+#0 D:\xampp\htdocs\demowp\wp-includes\template-loader.php(106): include()
+#1 D:\xampp\htdocs\demowp\wp-blog-header.php(19): require_once('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\demowp\index.php(17): require('D:\\xampp\\htdocs...')
+#3 {main}
+  thrown en D:\xampp\htdocs\demowp\wp-content\themes\wp-bootstrap-starter\templates\catalog_template.php en la línea 8
+
