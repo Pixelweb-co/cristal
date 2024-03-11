@@ -805,23 +805,23 @@ app.controller("cartController", function ($scope, $http) {
 var image_marca = localStorage.getItem("marca_sel_image");
 var name_marca = localStorage.getItem("name_marca");
 var marca_sel = localStorage.getItem("marca_sel");
-var tienda_sel = localStorage.getItem("tiendaSeleccionada");
-var tienda_name = ''
-angular.element(document).ready(function () {
-  // Obtener el alcance de AngularJS del elemento MiniCart
-  var scope = angular.element(document.getElementById("MiniCart")).scope();
+// var tienda_sel = localStorage.getItem("tiendaSeleccionada");
+// var tienda_name = ''
+// angular.element(document).ready(function () {
+//   // Obtener el alcance de AngularJS del elemento MiniCart
+//   var scope = angular.element(document.getElementById("MiniCart")).scope();
 
-  // Aplicar los cambios en el alcance
-  scope.$apply(function () {
-    tienda_name =  scope.tiendas.find((t)=>t.ID == localStorage.getItem("tiendaSeleccionada"));
+//   // Aplicar los cambios en el alcance
+//   scope.$apply(function () {
+//     tienda_name =  scope.tiendas.find((t)=>t.ID == localStorage.getItem("tiendaSeleccionada"));
     
-  });
-});
+//   });
+//});
 
 
 
 
-console.log("dzn", tienda_name)
+//console.log("dzn", tienda_name)
 
   var formData = new FormData();
   formData.append('file_order', myDropzone.getFiles());
