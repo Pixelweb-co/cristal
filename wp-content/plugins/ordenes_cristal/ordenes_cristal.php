@@ -37,10 +37,10 @@ function my_plugin_remove_database() {
     $marcas = get_posts($args);
 
     foreach ($marcas as $marca) {
-        wp_delete_post($marca->ID, true); // Eliminar la entrada de 'marca'
+     //   wp_delete_post($marca->ID, true); // Eliminar la entrada de 'marca'
     }
    // Eliminar el tipo de publicación personalizada 'marca' al desactivar el plugin
-    unregister_post_type('marcas');  
+   // unregister_post_type('marcas');  
 
     }  
 
