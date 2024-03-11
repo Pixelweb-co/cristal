@@ -1024,6 +1024,31 @@ function hideMiniCart() {
 jQuery(document).ready(function ($) {
 
 
+
+  // Controlador de eventos para el botón de "Editar"
+  $('.edit_order').on('click', function() {
+    // Obtiene el ID de la orden del atributo data
+    var order_id = $(this).data('id_orden');
+
+    // Realiza la solicitud AJAX para obtener los detalles de la orden
+    var data = {
+        'action': 'my_get_order',
+        'order_id': order_id
+    };
+
+    $.post(admin_ajax_url, data, function(response) {
+        if (response.success) {
+            // Se obtuvieron los datos exitosamente, muestra los detalles de la orden
+           console.log(response.data)
+        } else {
+            // Hubo un error al obtener los datos
+            console.error(response.data);
+        }
+    });
+});
+
+
+
   $('#sltienda').change((e)=>{
     
     localStorage.setItem('tienda_name',$('#sltienda option:selected').text());

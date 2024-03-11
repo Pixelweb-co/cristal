@@ -62,11 +62,11 @@ $categorias = obtener_categorias();
                                     <td width="13%"><?=count($ord['items'])?></td>
                                     <td width="15%">
                                     <?php if($ord['order']->is_send == '0') { ?> 
-                                    <button type="button" class="btn  btn-xs" id="btnEditOrder">
+                                    <button type="button" class="btn  btn-xs edit_order" data-id_orden="<?=$ord['order']->id?>">
                                         <i class="fa fa-edit" aria-hidden="true"></i>
                                     </button>
                                     <?php } ?>
-                                    <button type="button" class="obs-toggle-m ml-2 btn btn-xs" >
+                                    <button type="button" class="obs-toggle-m ml-2 btn btn-xs btnEmailOrder" >
                                     <i class=" fa fa-envelope" aria-hidden="true"></i>
                                         
                                     </button>
@@ -125,10 +125,3 @@ $categorias = obtener_categorias();
 </div><!-- .container -->
 
 <?php get_footer(); ?>
-<script>
-
-var productos_encontrados = <?=json_encode($productos_encontrados)?>;                
-
-
-
-</script>

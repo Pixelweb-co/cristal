@@ -1441,3 +1441,53 @@ function mail_order() {
 die();
 
 }
+
+// Agrega la acción wp_ajax_my_get_order
+add_action('wp_ajax_my_get_order', 'my_get_order');
+add_action('wp_ajax_nopriv_my_get_order', 'my_get_order');
+
+// Función que maneja la solicitud AJAX
+function my_get_order() {
+
+    // Verifica si se proporcionó un ID de orden en la solicitud
+    if (!isset($_POST['order_id'])) {
+        wp_send_json_error('ID de orden no especificado');
+    }
+
+    // Obtiene el ID de la orden de la solicitud
+    $order_id = intval($_POST['order_id']);
+
+    // Realiza la consulta para obtener los datos de la orden
+    global $wpdb;
+    $orden_table_name = $wpdb->prefix . 'orden';
+    $query_orden = $wpdb->prepare("
+        SELECT *
+        FROM $orden_table_name
+        WHERE id = %d
+    ", $order_id);
+
+    // Realiza la consulta para obtener los elementos de la orden
+    $orden_items_table_name = $wpdb->prefix . 'orden_items';
+    $query_items = $wpdb->prepare("
+        SELECT *
+        FROM $orden_items_table_name
+        WHERE order_id = %d
+    ", $order_id);
+    
+    $orden_data = $wpdb->get_row($query_orden); // Obtiene solo un registro
+    $items_orden = $wpdb->get_results($query_items); // Obtiene una lista de elementos
+
+    // Verifica si se encontraron resultados
+    if ($orden_data !== null || !empty($items_orden)) {
+        // Construye el arreglo de respuesta
+        $response = array(
+            'result' => 'success',
+            'orden_data' => $orden_data,
+            'items_orden' => $items_orden
+        );
+        // Devuelve los resultados como respuesta AJAX
+        wp_send_json_success($response);
+    } else {
+        wp_send_json_error('No se encontró ninguna orden con el ID proporcionado');
+    }
+}
