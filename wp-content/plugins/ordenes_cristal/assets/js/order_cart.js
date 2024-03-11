@@ -305,17 +305,9 @@ $scope.setTienda = (id,image_url) => {
     }
     new Noty({
       type: 'success',
-      layout: 'centerRight',
+      layout: 'bottomRight',
       text: "<b>Se agrego el producto al pedido correctamente!<br/>",
-      timeout: 3000,
-      buttons: [
-        Noty.button('VER PEDIDO ACTUAL', 'btn btn-outline-generic', function () {
-          location.href = base_url+'/index.php/hacer_pedido/'
-        
-          }, {id: 'button1', 'data-status': 'ok'}),
-    
-        
-      ]
+      timeout: 3000
     }).show()
     
   
@@ -841,7 +833,7 @@ beforeSend: function ( xhr ) {
   localStorage.removeItem("marca_sel_image");
   localStorage.removeItem("name_marca");
   
-  Swal.fire(`Pedido # ${response.order_id} ha sido creado, redirigiendo a listado de pedidos...`, '', 'success')    
+  Swal.fire(`Odern # ${response.order_id} ha sido creada, redirigiendo a listado de pedidos...`, '', 'success')    
   
   setTimeout(()=>{
 
@@ -1022,31 +1014,6 @@ function hideMiniCart() {
 }
 
 jQuery(document).ready(function ($) {
-
-
-
-  // Controlador de eventos para el botón de "Editar"
-  $('.edit_order').on('click', function() {
-    // Obtiene el ID de la orden del atributo data
-    var order_id = $(this).data('id_orden');
-
-    // Realiza la solicitud AJAX para obtener los detalles de la orden
-    var data = {
-        'action': 'my_get_order',
-        'order_id': order_id
-    };
-
-    $.post(admin_ajax_url, data, function(response) {
-        if (response.success) {
-            // Se obtuvieron los datos exitosamente, muestra los detalles de la orden
-           console.log(response.data)
-        } else {
-            // Hubo un error al obtener los datos
-            console.error(response.data);
-        }
-    });
-});
-
 
 
   $('#sltienda').change((e)=>{
@@ -1348,25 +1315,27 @@ console.log("adding",e)
 
 
 jQuery(document).ready(function($) {
-  $('#btnSendOrder').click(function(e) {
+  $('#login-form').submit(function(e) {
       e.preventDefault();
+
+      var formData = $(this).serialize();
 
       $.ajax({
           type: 'POST',
-          url: admin_ajax_url,
-          data: 'action=mail_order',
+          url: ajax_admin_url,
+          data: formData + '&action=custom_login',
           success: function(response) {
               if (response.success) {
-                
-                console.log(xhr.responseText);
-
+                  $('#login-error').html('Inicio de sesión exitoso');
+                  // Aquí puedes redirigir a otra página si es necesario
+                  location.href = base_url;
               } else {
-                console.log(xhr.responseText);
+                  $('#login-error').html(response.data.message);
               }
           },
           error: function(xhr, status, error) {
               
-              console.log(xhr.responseText);
+              $('#login-error').html(xhr.responseText);
           }
       });
   });
