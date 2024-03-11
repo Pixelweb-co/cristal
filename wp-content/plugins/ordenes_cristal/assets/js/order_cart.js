@@ -305,9 +305,17 @@ $scope.setTienda = (id,image_url) => {
     }
     new Noty({
       type: 'success',
-      layout: 'bottomRight',
+      layout: 'centerRight',
       text: "<b>Se agrego el producto al pedido correctamente!<br/>",
-      timeout: 3000
+      timeout: 3000,
+      buttons: [
+        Noty.button('VER PEDIDO ACTUAL', 'btn btn-outline-generic', function () {
+          location.href = base_url+'/index.php/hacer_pedido/'
+        
+          }, {id: 'button1', 'data-status': 'ok'}),
+    
+        
+      ]
     }).show()
     
   
@@ -347,128 +355,7 @@ $scope.setTienda = (id,image_url) => {
 });
 
 
-app.controller('cartOrderListController',function ($scope, $http) {
-  console.log("cartOrderListController", $scope);
 
-
-})
-
-
-app.controller("miniCartController", function ($scope, $http) {
-  console.log("miniCartController", $scope);
-
-  $scope.totalize = () => {
-    console.log("totalize");
-    $scope.total_order = 0;
-
-    var data = JSON.parse(localStorage.getItem("OrderCart"));
-    if (!data) {
-      return false;
-    }
-
-    console.log("citems_t", data);
-
-    data.map((item, index) => {
-      $scope.total_order += parseInt(item.subtotal);
-    });
-  };
-
-
-  $scope.calculate = () => {
-    // Objeto para almacenar los totales por categoría
-    var totalsByCategory = {};
-
-    // Obtener los datos del carrito del almacenamiento local
-    var cartData = JSON.parse(localStorage.getItem("OrderCart"));
-
-    // Verificar si hay datos en el carrito
-    if (!cartData || cartData.length === 0) {
-      return [];
-    }
-    var id_C = 0;
-    // Calcular los totales por categoría
-    cartData.forEach((item) => {
-      // Obtener las categorías asociadas al producto
-      var categories = item.categorias;
-
-      // Verificar si el producto tiene categorías asociadas
-      if (categories && categories.length > 0) {
-        categories.forEach((category) => {
-          // Obtener el nombre de la categoría
-          var categoryName = category.name;
-          if (categoryName != "Sin categorizar") {
-            id_C = category.ID;
-            // Verificar si ya hay un total para esta categoría
-            if (!totalsByCategory[categoryName]) {
-              totalsByCategory[categoryName] = 0;
-            }
-
-            // Incrementar el total de la categoría con el subtotal del producto
-            totalsByCategory[categoryName] += parseInt(item.subtotal);
-          }
-        });
-      }
-    });
-
-    // Convertir el objeto totalsByCategory a un array de objetos
-    var result = [];
-    Object.keys(totalsByCategory).forEach((categoryName) => {
-      result.push({
-        ID: id_C,
-        title: categoryName, // Usando el nombre de la categoría como título
-        total_cat: parseInt(totalsByCategory[categoryName]),
-      });
-    });
-    console.log("res por cat", result);
-    return result;
-  };
-
-  $scope.loadData = function () {
-    $scope.items =
-      localStorage.getItem("OrderCart") != null
-        ? JSON.parse(localStorage.getItem("OrderCart"))
-        : [];
-
-    console.log("items", $scope.items);
-
-    $scope.totalize();
-    $scope.calculate();
-  };
-
-  
-  $scope.setQty = (element, id_item) => {
-    console.log("id_item", id_item);
-    console.log("element", element.target.value);
-    return false
-    var data = JSON.parse(localStorage.getItem("OrderCart"));
-    var found = data.find((i) => i.ID == id_item);
-
-    if (action == "add") {
-      found.cnt = found.cnt + 1;
-    } else {
-      found.cnt = found.cnt - 1;
-    }
-
-    if (found.cnt <= 0) {
-      $scope.removeItem(id_item);
-      return false;
-    }
-
-    found.subtotal = parseInt(found.price) * parseInt(found.cnt);
-    var new_data = data.filter((i) => i.ID != id_item);
-    new_data.push(found);
-    console.log("nwdta_rp", new_data);
-
-    localStorage.setItem("OrderCart", JSON.stringify(new_data));
-
-    console.log("update qty", new_data);
-    $scope.items = new_data;
-    $scope.loadData();
-    $scope.stats = $scope.calculate();
-  };
-
-  $scope.loadData();
-});
 
 app.controller("cartController", function ($scope, $http) {
   $scope.total_order = 0;
@@ -833,7 +720,7 @@ beforeSend: function ( xhr ) {
   localStorage.removeItem("marca_sel_image");
   localStorage.removeItem("name_marca");
   
-  Swal.fire(`Odern # ${response.order_id} ha sido creada, redirigiendo a listado de pedidos...`, '', 'success')    
+  Swal.fire(`Pedido # ${response.order_id} ha sido creado, redirigiendo a listado de pedidos...`, '', 'success')    
   
   setTimeout(()=>{
 
@@ -1014,6 +901,31 @@ function hideMiniCart() {
 }
 
 jQuery(document).ready(function ($) {
+
+
+
+  // Controlador de eventos para el botón de "Editar"
+  $('.edit_order').on('click', function() {
+    // Obtiene el ID de la orden del atributo data
+    var order_id = $(this).data('id_orden');
+
+    // Realiza la solicitud AJAX para obtener los detalles de la orden
+    var data = {
+        'action': 'my_get_order',
+        'order_id': order_id
+    };
+
+    $.post(admin_ajax_url, data, function(response) {
+        if (response.success) {
+            // Se obtuvieron los datos exitosamente, muestra los detalles de la orden
+           console.log(response.data)
+        } else {
+            // Hubo un error al obtener los datos
+            console.error(response.data);
+        }
+    });
+});
+
 
 
   $('#sltienda').change((e)=>{
@@ -1315,14 +1227,16 @@ console.log("adding",e)
 
 
 jQuery(document).ready(function($) {
-  $('#login-form').submit(function(e) {
+
+
+    $('#login-form').submit(function(e) {
       e.preventDefault();
 
       var formData = $(this).serialize();
 
       $.ajax({
           type: 'POST',
-          url: ajax_admin_url,
+          url: admin_ajax_url,
           data: formData + '&action=custom_login',
           success: function(response) {
               if (response.success) {
@@ -1336,6 +1250,30 @@ jQuery(document).ready(function($) {
           error: function(xhr, status, error) {
               
               $('#login-error').html(xhr.responseText);
+          }
+      });
+  });
+
+
+  $('#btnSendOrder').click(function(e) {
+      e.preventDefault();
+
+      $.ajax({
+          type: 'POST',
+          url: admin_ajax_url,
+          data: 'action=mail_order',
+          success: function(response) {
+              if (response.success) {
+                
+                console.log(xhr.responseText);
+
+              } else {
+                console.log(xhr.responseText);
+              }
+          },
+          error: function(xhr, status, error) {
+              
+              console.log(xhr.responseText);
           }
       });
   });
