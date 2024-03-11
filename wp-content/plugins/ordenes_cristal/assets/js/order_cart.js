@@ -355,7 +355,128 @@ $scope.setTienda = (id,image_url) => {
 });
 
 
+app.controller('cartOrderListController',function ($scope, $http) {
+  console.log("cartOrderListController", $scope);
 
+
+})
+
+
+app.controller("miniCartController", function ($scope, $http) {
+  console.log("miniCartController", $scope);
+
+  $scope.totalize = () => {
+    console.log("totalize");
+    $scope.total_order = 0;
+
+    var data = JSON.parse(localStorage.getItem("OrderCart"));
+    if (!data) {
+      return false;
+    }
+
+    console.log("citems_t", data);
+
+    data.map((item, index) => {
+      $scope.total_order += parseInt(item.subtotal);
+    });
+  };
+
+
+  $scope.calculate = () => {
+    // Objeto para almacenar los totales por categoría
+    var totalsByCategory = {};
+
+    // Obtener los datos del carrito del almacenamiento local
+    var cartData = JSON.parse(localStorage.getItem("OrderCart"));
+
+    // Verificar si hay datos en el carrito
+    if (!cartData || cartData.length === 0) {
+      return [];
+    }
+    var id_C = 0;
+    // Calcular los totales por categoría
+    cartData.forEach((item) => {
+      // Obtener las categorías asociadas al producto
+      var categories = item.categorias;
+
+      // Verificar si el producto tiene categorías asociadas
+      if (categories && categories.length > 0) {
+        categories.forEach((category) => {
+          // Obtener el nombre de la categoría
+          var categoryName = category.name;
+          if (categoryName != "Sin categorizar") {
+            id_C = category.ID;
+            // Verificar si ya hay un total para esta categoría
+            if (!totalsByCategory[categoryName]) {
+              totalsByCategory[categoryName] = 0;
+            }
+
+            // Incrementar el total de la categoría con el subtotal del producto
+            totalsByCategory[categoryName] += parseInt(item.subtotal);
+          }
+        });
+      }
+    });
+
+    // Convertir el objeto totalsByCategory a un array de objetos
+    var result = [];
+    Object.keys(totalsByCategory).forEach((categoryName) => {
+      result.push({
+        ID: id_C,
+        title: categoryName, // Usando el nombre de la categoría como título
+        total_cat: parseInt(totalsByCategory[categoryName]),
+      });
+    });
+    console.log("res por cat", result);
+    return result;
+  };
+
+  $scope.loadData = function () {
+    $scope.items =
+      localStorage.getItem("OrderCart") != null
+        ? JSON.parse(localStorage.getItem("OrderCart"))
+        : [];
+
+    console.log("items", $scope.items);
+
+    $scope.totalize();
+    $scope.calculate();
+  };
+
+  
+  $scope.setQty = (element, id_item) => {
+    console.log("id_item", id_item);
+    console.log("element", element.target.value);
+    return false
+    var data = JSON.parse(localStorage.getItem("OrderCart"));
+    var found = data.find((i) => i.ID == id_item);
+
+    if (action == "add") {
+      found.cnt = found.cnt + 1;
+    } else {
+      found.cnt = found.cnt - 1;
+    }
+
+    if (found.cnt <= 0) {
+      $scope.removeItem(id_item);
+      return false;
+    }
+
+    found.subtotal = parseInt(found.price) * parseInt(found.cnt);
+    var new_data = data.filter((i) => i.ID != id_item);
+    new_data.push(found);
+    console.log("nwdta_rp", new_data);
+
+    localStorage.setItem("OrderCart", JSON.stringify(new_data));
+
+    console.log("update qty", new_data);
+    $scope.items = new_data;
+    $scope.loadData();
+    $scope.stats = $scope.calculate();
+  };
+
+  $scope.loadData();
+});
 
 app.controller("cartController", function ($scope, $http) {
   $scope.total_order = 0;
@@ -900,167 +1021,81 @@ function hideMiniCart() {
   });
 }
 
-jQuery(document).ready(function ($) {
+jQuery(document).ready(function($) {
 
 
+  $('#login-form').submit(function(e) {
+    e.preventDefault();
 
-  // Controlador de eventos para el botón de "Editar"
-  $('.edit_order').on('click', function() {
-    // Obtiene el ID de la orden del atributo data
-    var order_id = $(this).data('id_orden');
+    var formData = $(this).serialize();
 
-    // Realiza la solicitud AJAX para obtener los detalles de la orden
-    var data = {
-        'action': 'my_get_order',
-        'order_id': order_id
-    };
-
-    $.post(admin_ajax_url, data, function(response) {
-        if (response.success) {
-            // Se obtuvieron los datos exitosamente, muestra los detalles de la orden
-           console.log(response.data)
-        } else {
-            // Hubo un error al obtener los datos
-            console.error(response.data);
+    $.ajax({
+        type: 'POST',
+        url: admin_ajax_url,
+        data: formData + '&action=custom_login',
+        success: function(response) {
+            if (response.success) {
+                $('#login-error').html('Inicio de sesión exitoso');
+                // Aquí puedes redirigir a otra página si es necesario
+                location.href = base_url;
+            } else {
+                $('#login-error').html(response.data.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            
+            $('#login-error').html(xhr.responseText);
         }
     });
 });
 
 
-
-  $('#sltienda').change((e)=>{
-    
-    localStorage.setItem('tienda_name',$('#sltienda option:selected').text());
-
-  })
-
-  
-  $(document).on("click", "#cartController .obs-toggle", function () {
-    if ($(this).find("i").hasClass("fa-caret-up")) {
-      $(this).closest("tbody").find(".observ_field").hide();
-      $(this).closest("tbody").find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
-      $(this).find("i").removeClass("fa-caret-up").addClass("fa-caret-down");
-      $(this).closest("tr").find(".observ_field").show();
-    } else {
-      $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
-      $(this).closest("tr").find(".observ_field").hide();
-    angular.element(document).ready(function () {
-      // Actualizar el valor de $scope.file_order_upload en el controlador de AngularJS
-      var scope_cart = angular
-        .element(document.getElementById("cartController"))
-        .scope();
-      
-        scope_cart.$apply(function () {
-      
-        console.log(scope_cart.items);
-        localStorage.setItem('OrderCart', JSON.stringify(scope_cart.items))
-        scope_cart.loadData();
-
-        }) 
-    })
-
-  }
-});
-
-
-$(document).on("click", "#primary-list .obs-toggle-l", function () {
-  console.log("primary-list");
-  if ($(this).find("i").hasClass("fa-caret-up")) {
-    
-    //todos los elementos
-    $(".detail-order").hide();
-    $(".fa-caret-down").removeClass("fa-caret-down").addClass("fa-caret-up");
-    //elemento actual
-    $(this).find("i").removeClass("fa-caret-up").addClass("fa-caret-down");
-    $(this).closest("tbody").find(".detail-order").slideDown('slow');
-  } else {
-    $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
-    $(this).closest("tbody").find(".detail-order").hide();
-
-}
-});
-
-
-
-
-
-  $.validator.setDefaults({
-    debug: true,
-    success: "valid",
-    submitHandler: function () {
-      alert("submitted!");
-    },
-  });
-
-  $("#prdForm").validate({
-    rules: {
-      post_title: {
-        required: true,
-        minlength: 5,
+// Capturar el clic en el botón de editar orden
+$('.edit_order').click(function() {
+  var orderId = $(this).data('id_orden');
+  // Realizar una solicitud AJAX para obtener los datos de la orden
+  $.ajax({
+      url: admin_ajax_url,
+      type: 'GET',
+      data: {id_orden: orderId}+ '&action=custom_login',
+      beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', nonce);
       },
-      post_content: {
-        required: false,
-        minlength: 5,
+      success: function(response) {
+          // Manejar la respuesta exitosa
+          console.log('Datos de la orden:', response);
+          // Asignar los datos de la orden al controlador AngularJS
+          var cartScope = angular.element('#primary-list').scope();
+          cartScope.items = response.items;
+          cartScope.total_order = response.total_order;
+          cartScope.marcaSeleccionada = response.marca_sel; // Asignar la marca seleccionada
+          // Asignar otros datos de la orden según sea necesario
+          // Por ejemplo: tienda, etc.
+          // Luego, recargar la vista AngularJS si es necesario
+          cartScope.$apply();
+          // Almacenar los datos de la orden en el localStorage
+          localStorage.setItem('orderData', JSON.stringify(response));
+          // Almacenar la marca seleccionada en el localStorage
+          localStorage.setItem('marca_sel', response.marca_sel);
+          // Almacenar el nombre de la marca seleccionada en el localStorage
+          localStorage.setItem('marca_name', response.marca_name);
+          // Almacenar los datos de la tienda seleccionada en el localStorage
+          localStorage.setItem('tiendaSeleccionada', JSON.stringify(response.tienda));
       },
-      cnt: {
-        required: true,
-        number: true,
-      },
-      price: {
-        required: true,
-        number: true,
-      },
-      categorias: {
-        required: true,
-      },
-      marca: {
-        required: true,
-      },
-      observacion: {
-        required: false,
-      },
-    },
-    messages: {
-      post_title: "El nombre de el producto es requerido.",
-      post_content: "",
-      cnt: {
-        required: "La cantiad de productos es requerida.",
-        number: "El valor debe ser númerico.",
-      },
-      categorias: {
-        required: "La categoría es requerida.",
-      },
-      marca: {
-        required: "La categoría es requerida.",
-      },
-      price: {
-        required: "Precio de el producto es requerido.",
-        number: "Precio debe ser número."
-      },
-   
-      observacion: "",
-    },
-    errorElement: "em",
-    errorPlacement: function (error, element) {
-      // Add the `invalid-feedback` class to the error element
-      error.addClass("invalid-feedback");
-
-      if (element.prop("type") === "checkbox") {
-        error.insertAfter(element.next("label"));
-      } else {
-        error.insertAfter(element);
+      error: function(xhr, status, error) {
+          // Manejar el error
+          console.error('Error al obtener los datos de la orden:', error);
       }
-    },
-    highlight: function (element, errorClass, validClass) {
-      $(element).addClass("is-invalid").removeClass("is-valid");
-    },
-    unhighlight: function (element, errorClass, validClass) {
-      $(element).addClass("is-valid").removeClass("is-invalid");
-    },
   });
-
 });
 
+
+
+
+
+
+
+});
 
 
 // Función para validar y enviar el formulario
@@ -1227,34 +1262,6 @@ console.log("adding",e)
 
 
 jQuery(document).ready(function($) {
-
-
-    $('#login-form').submit(function(e) {
-      e.preventDefault();
-
-      var formData = $(this).serialize();
-
-      $.ajax({
-          type: 'POST',
-          url: admin_ajax_url,
-          data: formData + '&action=custom_login',
-          success: function(response) {
-              if (response.success) {
-                  $('#login-error').html('Inicio de sesión exitoso');
-                  // Aquí puedes redirigir a otra página si es necesario
-                  location.href = base_url;
-              } else {
-                  $('#login-error').html(response.data.message);
-              }
-          },
-          error: function(xhr, status, error) {
-              
-              $('#login-error').html(xhr.responseText);
-          }
-      });
-  });
-
-
   $('#btnSendOrder').click(function(e) {
       e.preventDefault();
 

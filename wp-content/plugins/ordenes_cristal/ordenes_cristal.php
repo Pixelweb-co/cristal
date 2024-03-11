@@ -24,6 +24,10 @@ function my_plugin_remove_database() {
      $sql = "DROP TABLE IF EXISTS $table_name_order";
      $wpdb->query($sql);
     
+     $table_valores_ideales = $wpdb->prefix . 'valores_ideales';
+     $sql = "DROP TABLE IF EXISTS $table_valores_ideales";
+     $wpdb->query($sql);
+
 
     }  
 
