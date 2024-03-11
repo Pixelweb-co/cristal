@@ -485,6 +485,12 @@ app.controller("cartController", function ($scope, $http) {
   $scope.links = [];
   $scope.linkError = null;
   $scope.valores_ideales = [];
+  $scope.orden_id = null;
+  
+  if(localStorage.getItem("orden_id_edit")) {
+    $scope.orden_id = parseInt(localStorage.getItem("orden_id_edit"));
+  }
+
   // Obtener las tiendas desde el endpoint
   $http
     .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
@@ -808,7 +814,10 @@ console.log("dzn", myDropzone)
   formData.append('file_order', myDropzone.getFiles());
   formData.append('order', btoa(JSON.stringify({items:$scope.items,total_order:$scope.total_order,marca:marca_sel,image_marca:image_marca,name_marca:name_marca,tienda:tienda_sel,tienda_name:localStorage.getItem('tienda_name')})));
   formData.append('links', JSON.stringify($scope.links))
-    
+  if($scope.orden_id){
+    formData.append('orden_id',localStorage.getItem('orden_id_edit'));  
+  }  
+  
   console.log("to send ",formData);
 
     // Realizar la solicitud AJAX
@@ -1057,30 +1066,53 @@ $('.edit_order').click(function() {
   $.ajax({
       url: admin_ajax_url,
       type: 'GET',
-      data: {id_orden: orderId}+ '&action=custom_login',
+      data: 'id_orden='+orderId+'&action=my_get_order',
       beforeSend: function(xhr) {
           xhr.setRequestHeader('X-WP-Nonce', nonce);
       },
       success: function(response) {
           // Manejar la respuesta exitosa
-          console.log('Datos de la orden:', response);
-          // Asignar los datos de la orden al controlador AngularJS
-          var cartScope = angular.element('#primary-list').scope();
-          cartScope.items = response.items;
-          cartScope.total_order = response.total_order;
-          cartScope.marcaSeleccionada = response.marca_sel; // Asignar la marca seleccionada
-          // Asignar otros datos de la orden según sea necesario
-          // Por ejemplo: tienda, etc.
-          // Luego, recargar la vista AngularJS si es necesario
-          cartScope.$apply();
+          console.log('Datos de la orden:', response.data);
           // Almacenar los datos de la orden en el localStorage
-          localStorage.setItem('orderData', JSON.stringify(response));
+          
+          console.log("items ",response.data.items_orden);
+         
           // Almacenar la marca seleccionada en el localStorage
-          localStorage.setItem('marca_sel', response.marca_sel);
+          localStorage.setItem('marca_sel', response.data.orden_data.marca);
           // Almacenar el nombre de la marca seleccionada en el localStorage
-          localStorage.setItem('marca_name', response.marca_name);
+          localStorage.setItem('marca_name', response.data.orden_data.name_marca);
           // Almacenar los datos de la tienda seleccionada en el localStorage
-          localStorage.setItem('tiendaSeleccionada', JSON.stringify(response.tienda));
+          localStorage.setItem('tiendaSeleccionada', response.data.orden_data.tienda);
+          localStorage.setItem('orden_id_edit', response.data.orden_data.id);
+
+
+          var localitems = []
+          response.data.items_orden.map((item) => {
+
+            var formData = {
+              ID: item.ID,
+              id_item: item.id_item,
+              sku: item.sku,
+              post_title: item.post_title,
+              post_content: item.post_content,
+              cnt: parseInt(item.cnt),
+              categorias: JSON.parse(item.categorias),
+              marca: parseInt(item.marca),
+              price: parseInt(item.price),
+              observacion: item.observacion,
+              subtotal:parseInt(item.subtotal),
+              image_url:item.image_url
+            };
+            console.log("item ",formData)
+            localitems.push(formData);
+
+
+          })
+          
+          localStorage.setItem('OrderCart', JSON.stringify(localitems));
+   
+          location.href = base_url + '/index.php/hacer_pedido'
+
       },
       error: function(xhr, status, error) {
           // Manejar el error

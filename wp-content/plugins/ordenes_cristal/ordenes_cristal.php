@@ -28,6 +28,19 @@ function my_plugin_remove_database() {
      $sql = "DROP TABLE IF EXISTS $table_valores_ideales";
      $wpdb->query($sql);
 
+         // Eliminar todas las entradas del tipo de publicación personalizada 'marca'
+    $args = array(
+        'post_type' => 'marcas', // Nombre del tipo de publicación personalizada
+        'posts_per_page' => -1, // Obtener todas las entradas
+    );
+
+    $marcas = get_posts($args);
+
+    foreach ($marcas as $marca) {
+        wp_delete_post($marca->ID, true); // Eliminar la entrada de 'marca'
+    }
+   // Eliminar el tipo de publicación personalizada 'marca' al desactivar el plugin
+    unregister_post_type('marcas');  
 
     }  
 
@@ -1155,8 +1168,145 @@ function registrar_endpoint_guardar_orden()
 }
 add_action('rest_api_init', 'registrar_endpoint_guardar_orden');
 
-// Función para manejar las solicitudes POST al endpoint /order-save
+
+
+// Función para manejar las solicitudes POST al endpoint /guardar_orden
 function handle_order_save_request($request)
+{
+    // Obtener los datos del cuerpo de la solicitud
+    $params = $request->get_params();
+    
+    // Verificar si se enviaron los datos de la orden
+    if (isset($params['order'])) {
+        // Si el usuario está logueado, obtener su ID
+        $user = wp_get_current_user();
+        $user_id = $user->ID;
+
+        if ($user_id) {
+            global $wpdb;
+            $orden_table_name = $wpdb->prefix . 'orden';
+            $orden_items_table_name = $wpdb->prefix . 'orden_items';
+
+            // Obtener los datos de la orden del cuerpo de la solicitud
+            $newOrder = json_decode(base64_decode($params['order']));
+            $totalOrden = $newOrder->total_order;
+            $marca = $newOrder->marca;
+            $image_marca = $newOrder->image_marca;
+            $name_marca = $newOrder->name_marca;
+            $tienda = $newOrder->tienda;
+            $tienda_name = $newOrder->tienda_name;
+            $links = $params['links'];
+
+            // Verificar si se proporcionó un ID de orden para actualizar
+            if (isset($params['orden_id'])) {
+                $order_id = intval($params['orden_id']);
+
+                // Actualizar la orden en la tabla de órdenes
+                $wpdb->update(
+                    $orden_table_name,
+                    array(
+                        'totalOrden' => $totalOrden,
+                        'marca' => $marca,
+                        'image_marca' => $image_marca,
+                        'name_marca' => $name_marca,
+                        'tienda' => $tienda,
+                        'tienda_name' => $tienda_name,
+                        'links' => $links
+                    ),
+                    array('ID' => $order_id)
+                );
+
+                // Eliminar los elementos de la orden existentes en la tabla de items de la orden
+                $wpdb->delete(
+                    $orden_items_table_name,
+                    array('order_id' => $order_id)
+                );
+
+                // Insertar los nuevos elementos de la orden en la tabla de items de la orden
+                foreach ($newOrder->items as $item) {
+                    $wpdb->insert(
+                        $orden_items_table_name,
+                        array(
+                            'order_id' => $order_id,
+                            'ID' => $item->ID,
+                            'post_title' => $item->post_title,
+                            'post_content' => $item->post_content,
+                            'cnt' => $item->cnt,
+                            'observacion' => $item->observacion,
+                            'price' => $item->price,
+                            'categorias' => json_encode($item->categorias),
+                            'subtotal' => $item->subtotal,
+                            'sku' => $item->sku,
+                            'image_url' => $item->image_url
+                        )
+                    );
+                }
+
+                return array('success' => true, 'message' => 'Order updated successfully', 'order_id' => $order_id);
+            } else {
+                // Si no se proporcionó un ID de orden, se crea una nueva orden
+                // Insertar la nueva orden en la tabla de órdenes
+                $fecha_actual = current_time('mysql');
+                $resultado_insercion_order = $wpdb->insert(
+                    $orden_table_name,
+                    array(
+                        'fecha_orden' => $fecha_actual,
+                        'cliente' => $user_id,
+                        'totalOrden' => $totalOrden,
+                        'fichero_adjunto' => '',
+                        'marca' => $marca,
+                        'image_marca' => $image_marca,
+                        'name_marca' => $name_marca,
+                        'links' => $links,
+                        'tienda' => $tienda,
+                        'tienda_name' => $tienda_name,
+                        'is_send' => 0
+                    )
+                );
+
+                if ($resultado_insercion_order !== false) {
+                    // Obtener el ID de la orden recién creada
+                    $order_id = $wpdb->insert_id;
+
+                    // Insertar los elementos de la orden en la tabla de items de la orden
+                    foreach ($newOrder->items as $item) {
+                        $wpdb->insert(
+                            $orden_items_table_name,
+                            array(
+                                'order_id' => $order_id,
+                                'ID' => $item->ID,
+                                'post_title' => $item->post_title,
+                                'post_content' => $item->post_content,
+                                'cnt' => $item->cnt,
+                                'observacion' => $item->observacion,
+                                'price' => $item->price,
+                                'categorias' => json_encode($item->categorias),
+                                'subtotal' => $item->subtotal,
+                                'sku' => $item->sku,
+                                'image_url' => $item->image_url
+                            )
+                        );
+                    }
+
+                    return array('success' => true, 'message' => 'Order saved successfully', 'order_id' => $order_id);
+                } else {
+                    // Si la inserción de la orden falla, devuelve un mensaje de error
+                    return array('success' => false, 'message' => 'Error: Failed to insert order');
+                }
+            }
+        } else {
+            // Si el usuario no está logueado, devuelve un mensaje de error
+            return array('success' => false, 'message' => 'Error: User not logged in');
+        }
+    } else {
+        // Si faltan datos de la orden, devuelve un mensaje de error
+        return array('success' => false, 'message' => 'Error: Missing order data');
+    }
+}
+
+
+
+function handle_order_save_request2($request)
 {
    
 
@@ -1186,32 +1336,6 @@ function handle_order_save_request($request)
             $totalOrden = $newOrder->total_order; // El total de la orden
 
             $file_name = '';
-
-              // Si se adjuntó un archivo, guardarlo relacionado con la orden
-            //  if (isset($params['file_order'])) {
-            //    // print_r($_FILES);
-            //     //echo "tiene filesystem";
-
-            //     foreach ($params['file_order'] as $file_order_upload){
-            //       //  echo "namefile ".$file_order_upload['name'];
-            //     // Obtener el directorio de subidas de WordPress
-            //     $upload_dir = wp_upload_dir();
-            //     $base_dir = $upload_dir['basedir'];
-            //     $ordenes_cristal_dir = $base_dir . '/ordenes_cristal';
-
-            //     // Verificar si la carpeta ordenes_cristal existe, si no, crearla
-            //     if (!file_exists($ordenes_cristal_dir)) {
-            //         mkdir($ordenes_cristal_dir, 0755, true); // Crear la carpeta con permisos 0755
-            //     }
-
-            //     // Guardar el archivo adjunto en la carpeta uploads/ordenes_cristal
-            //     $file_path = $ordenes_cristal_dir . '/' . $file_order_upload['name'];
-            //     move_uploaded_file($file_order_upload['tmp_name'], $file_path);
-
-            // }
-            
-            // }
-          //  print_r($newOrder);
 
             $marca = $newOrder->marca;
             $image_marca = $newOrder->image_marca;
@@ -1454,12 +1578,12 @@ add_action('wp_ajax_nopriv_my_get_order', 'my_get_order');
 function my_get_order() {
 
     // Verifica si se proporcionó un ID de orden en la solicitud
-    if (!isset($_POST['order_id'])) {
+    if (!isset($_GET['id_orden'])) {
         wp_send_json_error('ID de orden no especificado');
     }
 
     // Obtiene el ID de la orden de la solicitud
-    $order_id = intval($_POST['order_id']);
+    $id_orden = intval($_GET['id_orden']);
 
     // Realiza la consulta para obtener los datos de la orden
     global $wpdb;
@@ -1468,7 +1592,7 @@ function my_get_order() {
         SELECT *
         FROM $orden_table_name
         WHERE id = %d
-    ", $order_id);
+    ", $id_orden);
 
     // Realiza la consulta para obtener los elementos de la orden
     $orden_items_table_name = $wpdb->prefix . 'orden_items';
@@ -1476,7 +1600,7 @@ function my_get_order() {
         SELECT *
         FROM $orden_items_table_name
         WHERE order_id = %d
-    ", $order_id);
+    ", $id_orden);
     
     $orden_data = $wpdb->get_row($query_orden); // Obtiene solo un registro
     $items_orden = $wpdb->get_results($query_items); // Obtiene una lista de elementos

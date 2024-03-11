@@ -1,7 +1,7 @@
 <br />
 <div class="container-fluid">
     <div class="row mt-20" ng-controller="cartController" id="cartController">
-    <div class="col-md-12"><h2>Pedido</h2></div>    
+    <div class="col-md-12"><h2>Pedido <span ng-if="orden_id">#{{orden_id}}</span></h2></div>    
     <div class="col-lg-8">
             <div class="table-cart">
                 <table>
