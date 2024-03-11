@@ -115,6 +115,7 @@ $scope.setTienda = (id,image_url) => {
             localStorage.setItem("marca_sel", id);
             localStorage.setItem("marca_sel_image", image_url);
             localStorage.setItem("name_marca", name_marca);
+
             
             $scope.marcaSeleccionada = id;
             console.log("setsel", id);
@@ -804,11 +805,23 @@ app.controller("cartController", function ($scope, $http) {
 var image_marca = localStorage.getItem("marca_sel_image");
 var name_marca = localStorage.getItem("name_marca");
 var marca_sel = localStorage.getItem("marca_sel");
-
-var tienda_name =  $scope.tiendas.find((t)=>t.ID == localStorage.getItem("tienda_sel"));
 var tienda_sel = localStorage.getItem("tiendaSeleccionada");
+var tienda_name = ''
+angular.element(document).ready(function () {
+  // Obtener el alcance de AngularJS del elemento MiniCart
+  var scope = angular.element(document.getElementById("MiniCart")).scope();
 
-console.log("dzn", myDropzone)
+  // Aplicar los cambios en el alcance
+  scope.$apply(function () {
+    tienda_name =  scope.tiendas.find((t)=>t.ID == localStorage.getItem("tiendaSeleccionada"));
+    
+  });
+});
+
+
+
+
+console.log("dzn", tienda_name)
 
   var formData = new FormData();
   formData.append('file_order', myDropzone.getFiles());
@@ -842,7 +855,8 @@ beforeSend: function ( xhr ) {
   jQuery('#btnSaveOrder div.cart-loader').hide();
   console.log("svo ",response.data)
   localStorage.removeItem("OrderCart");
-  
+  localStorage.removeItem('orden_id_edit');
+
   localStorage.removeItem("marca_sel");
   localStorage.removeItem("tienda_name");
   localStorage.removeItem("tienda_sel");
@@ -850,7 +864,7 @@ beforeSend: function ( xhr ) {
   localStorage.removeItem("marca_sel_image");
   localStorage.removeItem("name_marca");
   
-  Swal.fire(`Pedido # ${response.order_id} ha sido creado, redirigiendo a listado de pedidos...`, '', 'success')    
+  Swal.fire(`Pedido # ${response.order_id} ha sido guardado, redirigiendo a listado de pedidos...`, '', 'success')    
   
   setTimeout(()=>{
 
@@ -1080,7 +1094,7 @@ $('.edit_order').click(function() {
           // Almacenar la marca seleccionada en el localStorage
           localStorage.setItem('marca_sel', response.data.orden_data.marca);
           // Almacenar el nombre de la marca seleccionada en el localStorage
-          localStorage.setItem('marca_name', response.data.orden_data.name_marca);
+          localStorage.setItem('name_marca', response.data.orden_data.name_marca);
           // Almacenar los datos de la tienda seleccionada en el localStorage
           localStorage.setItem('tiendaSeleccionada', response.data.orden_data.tienda);
           localStorage.setItem('orden_id_edit', response.data.orden_data.id);

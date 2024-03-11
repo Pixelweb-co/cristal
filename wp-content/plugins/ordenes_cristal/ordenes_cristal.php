@@ -1163,7 +1163,7 @@ function registrar_endpoint_guardar_orden()
 {
     register_rest_route('ordenes_cristal/v1', '/guardar_orden', array(
         'methods' => 'POST',
-        'callback' => 'handle_order_save_request',
+        'callback' => 'handle_order_save_request2',
     ));
 }
 add_action('rest_api_init', 'registrar_endpoint_guardar_orden');
