@@ -105,6 +105,7 @@ function agregar_estilos_y_scripts()
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         var plugins_url = '<?= plugins_url() ?>'
+        var admin_ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>'
     </script>
 <?php
 
@@ -962,7 +963,7 @@ function asignar_valores_ideales_por_defecto($post_id, $post, $update)
 
         // Insertar registros en la tabla valores_ideales con valor por defecto
         foreach ($categorias as $categoria) {
-            if ($categoria->slug != 'sin-categorizar') {
+            if ($categoria->slug != 'uncategorized') {
                 $wpdb->insert(
                     $tabla_valores_ideales,
                     array(
@@ -1140,54 +1141,6 @@ function validate_nonce( $nonce_name ){
 }
 
 
-// Agregar la columna 'Marca' a las columnas permitidas en la importación CSV
-add_filter('woocommerce_csv_product_import_mapping_default_columns', 'agregar_columna_marca_csv');
-function agregar_columna_marca_csv($columns) {
-    $columns['marca'] = 'Marca';
-    return $columns;
-}
-
-// Registrar el campo de metadatos 'Marca' para la importación
-add_filter('woocommerce_product_importer_meta_keys', 'registrar_meta_marca_importacion');
-
-function registrar_meta_marca_importacion($meta_keys) {
-    $meta_keys['_marca_producto'] = 'marca';
-    return $meta_keys;
-}
-
-// Procesar la importación de la marca desde el archivo CSV
-add_filter('woocommerce_product_import_pre_insert_product_object', 'procesar_importacion_marca', 10, 2);
-function procesar_importacion_marca($object, $data) {
-    if (isset($data['marca'])) {
-        $marca_name = $data['marca'];
-
-        // Buscar la marca por el nombre en el tipo de publicación 'marcas'
-        $marca_query = new WP_Query(array(
-            'post_type' => 'marcas',
-            'posts_per_page' => 1,
-            'title' => $marca_name,
-            'fields' => 'ids'
-        ));
-
-        // Si no se encuentra la marca, crearla
-        if (!$marca_query->have_posts()) {
-            $marca_id = wp_insert_post(array(
-                'post_type' => 'marcas',
-                'post_title' => $marca_name,
-                'post_status' => 'publish'
-            ));
-        } else {
-            $marca_id = $marca_query->posts[0];
-        }
-
-        // Asociar la marca al producto
-        update_post_meta($object->get_id(), '_marca_producto', $marca_id);
-
-        wp_reset_postdata(); // Restablecer los datos del post
-    }
-    return $object;
-}
-
 // Registrar la ruta del endpoint para guardar la orden
 function registrar_endpoint_guardar_orden()
 {
@@ -1231,66 +1184,82 @@ function handle_order_save_request($request)
             $file_name = '';
 
               // Si se adjuntó un archivo, guardarlo relacionado con la orden
-             if (isset($params['file_order'])) {
-               // print_r($_FILES);
-                //echo "tiene filesystem";
+            //  if (isset($params['file_order'])) {
+            //    // print_r($_FILES);
+            //     //echo "tiene filesystem";
 
-                foreach ($params['file_order'] as $file_order_upload){
-                  //  echo "namefile ".$file_order_upload['name'];
-                // Obtener el directorio de subidas de WordPress
-                $upload_dir = wp_upload_dir();
-                $base_dir = $upload_dir['basedir'];
-                $ordenes_cristal_dir = $base_dir . '/ordenes_cristal';
+            //     foreach ($params['file_order'] as $file_order_upload){
+            //       //  echo "namefile ".$file_order_upload['name'];
+            //     // Obtener el directorio de subidas de WordPress
+            //     $upload_dir = wp_upload_dir();
+            //     $base_dir = $upload_dir['basedir'];
+            //     $ordenes_cristal_dir = $base_dir . '/ordenes_cristal';
 
-                // Verificar si la carpeta ordenes_cristal existe, si no, crearla
-                if (!file_exists($ordenes_cristal_dir)) {
-                    mkdir($ordenes_cristal_dir, 0755, true); // Crear la carpeta con permisos 0755
-                }
+            //     // Verificar si la carpeta ordenes_cristal existe, si no, crearla
+            //     if (!file_exists($ordenes_cristal_dir)) {
+            //         mkdir($ordenes_cristal_dir, 0755, true); // Crear la carpeta con permisos 0755
+            //     }
 
-                // Guardar el archivo adjunto en la carpeta uploads/ordenes_cristal
-                $file_path = $ordenes_cristal_dir . '/' . $file_order_upload['name'];
-                move_uploaded_file($file_order_upload['tmp_name'], $file_path);
+            //     // Guardar el archivo adjunto en la carpeta uploads/ordenes_cristal
+            //     $file_path = $ordenes_cristal_dir . '/' . $file_order_upload['name'];
+            //     move_uploaded_file($file_order_upload['tmp_name'], $file_path);
 
-            }
+            // }
             
-            }
+            // }
+          //  print_r($newOrder);
 
+            $marca = $newOrder->marca;
+            $image_marca = $newOrder->image_marca;
+            $name_marca = $newOrder->name_marca;
+            $tienda = $newOrder->tienda;
+            $tienda_name = $newOrder->tienda_name;    
 
-            $marca = $newOrder['marca'];
-            $image_marca = $newOrder['image_marca'];
-            $name_marca = $newOrder['name_marca'];
             $links = $params['links'];
             // Insertar la nueva orden en la tabla de órdenes
-            $wpdb->insert(
+            $resultado_insercion_order = $wpdb->insert(
                 $orden_table_name,
                 array(
                     'fecha_orden' => $fecha_actual,
                     'cliente' => $user_id,
                     'totalOrden' => $totalOrden,
-                    'ficheros_adjunto' => $file_name,
+                    'fichero_adjunto' => '',//$file_name,
                     'marca' => $marca,
                     'image_marca' => $image_marca,
                     'name_marca' => $name_marca,
-                    'links'=>$links
+                    'links'=>$links,
+                    'tienda' => $tienda,
+                    'tienda_name'=>$tienda_name,
+                    'is_send' => 0,
                 )
             );
 
 
+            if ($resultado_insercion_order === false) {
+                // La inserción no fue exitosa
+                 // La inserción no fue exitosa, mostrar el error y el SQL ejecutado
+            $error = $wpdb->last_error;
+            $sql_ejecutado = $wpdb->last_query;
+            //echo "Error al insertar en la base de datos. Error: $error. SQL ejecutado: $sql_ejecutado";
+
+            } else {
+                // La inserción fue exitosa
+              //  echo "¡Datos insertados correctamente!";
+            }
             // Obtener el ID de la orden recién creada
             $order_id = $wpdb->insert_id;
 
             // Guardar los ítems de la orden en la tabla de items de la orden
-            foreach ($newOrder['items'] as $item) {
-                $wpdb->insert(
+            foreach ($newOrder->items as $item) {
+                $resultado_insercion_items =  $wpdb->insert(
                     $orden_items_table_name,
                     array(
                         'order_id' => $order_id,
-                        'ID' => $item['ID'],
-                        'post_title' => $item['post_title'],
-                        'post_content' => $item['post_content'],
-                        'cnt' => $item['cnt'],
-                        'observacion' => $item['observacion'],
-                        
+                        'ID' => $item->ID,
+                        'post_title' => $item->post_title,
+                        'post_content' => $item->post_content,
+                        'cnt' => $item->cnt,
+                        'observacion' => $item->observacion,
                         'price' => $item->price,
                         'categorias' => json_encode($item->categorias),
                         'subtotal' => $item->subtotal,
@@ -1298,6 +1267,18 @@ function handle_order_save_request($request)
                         'image_url' => $item->image_url
                     )
                 );
+
+                if ($resultado_insercion_items === false) {
+                    // La inserción no fue exitosa
+                     // La inserción no fue exitosa, mostrar el error y el SQL ejecutado
+    $error = $wpdb->last_error;
+    $sql_ejecutado = $wpdb->last_query;
+    echo "Error al insertar en la base de datos. Error: $error. SQL ejecutado: $sql_ejecutado";
+
+                } else {
+                    // La inserción fue exitosa
+               //     echo "¡Datos insertados correctamente!";
+                }
             }
 
            
@@ -1319,10 +1300,17 @@ function get_orders_list()
     global $wpdb;
     $orden_table_name = $wpdb->prefix . 'orden';
     $orden_items_table_name = $wpdb->prefix . 'orden_items';
-
+    $usuarios_table_name = $wpdb->prefix . 'users';
+    
     $out_data = [];
-    $orders = $wpdb->get_results("SELECT * FROM $orden_table_name");
+    
+    $query = "SELECT o.*, u.display_name AS cliente_name 
+          FROM $orden_table_name AS o 
+          INNER JOIN $usuarios_table_name AS u ON o.cliente = u.ID
+          ORDER BY o.id DESC";
 
+
+    $orders = $wpdb->get_results($query);
     foreach ($orders as $order) {
 
         $order_items = $wpdb->get_results("SELECT * FROM $orden_items_table_name where order_id = $order->id");
@@ -1395,4 +1383,61 @@ function custom_login()
 
     // Si no se ha enviado el formulario, devuelve un mensaje de error
     wp_send_json_error(array('message' => 'Error: los campos de inicio de sesión están vacíos'));
+}
+
+
+
+add_action('wp_ajax_mail_order', 'mail_order');
+add_action('wp_ajax_nopriv_mail_order', 'mail_order');
+
+
+
+
+function mail_order() {
+    
+    $nombre_usuario = 'pepe';
+    $pedido = '328';
+    
+    ob_start(); // Comenzar el almacenamiento en búfer de salida
+    
+    // Incluir la plantilla de correo
+    include 'templates/orderMail.php';
+
+    // Obtener el contenido del búfer y limpiar el búfer de salida
+    $mensaje = ob_get_clean();
+    $mensaje = 'hola';
+
+    // Destinatario del correo electrónico
+    $para = 'egbmaster2007@gmail.com';
+
+    // Asunto del correo electrónico
+    $asunto = 'Correo de confirmación de pedido';
+
+    // Cabeceras del correo electrónico (opcional)
+    $cabeceras = array(
+        'Content-Type: text/html; charset=UTF-8',
+    );
+
+    //prov 
+     // Actualizar el campo 'is_send' a 1 en la base de datos
+     global $wpdb;
+     $orden_table_name = $wpdb->prefix . 'ordenes';
+     $wpdb->update(
+         $orden_table_name,
+         array('is_send' => '1'),
+         array('id' => $idDeLaOrden) // Asegúrate de tener el ID de la orden
+     );
+    
+    
+    // Envío del correo electrónico
+    $enviado = wp_mail($para, $asunto, $mensaje, $cabeceras);
+
+     // Verificar si el correo electrónico se envió correctamente
+     if ($enviado) {
+         echo 'El correo electrónico se ha enviado correctamente.';
+     } else {
+         echo 'Error al enviar el correo electrónico.';
+     }
+die();
+
 }

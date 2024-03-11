@@ -25,6 +25,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
 
             <div class="container-fluid " id="filter-area">
                 <div class="row">
+                
                     <div class="col-md-7 pt-4 pl-5">
                         <?php
                         foreach ($marcas as $marca) {
@@ -41,12 +42,12 @@ $productos_encontrados = buscar_productos('', null, null, null);
                     </div>
                     <div class="col-md-5">
                         <div class="dropdown filter-dropdown text-center pt-4">
-                            <select class="form-control" ng-model="tiendaSeleccionada">
+                            <select class="form-control" ng-model="tiendaSeleccionada" id="sltienda">
                                 <option value="">Tienda</option>
                                 <?php foreach ($tiendas as $tienda) {
 
                                 ?>
-                                    <option value="<?= $tienda->metros_cuadrados ?>"><?= $tienda->post_title ?></option>
+                                    <option value="<?= $tienda->metros_cuadrados ?>"><?= $tienda->post_title ?></option> 
                                 <?php }
 
                                 ?>

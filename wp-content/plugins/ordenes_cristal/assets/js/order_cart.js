@@ -14,7 +14,7 @@ app.controller("cartSearchController", function ($scope, $http) {
   $scope.tiendaSeleccionada = null;
   $scope.sresult = [];
   $scope.marcaNameSel = null;
-
+  $scope.tiendas = [];
   $scope.setMarca = (id,image_url,name_marca) => {
     $scope.marcaNameSel= name_marca
     if(localStorage.getItem("marca_sel")) {
@@ -166,9 +166,9 @@ $scope.setTienda = (id,image_url) => {
 
 };
 
-  $scope.buscarProductos = function () {
+  $scope.buscarProductos = async function () {
     jQuery("#primary .cart-loader").show();
-
+    
    
     $marca_sel = localStorage.getItem("marca_sel");
 
@@ -185,6 +185,16 @@ $scope.setTienda = (id,image_url) => {
 
     }
 
+    await $http
+    .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
+    .then(function (response) {
+      // Asignar las tiendas obtenidas a $scope.tiendas
+      console.log("lt ",response.data);
+      $scope.tiendas = response.data;
+    })
+    .catch(function (error) {
+      console.error("Error al obtener las tiendas:", error);
+    });
 
 
     var parametros = {};
@@ -201,7 +211,13 @@ $scope.setTienda = (id,image_url) => {
     
     if ($scope.tiendaSeleccionada) {
       parametros.tienda = $scope.tiendaSeleccionada;
-      localStorage.setItem('tiendaSeleccionada',$scope.tiendaSeleccionada);
+      localStorage.setItem('tiendaSeleccionada',$scope.tiendaSeleccionada); 
+      
+      const tienda_name = $scope.tiendas.find((t)=>t.id == parseInt($scope.tiendaSeleccionada));
+      console.log("Ts ",tienda_name)
+
+      localStorage.setItem('tienda_name',tienda_name);
+
     }else{
       Swal.fire({
         title: "Te falta seleccionar la tienda",
@@ -289,9 +305,17 @@ $scope.setTienda = (id,image_url) => {
     }
     new Noty({
       type: 'success',
-      layout: 'bottomRight',
+      layout: 'centerRight',
       text: "<b>Se agrego el producto al pedido correctamente!<br/>",
-      timeout: 3000
+      timeout: 3000,
+      buttons: [
+        Noty.button('VER PEDIDO ACTUAL', 'btn btn-outline-generic', function () {
+          location.href = base_url+'/index.php/hacer_pedido/'
+        
+          }, {id: 'button1', 'data-status': 'ok'}),
+    
+        
+      ]
     }).show()
     
   
@@ -775,11 +799,14 @@ var image_marca = localStorage.getItem("marca_sel_image");
 var name_marca = localStorage.getItem("name_marca");
 var marca_sel = localStorage.getItem("marca_sel");
 
+var tienda_name =  $scope.tiendas.find((t)=>t.ID == localStorage.getItem("tienda_sel"));
+var tienda_sel = localStorage.getItem("tiendaSeleccionada");
+
 console.log("dzn", myDropzone)
 
   var formData = new FormData();
   formData.append('file_order', myDropzone.getFiles());
-  formData.append('order', btoa(JSON.stringify({items:$scope.items,total_order:$scope.total_order,marca:marca_sel,image_marca:image_marca,name_marca:name_marca})));
+  formData.append('order', btoa(JSON.stringify({items:$scope.items,total_order:$scope.total_order,marca:marca_sel,image_marca:image_marca,name_marca:name_marca,tienda:tienda_sel,tienda_name:localStorage.getItem('tienda_name')})));
   formData.append('links', JSON.stringify($scope.links))
     
   console.log("to send ",formData);
@@ -798,21 +825,31 @@ beforeSend: function ( xhr ) {
   },
  
   success: function(response) {
-      console.log('El archivo se ha subido correctamente.');
+
+
+      console.log('El archivo se ha subido correctamente.', response);
       // Manejar la respuesta del servidor si es necesario
       jQuery('#btnSaveOrder .title_btn').html('Guardar');
   jQuery('#btnSaveOrder div.cart-loader').hide();
-  
+  console.log("svo ",response.data)
   localStorage.removeItem("OrderCart");
   
   localStorage.removeItem("marca_sel");
+  localStorage.removeItem("tienda_name");
+  localStorage.removeItem("tienda_sel");
 
   localStorage.removeItem("marca_sel_image");
   localStorage.removeItem("name_marca");
   
+  Swal.fire(`Pedido # ${response.order_id} ha sido creado, redirigiendo a listado de pedidos...`, '', 'success')    
+  
+  setTimeout(()=>{
 
-  //location.href = base_url+'/index.php/listado-de-pedidos/'
+    
+    location.href = base_url+'/index.php/listado-de-pedidos/'
 
+
+  },5000)
   },
   error: function(xhr, status, error) {
       console.error('Error al subir el archivo:', error);
@@ -986,6 +1023,12 @@ function hideMiniCart() {
 
 jQuery(document).ready(function ($) {
 
+
+  $('#sltienda').change((e)=>{
+    
+    localStorage.setItem('tienda_name',$('#sltienda option:selected').text());
+
+  })
 
   
   $(document).on("click", "#cartController .obs-toggle", function () {
@@ -1278,3 +1321,28 @@ console.log("adding",e)
 
 }
 
+
+jQuery(document).ready(function($) {
+  $('#btnSendOrder').click(function(e) {
+      e.preventDefault();
+
+      $.ajax({
+          type: 'POST',
+          url: admin_ajax_url,
+          data: 'action=mail_order',
+          success: function(response) {
+              if (response.success) {
+                
+                console.log(xhr.responseText);
+
+              } else {
+                console.log(xhr.responseText);
+              }
+          },
+          error: function(xhr, status, error) {
+              
+              console.log(xhr.responseText);
+          }
+      });
+  });
+});

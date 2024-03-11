@@ -56,7 +56,7 @@ get_header();
 <script>
 
 jQuery(document).ready(function($) {
-    $('#login-form').submit(function(e) {
+    $('#btnSendOrder').click(function(e) {
         e.preventDefault();
 
         var formData = $(this).serialize();

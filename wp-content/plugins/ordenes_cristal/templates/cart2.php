@@ -1,7 +1,8 @@
 <br />
 <div class="container-fluid">
     <div class="row mt-20" ng-controller="cartController" id="cartController">
-        <div class="col-lg-8">
+    <div class="col-md-12"><h2>Pedido</h2></div>    
+    <div class="col-lg-8">
             <div class="table-cart">
                 <table>
                     <thead>
@@ -152,7 +153,7 @@
                     <div class="cart-loader"></div> <span class="title_btn">Guardar pedido</span>
                 </button>
 
-                <button type="button" id="btnSaveOrder" class="btn btn-outline-generic mr-10" ng-click="enviarOrden()">
+                <button type="button" id="btnSendOrder" class="btn btn-outline-generic mr-10" ng-click="enviarOrden()">
                     <div class="cart-loader"></div> <span class="title_btn">Enviar</span>
                 </button>
             </div>

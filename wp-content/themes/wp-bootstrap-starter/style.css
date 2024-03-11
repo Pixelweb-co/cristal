@@ -1396,3 +1396,8 @@ margin-left: 5%;
   background-color: #000000;
   
 }
+
+#order-list-table tbody tr.detail-order table.table-order-detail tbody tr{
+  margin-bottom: 2px;
+  height: 80px;
+}

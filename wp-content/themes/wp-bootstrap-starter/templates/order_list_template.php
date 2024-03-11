@@ -24,6 +24,7 @@ $categorias = obtener_categorias();
             <div class="container mt-5">
                 
                 <div class="row">
+                    <div class="col-md-12"><h2>Pedidos</h2></div>
                     <div class="col-md-12">
 
                         <?php if (count($ordenes) > 0) { ?>
@@ -32,6 +33,7 @@ $categorias = obtener_categorias();
                                 <tr class="tr-border">
                                 <th>Marca</th>
                                 <th>Pedido</th>
+                                <th>Usuario</th>
                                 <th>Fecha</th>
                                 <th>Total</th>
                                 <th>Cantidad</th>
@@ -49,19 +51,31 @@ $categorias = obtener_categorias();
                                 ?>
                             <tbody>
                                 <tr class="tr-border">
-                                    <td><img src="<?=$ord['order']->image_marca?>" style="height:50px; width:70px"/></td>
+                                    <td>
+                                    <?=$ord['order']->name_marca?>    
+                                    
+                                    </td>
                                     <td><?=$ord['order']->id?></td>
+                                    <td><?=$ord['order']->cliente_name?></td>
                                     <td><?=$ord['order']->fecha_orden?></td>
                                     <td>$<?=number_format($ord['order']->totalOrden)?></td>
                                     <td width="13%"><?=count($ord['items'])?></td>
                                     <td width="15%">
-                                    <button type="button" class="btn  btn-xs" ng-click="removeItem(x.ID)">
+                                    <?php if($ord['order']->is_send == '0') { ?> 
+                                    <button type="button" class="btn  btn-xs" id="btnEditOrder">
                                         <i class="fa fa-edit" aria-hidden="true"></i>
                                     </button>
-                                    <button type="button" class="obs-toggle-l ml-4 btn btn-xs" >
+                                    <?php } ?>
+                                    <button type="button" class="obs-toggle-m ml-2 btn btn-xs" >
+                                    <i class=" fa fa-envelope" aria-hidden="true"></i>
+                                        
+                                    </button>
+                                    
+                                    <button type="button" class="obs-toggle-l ml-2 btn btn-xs" >
                                     <i class=" fa fa-caret-up" aria-hidden="true"></i>
                                         
                                     </button>
+                                     
                                     </td>
                                 </tr>
                                 <tr class="detail-order">

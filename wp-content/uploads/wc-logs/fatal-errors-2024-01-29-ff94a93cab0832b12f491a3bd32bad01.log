@@ -1,4 +1,0 @@
-2024-01-29T09:30:29+00:00 CRITICAL syntax error, unexpected token "<", expecting end of file en /var/www/docroot/wp-content/themes/hello-theme-child-master/functions.php en la línea 293
-
-2024-01-29T11:49:04+00:00 CRITICAL syntax error, unexpected token "}" en /var/www/docroot/wp-content/themes/hello-theme-child-master/functions.php en la línea 62
-
