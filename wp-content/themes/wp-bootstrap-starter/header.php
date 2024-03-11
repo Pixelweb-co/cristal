@@ -257,16 +257,7 @@
                         if ($post_slug != 'hacer_pedido') {
                         ?>
                             <!-- #slider cart resume -->
-                            <div id="cartResume">
-                                <div class="card">
-                                    <?php
-                                    if ($post_slug != 'hacer_pedido') {
-                                        echo do_shortcode('[mini_cart]');
-                                    }
-
-                                    ?>
-                                </div>
-                            </div>
+                          
                         <?php
                         }
 
