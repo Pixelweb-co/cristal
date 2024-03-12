@@ -509,7 +509,7 @@ app.controller("cartController", function ($scope, $http) {
   $scope.get_valores_ideales_order = async function() {
     // Obtener los datos del carrito del almacenamiento local
     var cartData = JSON.parse(localStorage.getItem("OrderCart"));
-
+    console.log("datos carrito para viniciales ",cartData);
     // Verificar si hay datos en el carrito
     if (!cartData || cartData.length === 0) {
       return [];
@@ -517,6 +517,9 @@ app.controller("cartController", function ($scope, $http) {
 
     //obtener todas las categorias del cart
     var categoriasCart = cartData.map((item) => (item.categorias[0].term_id))
+    console.log("categoria de consulta",categoriasCart);
+
+
     jQuery("#statsPanel .cart-loader").show();
 
         //Lógica para realizar la búsqueda de valores ideales segun categorias seleccionadas
@@ -1073,6 +1076,14 @@ jQuery(document).ready(function($) {
 });
 
 
+
+
+
+$('.obs-toogle-l').click(function(e) {
+  alert(5)
+})
+
+
 // Capturar el clic en el botón de editar orden
 $('.edit_order').click(function() {
   var orderId = $(this).data('id_orden');
@@ -1330,4 +1341,9 @@ jQuery(document).ready(function($) {
           }
       });
   });
+
+
+
+
+
 });
