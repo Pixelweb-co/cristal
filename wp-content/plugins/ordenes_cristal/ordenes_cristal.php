@@ -1007,7 +1007,6 @@ function registrar_endpoint_actualizar_valor_ideal()
     ));
 }
 
-// Función que maneja la lógica para actualizar el valor ideal
 function actualizar_valor_ideal_callback($request)
 {
     global $wpdb;
@@ -1017,21 +1016,50 @@ function actualizar_valor_ideal_callback($request)
     $categoria_id = $request->get_param('categoria_id');
     $nuevo_valor_ideal = $request->get_param('valor_ideal');
 
-    // Actualizar el valor ideal existente
-    $result = $wpdb->update(
-        $wpdb->prefix . 'valores_ideales',
-        array('valor_ideal' => $nuevo_valor_ideal),
-        array('marca_id' => $marca_id, 'categoria_id' => $categoria_id),
-        array('%f'),
-        array('%d', '%d')
+    // Verificar si el registro existe
+    $registro_existente = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT * FROM {$wpdb->prefix}valores_ideales WHERE marca_id = %d AND categoria_id = %d",
+            $marca_id,
+            $categoria_id
+        )
     );
 
-    if ($result !== false) {
-        return new WP_REST_Response(array('message' => 'Valor ideal actualizado correctamente'), 200);
+    if ($registro_existente) {
+        // Si el registro existe, actualizar el valor ideal
+        $result = $wpdb->update(
+            $wpdb->prefix . 'valores_ideales',
+            array('valor_ideal' => $nuevo_valor_ideal),
+            array('marca_id' => $marca_id, 'categoria_id' => $categoria_id),
+            array('%f'),
+            array('%d', '%d')
+        );
+
+        if ($result !== false) {
+            return new WP_REST_Response(array('message' => 'Valor ideal actualizado correctamente'), 200);
+        } else {
+            return new WP_Error('actualizacion_error', 'Error al actualizar el valor ideal', array('status' => 500));
+        }
     } else {
-        return new WP_Error('actualizacion_error', 'Error al actualizar el valor ideal', array('status' => 500));
+        // Si el registro no existe, insertarlo
+        $result = $wpdb->insert(
+            $wpdb->prefix . 'valores_ideales',
+            array(
+                'marca_id' => $marca_id,
+                'categoria_id' => $categoria_id,
+                'valor_ideal' => $nuevo_valor_ideal
+            ),
+            array('%d', '%d', '%f')
+        );
+
+        if ($result !== false) {
+            return new WP_REST_Response(array('message' => 'Nuevo valor ideal insertado correctamente'), 200);
+        } else {
+            return new WP_Error('insercion_error', 'Error al insertar el nuevo valor ideal', array('status' => 500));
+        }
     }
 }
+
 
 
 // Agregar endpoint personalizado para manejar la actualización del valor ideal

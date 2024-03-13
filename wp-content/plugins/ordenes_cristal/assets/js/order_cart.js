@@ -657,7 +657,7 @@ app.controller("cartController", function ($scope, $http) {
         categories.forEach((category) => {
           // Obtener el nombre de la categoría
           var categoryName = category.name;
-          if (categoryName != "Sin categorizar" || categoryName != 'Uncategorized') {
+          if (categoryName != "Sin categorizar" || categoryName != 'Uncategorized' || categoryName != 'uncategorized') {
             id_C = category.term_id;
             // Verificar si ya hay un total para esta categoría
             if (!totalsByCategory[categoryName]) {
@@ -1079,8 +1079,12 @@ jQuery(document).ready(function($) {
 
 
 
-$('.obs-toogle-l').click(function(e) {
-  alert(5)
+$('.obs-toggle-l').click(function(e) {
+  
+    $('#order-list-table').find('i.fa-caret-down').removeClass('fa-caret-down').addClass('fa-caret-up');
+    $(this).find('i').removeClass('fa-caret-up').addClass('fa-caret-down');
+    $(this).closest('tbody').find('.detail-order').toggle();
+
 })
 
 
