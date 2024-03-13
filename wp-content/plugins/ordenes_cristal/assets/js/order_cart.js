@@ -170,7 +170,9 @@ $scope.setTienda = (id,image_url) => {
   $scope.buscarProductos = async function () {
     jQuery("#primary .cart-loader").show();
     
-   
+    
+
+    
     $marca_sel = localStorage.getItem("marca_sel");
 
     if(!$marca_sel) {
@@ -186,17 +188,6 @@ $scope.setTienda = (id,image_url) => {
 
     }
 
-    await $http
-    .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
-    .then(function (response) {
-      // Asignar las tiendas obtenidas a $scope.tiendas
-      console.log("lt ",response.data);
-      $scope.tiendas = response.data;
-    })
-    .catch(function (error) {
-      console.error("Error al obtener las tiendas:", error);
-    });
-
 
     var parametros = {};
     if ($scope.marcaSeleccionada) {
@@ -211,14 +202,28 @@ $scope.setTienda = (id,image_url) => {
 
     
     if ($scope.tiendaSeleccionada) {
+
+      await $http
+      .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
+      .then(function (response) {
+        // Asignar las tiendas obtenidas a $scope.tiendas
+      $scope.tiendas = response.data;
+        
       parametros.tienda = $scope.tiendaSeleccionada;
+      console.log("tid ",parametros.tienda);
       localStorage.setItem('tiendaSeleccionada',$scope.tiendaSeleccionada); 
-      
-      const tienda_name = $scope.tiendas.find((t)=>t.id == parseInt($scope.tiendaSeleccionada));
+      console.log('tiendaS',$scope.tiendas)
+      const tienda_name = $scope.tiendas.find((t)=>t.metros_cuadrados == $scope.tiendaSeleccionada).titulo;
       console.log("Ts ",tienda_name)
 
       localStorage.setItem('tienda_name',tienda_name);
 
+      })
+      .catch(function (error) {
+        console.error("Error al obtener las tiendas:", error);
+      });
+
+    
     }else{
       Swal.fire({
         title: "Te falta seleccionar la tienda",
@@ -808,19 +813,8 @@ app.controller("cartController", function ($scope, $http) {
 var image_marca = localStorage.getItem("marca_sel_image");
 var name_marca = localStorage.getItem("name_marca");
 var marca_sel = localStorage.getItem("marca_sel");
-// var tienda_sel = localStorage.getItem("tiendaSeleccionada");
-// var tienda_name = ''
-// angular.element(document).ready(function () {
-//   // Obtener el alcance de AngularJS del elemento MiniCart
-//   var scope = angular.element(document.getElementById("MiniCart")).scope();
-
-//   // Aplicar los cambios en el alcance
-//   scope.$apply(function () {
-//     tienda_name =  scope.tiendas.find((t)=>t.ID == localStorage.getItem("tiendaSeleccionada"));
-    
-//   });
-//});
-
+var tienda_sel = localStorage.getItem("tiendaSeleccionada");
+var tienda_name = localStorage.getItem("tienda_name");
 
 
 
