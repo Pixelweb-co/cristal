@@ -1082,8 +1082,10 @@ jQuery(document).ready(function($) {
 $('.obs-toggle-l').click(function(e) {
   
     $('#order-list-table').find('i.fa-caret-down').removeClass('fa-caret-down').addClass('fa-caret-up');
+    $('#order-list-table').find('.detail-order').hide();
+
     $(this).find('i').removeClass('fa-caret-up').addClass('fa-caret-down');
-    $(this).closest('tbody').find('.detail-order').toggle();
+    $(this).closest('tbody').find('.detail-order').show();
 
 })
 
