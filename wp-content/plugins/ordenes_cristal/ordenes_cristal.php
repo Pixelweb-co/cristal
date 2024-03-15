@@ -226,7 +226,7 @@ function restrict_access_to_logged_in_users()
         exit;
     }
 }
-//add_action('template_redirect', 'restrict_access_to_logged_in_users');
+add_action('template_redirect', 'restrict_access_to_logged_in_users');
 
 function redirect_to_profile() {
     $who = strtolower(sanitize_user($_POST['log']));
