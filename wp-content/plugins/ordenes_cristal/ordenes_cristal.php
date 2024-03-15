@@ -1,5 +1,5 @@
 <?php
-
+define( 'SAVEQUERIES', true );
 
 
 require_once('classes/cart.php');
@@ -1212,6 +1212,25 @@ function handle_order_save_request($request)
     // Obtener los datos del cuerpo de la solicitud
     $params = $request->get_params();
 
+
+    $files_order_complete_path = [];
+
+    // Subir archivos adjuntos
+    $archivos = [];
+    $upload_dir = wp_upload_dir();
+    
+    if(isset($_FILES['file_order'])){
+    $files = $_FILES['file_order'];
+    foreach ($files['tmp_name'] as $key => $tmp_name) {
+        $file_name = $files['name'][$key];
+        $file_path = $upload_dir['path'] . '/' . $file_name;
+        
+        array_push($files_order_complete_path, $file_path);
+        move_uploaded_file($tmp_name, $file_path);
+        $archivos[] = $file_name;
+    }
+
+    }
     // Verificar si se enviaron los datos de la orden
     if (isset($params['order'])) {
         // Si el usuario está logueado, obtener su ID
@@ -1248,6 +1267,7 @@ function handle_order_save_request($request)
                         'tienda' => $tienda,
                         'tienda_name' => $tienda_name,
                         'links' => $links,
+                        'fichero_adjunto' => json_encode($files_order_complete_path),
                     ),
                     array('ID' => $order_id)
                 );
@@ -1283,6 +1303,9 @@ function handle_order_save_request($request)
                 // Si no se proporcionó un ID de orden, se crea una nueva orden
                 // Insertar la nueva orden en la tabla de órdenes
                 $fecha_actual = current_time('mysql');
+              
+               
+              
                 $resultado_insercion_order = $wpdb->insert(
                     $orden_table_name,
                     array(
@@ -1290,11 +1313,11 @@ function handle_order_save_request($request)
                         'cliente' => $user_id,
                         'cliente_name' => $user->display_name,
                         'totalOrden' => $totalOrden,
-                        'fichero_adjunto' => '',
                         'marca' => $marca,
                         'image_marca' => $image_marca,
                         'name_marca' => $name_marca,
                         'links' => $links,
+                        'fichero_adjunto' => json_encode($files_order_complete_path),
                         'tienda' => $tienda,
                         'tienda_name' => $tienda_name,
                         'is_send' => 0

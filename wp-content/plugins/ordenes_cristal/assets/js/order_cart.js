@@ -410,7 +410,7 @@ app.controller("miniCartController", function ($scope, $http) {
         categories.forEach((category) => {
           // Obtener el nombre de la categoría
           var categoryName = category.name;
-          if (categoryName != "Sin categorizar") {
+          if (categoryName != "Sin categorizar" || categoryName != "Uncategorized" || categoryName != "uncategorized") {
             id_C = category.ID;
             // Verificar si ya hay un total para esta categoría
             if (!totalsByCategory[categoryName]) {
@@ -821,7 +821,13 @@ var tienda_name = localStorage.getItem("tienda_name");
 //console.log("dzn", tienda_name)
 
   var formData = new FormData();
-  formData.append('file_order', myDropzone.getFiles());
+
+  const files_send = myDropzone.getFiles();
+
+  for (let x = 0; x < files_send.length; x++){ 
+    formData.append('file_order[]', files_send[x]);
+  }
+
   formData.append('order', btoa(JSON.stringify({items:$scope.items,total_order:$scope.total_order,marca:marca_sel,image_marca:image_marca,name_marca:name_marca,tienda:tienda_sel,tienda_name:localStorage.getItem('tienda_name')})));
   formData.append('links', JSON.stringify($scope.links))
   if($scope.orden_id){
