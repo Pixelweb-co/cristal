@@ -261,21 +261,6 @@ $scope.setTienda = (id,image_url) => {
 
 
 
-    // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
-    // $http({
-    //     method : "POST",
-    //     url : '<?=get_site_url()?>/wp-json/ordenes_cristal/v1/add_to_cart',
-    //     params: product_add,
-    //     headers:{'X-WP-Nonce' : nonce},
-    // }).then(function (response) {
-    //     // Manejar la respuesta de la búsqueda de productos
-    //    // $scope.sresult = response.data;
-    //     console.log("result",response);
-    //     $scope.loadData()
-    //
-
-    // });
-
     if (!localStorage.getItem("OrderCart")) {
       console.log("no existe localstorass");
 
@@ -295,7 +280,7 @@ $scope.setTienda = (id,image_url) => {
       if (!found) {
         console.log("no found", found);
 
-        data.push({ ...product_add, cnt: qty, subtotal: parseInt(product_add.price) });
+        data.push({ ...product_add, cnt: qty, subtotal: parseInt(product_add.price),price:parseInt(product_add).price });
 
         localStorage.setItem("OrderCart", JSON.stringify(data));
       } else {
@@ -303,6 +288,7 @@ $scope.setTienda = (id,image_url) => {
 
         found.cnt = parseInt(found.cnt) + qty;
         found.subtotal = parseInt(found.price) * parseInt(found.cnt);
+        found.price = parseInt(found.price) ;
 
         var new_data = data.filter((i) => i.ID != product_add.ID);
         new_data.push(found);
@@ -615,13 +601,13 @@ app.controller("cartController", function ($scope, $http) {
         : []
         , 'ID', true);
 
-
+    console.log("items loaded fl ",$scope.items)  
     $scope.totalize();
     $scope.calculate();
   };
 
   $scope.totalize = () => {
-    console.log("totalize");
+    console.log("totalize cart");
     $scope.total_order = 0;
     var data = JSON.parse(localStorage.getItem("OrderCart"));
     if (!data) {
@@ -665,6 +651,9 @@ app.controller("cartController", function ($scope, $http) {
       if (categories && categories.length > 0) {
         categories.forEach((category) => {
           // Obtener el nombre de la categoría
+          if(!category.term_id){
+            return false;
+          }
           var categoryName = category.name;
           if (categoryName != "Sin categorizar" || categoryName != 'Uncategorized' || categoryName != 'uncategorized') {
             id_C = category.term_id;
@@ -754,21 +743,6 @@ app.controller("cartController", function ($scope, $http) {
   $scope.addCart = (id_item) => {
     var product_add = $scope.sresult.find((p) => p.ID === id_item);
     console.log("padd", product_add);
-
-    // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
-    // $http({
-    //     method : "POST",
-    //     url : '<?=get_site_url()?>/wp-json/ordenes_cristal/v1/add_to_cart',
-    //     params: product_add,
-    //     headers:{'X-WP-Nonce' : nonce},
-    // }).then(function (response) {
-    //     // Manejar la respuesta de la búsqueda de productos
-    //    // $scope.sresult = response.data;
-    //     console.log("result",response);
-    //     $scope.loadData()
-    //
-
-    // });
 
     if (!localStorage.getItem("OrderCart")) {
       console.log("no existe localstorass");
@@ -1126,7 +1100,6 @@ $('.edit_order').click(function() {
 
             var formData = {
               ID: item.ID,
-              id_item: item.id_item,
               sku: item.sku,
               post_title: item.post_title,
               post_content: item.post_content,
@@ -1166,7 +1139,7 @@ $('.edit_order').click(function() {
 
 
 // Función para validar y enviar el formulario
-function AddNewProduct() {
+function AddNewProduct2() {
   // Validar el formulario usando jQuery Validate
   if (jQuery("#prdForm").valid()) {
     // Obtener los datos del formulario
