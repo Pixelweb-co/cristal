@@ -281,12 +281,12 @@ $scope.setTienda = (id,image_url) => {
 
       localStorage.setItem(
         "OrderCart",
-        JSON.stringify([{ ...product_add, cnt: qty, subtotal: product_add.price }])
+        JSON.stringify([{ ...product_add, cnt: qty, subtotal: parseInt(product_add.price) }])
       );
     } else {
       
       jQuery("#modalAddrelated").modal("show");
-      
+
       var data = JSON.parse(localStorage.getItem("OrderCart"));
       console.log("mini carrito", data);
 
@@ -295,7 +295,7 @@ $scope.setTienda = (id,image_url) => {
       if (!found) {
         console.log("no found", found);
 
-        data.push({ ...product_add, cnt: qty, subtotal: product_add.price });
+        data.push({ ...product_add, cnt: qty, subtotal: parseInt(product_add.price) });
 
         localStorage.setItem("OrderCart", JSON.stringify(data));
       } else {
