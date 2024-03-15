@@ -142,6 +142,9 @@ $productos_encontrados = buscar_productos('', null, null, null);
 
         </main><!-- .site-main -->
     </div><!-- .content-area -->
+
+<?php include 'modalRelated.php'?>
+
 </div><!-- .container -->
 
 <?php get_footer(); ?>

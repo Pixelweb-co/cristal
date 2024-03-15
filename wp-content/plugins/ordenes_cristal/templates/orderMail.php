@@ -152,7 +152,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-      <img align="center" border="0" src="https://img.bayengage.com/assets/1637555671487-logo-placeholder.jpg" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 196px;" width="196"/>
+      <img align="center" border="0" src="<?=$logo_url?>" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 196px;" width="196"/>
       
     </td>
   </tr>
@@ -235,7 +235,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
         
   <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;">Este correo es la confirmación de su nuevo pedido</span></p>
-<p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;"><strong>Pedido NRO: {{order.order_id}}</strong></span></p>
+<p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;"><strong>Pedido NRO: <?=$order_id?></strong></span></p>
   </div>
 
       </td>
@@ -259,10 +259,6 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     </table>
     <![endif]-->
     
-
-
-  
-  
 <div class="u-row-container" style="padding: 0px;background-color: transparent">
   <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #000000;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">

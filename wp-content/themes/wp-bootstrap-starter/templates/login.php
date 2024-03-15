@@ -31,18 +31,7 @@ get_header();
          <div class="col-md-6 col-sm-12">
             <div class="login-form">
                 <div class="dt"></div>
-               <form id="login-form">
-                  <div class="form-group">
-                     <label>Nombre de usuario o correo electrónico</label>
-                     <input type="text" name="username" class="form-control" placeholder="User Name"/>
-                  </div>
-                  <div class="form-group">
-                     <label>Contraseña</label>
-                     <input type="password" name="password" class="form-control" placeholder="Password"/>
-                  </div>
-                  <button type="submit" class="btn btn-submit">Acceder</button>
-                  
-               </form>
+                    <?=do_shortcode('[theme-my-login]')?>
 
                <div id="login-error"></div>
             </div>

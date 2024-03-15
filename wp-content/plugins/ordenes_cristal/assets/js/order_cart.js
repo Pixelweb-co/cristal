@@ -255,10 +255,11 @@ $scope.setTienda = (id,image_url) => {
     
     console.log(el.target)
 
-
       var product_add = $scope.sresult.find((p) => p.ID === id_item);
       var qty = parseInt(jQuery(el.target).closest(".card-body").find(".qtyMinicartInput").val());
     console.log("padd", product_add);
+
+
 
     // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
     // $http({
@@ -283,6 +284,9 @@ $scope.setTienda = (id,image_url) => {
         JSON.stringify([{ ...product_add, cnt: qty, subtotal: product_add.price }])
       );
     } else {
+      
+      jQuery("#modalAddrelated").modal("show");
+      
       var data = JSON.parse(localStorage.getItem("OrderCart"));
       console.log("mini carrito", data);
 
