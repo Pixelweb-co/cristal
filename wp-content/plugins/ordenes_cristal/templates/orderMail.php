@@ -236,7 +236,10 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;">Este correo es la confirmación de su nuevo pedido</span></p>
 <p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;"><strong>Pedido NRO: <?=$order_id?></strong></span></p>
-  </div>
+<p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;"><strong>Fecha: <?=$orden_data->fecha_orden?></strong></span></p>
+ 
+
+</div>
 
       </td>
     </tr>
@@ -321,7 +324,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 20px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div style="font-size: 14px; color: #ffffff; line-height: 140%; text-align: right; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><strong>Valor</strong></span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><strong>Subtotal</strong></span></p>
   </div>
 
       </td>
@@ -345,34 +348,38 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 <div class="u-row-container ordered_products" style="padding: 0px;background-color: transparent">
   <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ffffff;"><![endif]-->
-      
-<!--[if (mso)|(IE)]><td align="center" width="244" style="width: 244px;padding: 20px 0px 20px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-38p17" style="max-width: 320px;min-width: 244.29px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 20px 0px 20px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">{{order.items.title}}</span></p>
-  </div>
 
-      </td>
-    </tr>
-  </tbody>
-</table>
+<?php foreach($orden_data->items as $item) {?>
+
+<!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ffffff;"><![endif]-->
+  <!--[if (mso)|(IE)]><td align="center" width="244" style="width: 244px;padding: 20px 0px 20px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
+    <div class="u-col u-col-38p17" style="max-width: 320px;min-width: 244.29px;display: table-cell;vertical-align: top;">
+      <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+      <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 20px 0px 20px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
+      
+    <table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+      <tbody>
+        <tr>
+          <td style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px;font-family:arial,helvetica,sans-serif;" align="left">
+            
+      <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
+        <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">{{order.items.title}}</span></p>
+      </div>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
   <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
   </div>
 </div>
 <!--[if (mso)|(IE)]></td><![endif]-->
+
+
 <!--[if (mso)|(IE)]><td align="center" width="182" style="width: 182px;padding: 20px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
 <div class="u-col u-col-28p5" style="max-width: 320px;min-width: 182.4px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+<div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
   <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 20px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
   
 <table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -393,6 +400,9 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   </div>
 </div>
 <!--[if (mso)|(IE)]></td><![endif]-->
+
+
+
 <!--[if (mso)|(IE)]><td align="center" width="213" style="width: 213px;padding: 20px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
 <div class="u-col u-col-33p33" style="max-width: 320px;min-width: 213.31px;display: table-cell;vertical-align: top;">
   <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
@@ -413,10 +423,17 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 </table>
 
   <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
+
 </div>
+</div>
+
+
 <!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+
+<?php } ?>
+
+<!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+
     </div>
   </div>
   </div>

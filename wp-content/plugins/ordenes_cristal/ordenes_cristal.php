@@ -1595,6 +1595,26 @@ function mail_order($order_id)
    
     $logo_url = site_url('wp-content/uploads/2024/03/Logo-crystal-2.png');
    
+       // Realiza la consulta para obtener los datos de la orden
+       global $wpdb;
+       $orden_table_name = $wpdb->prefix . 'orden';
+       $query_orden = $wpdb->prepare("
+           SELECT *
+           FROM $orden_table_name
+           WHERE id = %d
+       ", $order_id);
+   
+       // Realiza la consulta para obtener los elementos de la orden
+       $orden_items_table_name = $wpdb->prefix . 'orden_items';
+       $query_items = $wpdb->prepare("
+           SELECT *
+           FROM $orden_items_table_name
+           WHERE order_id = %d
+       ", $id_orden);
+   
+       $orden_data = $wpdb->get_row($query_orden); // Obtiene solo un registro
+       $items_orden = $wpdb->get_results($query_items); // Obtiene una lista de elementos
+   
    
     ob_start(); // Comenzar el almacenamiento en búfer de salida
     // Incluir la plantilla de correo

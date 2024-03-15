@@ -1139,7 +1139,7 @@ $('.edit_order').click(function() {
 
 
 // Función para validar y enviar el formulario
-function AddNewProduct2() {
+function AddNewProduct() {
   // Validar el formulario usando jQuery Validate
   if (jQuery("#prdForm").valid()) {
     // Obtener los datos del formulario
