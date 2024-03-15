@@ -280,7 +280,7 @@ $scope.setTienda = (id,image_url) => {
       if (!found) {
         console.log("no found", found);
 
-        data.push({ ...product_add, cnt: qty, subtotal: parseInt(product_add.price),price:parseInt(product_add).price });
+        data.push({ ...product_add, cnt: qty, subtotal: parseInt(product_add.price),price:parseInt(product_add.price) });
 
         localStorage.setItem("OrderCart", JSON.stringify(data));
       } else {
