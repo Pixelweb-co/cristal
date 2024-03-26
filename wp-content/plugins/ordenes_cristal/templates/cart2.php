@@ -46,7 +46,7 @@
             <td class="product-count">
                 <form action="#" class="count-inlineflex">
                     <div class="qtyminus" ng-click="setQty('minus',x.ID)" role="button">-</div>
-                    <input type="text" name="quantity" disabled value="{{x.cnt}}" class="qty">
+                    <input type="text" name="quantity" ng-model="x.cnt"  class="qty" ng-blur="actualizarCantidad(x)">
                     <div class="qtyplus" role="button" ng-click="setQty('add',x.ID)">+</div>
                 </form>
             </td>

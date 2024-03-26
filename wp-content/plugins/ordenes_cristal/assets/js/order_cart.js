@@ -8,7 +8,7 @@ var app = angular.module("shoppingCart", []);
 app.controller("cartSearchController", function ($scope, $http) {
   console.log("controllerSearch");
   localStorage.removeItem("marca_sel");
-  $scope.marcaSeleccionada = null;
+  $scope.marcaSeleccionada = null;t
   $scope.categoriaSeleccionada = null;
   $scope.nombreProducto = null;
   $scope.tiendaSeleccionada = null;
@@ -266,7 +266,7 @@ $scope.setTienda = (id,image_url) => {
 
       localStorage.setItem(
         "OrderCart",
-        JSON.stringify([{ ...product_add, cnt: qty, subtotal: parseInt(product_add.price) }])
+        JSON.stringify([{ ...product_add, cnt: parseFloat(qty), subtotal: parseInt(product_add.price) }])
       );
     } else {
       
@@ -280,14 +280,14 @@ $scope.setTienda = (id,image_url) => {
       if (!found) {
         console.log("no found", found);
 
-        data.push({ ...product_add, cnt: qty, subtotal: parseInt(product_add.price),price:parseInt(product_add.price) });
+        data.push({ ...product_add, cnt: parseFloat(qty), subtotal: parseInt(product_add.price),price:parseInt(product_add.price) });
 
         localStorage.setItem("OrderCart", JSON.stringify(data));
       } else {
         console.log("founddd ", found);
 
-        found.cnt = parseInt(found.cnt) + qty;
-        found.subtotal = parseInt(found.price) * parseInt(found.cnt);
+        found.cnt = parseFloat(qty + qty);
+        found.subtotal = parseInt(found.price) * parseFloat(qty);
         found.price = parseInt(found.price) ;
 
         var new_data = data.filter((i) => i.ID != product_add.ID);
@@ -499,7 +499,36 @@ app.controller("cartController", function ($scope, $http) {
       console.error("Error al obtener las tiendas:", error);
     });
 
+    // Función para actualizar la cantidad de un ítem
+    $scope.actualizarCantidad = function(item) {
+      // Actualizar el modelo de datos con la nueva cantidad
+      // Esto es necesario para que se refleje en la lista
+      var data = JSON.parse(localStorage.getItem("OrderCart"));
+      
 
+      for (var i = 0; i < data.length; i++) {
+          if (data[i].ID === item.ID && item.cnt) {
+            
+            if (data[i].cnt <= 0) {
+              $scope.removeItem(data[i].ID);
+              break
+            }
+        
+
+              data[i].cnt = parseFloat(item.cnt);
+              data[i].subtotal = parseInt(data[i].price) * parseFloat(data[i].cnt);
+    
+              console.log("nw cant", data[i].cnt);
+              break;
+          }
+      }
+
+      console.log("nw cant", data);
+      localStorage.setItem("OrderCart", JSON.stringify(data));
+      $scope.items = data;
+      $scope.loadData();
+
+    };
     
   $scope.get_valores_ideales_order = async function() {
     // Obtener los datos del carrito del almacenamiento local
@@ -674,9 +703,9 @@ app.controller("cartController", function ($scope, $http) {
   
     Object.keys(totalsByCategory).forEach((categoryName) => {
 
-      var metro_cuadrado_total_categoria = totalsByCategory[categoryName] / parseInt(localStorage.getItem('tiendaSeleccionada'));
-      var valor_ideal = $scope.valores_ideales.find((val) => val.marca_id == localStorage.getItem('marca_sel') && val.categoria_id == idsByCategory[categoryName]).valor_ideal;
-      var valor_restante = valor_ideal - metro_cuadrado_total_categoria;
+      var metro_cuadrado_total_categoria = totalsByCategory[categoryName] / parseInt(localStorage.getItem('tiendaSeleccionada')); //valor metro cuadrado categoria
+      var valor_ideal = $scope.valores_ideales.find((val) => val.marca_id == localStorage.getItem('marca_sel') && val.categoria_id == idsByCategory[categoryName]).valor_ideal // valor ideal marca ctegoria;
+      var valor_restante = valor_ideal - metro_cuadrado_total_categoria //valor ideal restante;
       
       var porcentaje_utilizado = metro_cuadrado_total_categoria / valor_ideal * 100;
       var porcentaje_restante = 100 - ((totalsByCategory[categoryName] / parseInt(localStorage.getItem('tiendaSeleccionada'))) / parseInt($scope.valores_ideales.find((val) => val.marca_id == localStorage.getItem('marca_sel') && val.categoria_id == idsByCategory[categoryName]).valor_ideal) * 100)
@@ -688,6 +717,7 @@ app.controller("cartController", function ($scope, $http) {
 
       var overvalue = false
 
+      //si supera valor ideal
       if(metro_cuadrado_total_categoria > valor_ideal){
         overvalue = true
       }
@@ -874,9 +904,9 @@ beforeSend: function ( xhr ) {
     var found = data.find((i) => i.ID == id_item);
 
     if (action == "add") {
-      found.cnt = found.cnt + 1;
+      found.cnt = parseFloat(found.cnt) + 1;
     } else {
-      found.cnt = found.cnt - 1;
+      found.cnt = parseFloat(found.cnt) - 1;
     }
 
     if (found.cnt <= 0) {
@@ -884,7 +914,7 @@ beforeSend: function ( xhr ) {
       return false;
     }
 
-    found.subtotal = parseInt(found.price) * parseInt(found.cnt);
+    found.subtotal = parseInt(found.price) * parseFloat(found.cnt);
     var new_data = data.filter((i) => i.ID != id_item);
     new_data.push(found);
     console.log("nwdta_rp", new_data);
