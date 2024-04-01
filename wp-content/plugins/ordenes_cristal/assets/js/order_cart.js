@@ -256,7 +256,7 @@ $scope.setTienda = (id,image_url) => {
     console.log(el.target)
 
       var product_add = $scope.sresult.find((p) => p.ID === id_item);
-      var qty = parseInt(jQuery(el.target).closest(".card-body").find(".qtyMinicartInput").val());
+      var qty = parseFloat(jQuery(el.target).closest(".card-body").find(".qtyMinicartInput").val());
     console.log("padd", product_add);
 
 
@@ -266,7 +266,7 @@ $scope.setTienda = (id,image_url) => {
 
       localStorage.setItem(
         "OrderCart",
-        JSON.stringify([{ ...product_add, cnt: parseFloat(qty), subtotal: parseInt(product_add.price) }])
+        JSON.stringify([{ ...product_add, cnt: qty, subtotal: parseInt(product_add.price) }])
       );
     } else {
       

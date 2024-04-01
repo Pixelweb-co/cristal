@@ -113,7 +113,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
                                 <div class="d-flex text-item-block">
                                     
                                 <div class="w-50">
-                                Qty: <input type="number" ng-class="{'qtyMinicartInput item-id-': r.ID}"  ng-value="1" value="1">
+                                Qty: <input type="text" ng-class="{'qtyMinicartInput item-id-': r.ID}"  ng-value="1" value="1">
                                 </div>
                                 <div class="w-50">
 
