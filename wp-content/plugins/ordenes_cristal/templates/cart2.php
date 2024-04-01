@@ -153,7 +153,7 @@
                     <div class="cart-loader"></div> <span class="title_btn">Guardar pedido</span>
                 </button>
 
-                <button type="button" id="btnSendOrder" class="btn btn-outline-generic mr-10" ng-click="enviarOrden()">
+                <button type="button" ng-if="orden_id" id="btnSendOrder" class="btn btn-outline-generic mr-10" ng-click="enviarOrden()">
                     <div class="cart-loader"></div> <span class="title_btn">Enviar</span>
                 </button>
             </div>

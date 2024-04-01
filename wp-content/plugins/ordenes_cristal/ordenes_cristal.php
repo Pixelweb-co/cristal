@@ -229,9 +229,11 @@ function restrict_access_to_logged_in_users()
 add_action('template_redirect', 'restrict_access_to_logged_in_users');
 
 function redirect_to_profile() {
+    if(isset($_POST['log'])){    
     $who = strtolower(sanitize_user($_POST['log']));
     $redirect_to = get_option('home');
     return $redirect_to;
+    }else{ return false; }    
 }
 add_filter('login_redirect', 'redirect_to_profile');
 
@@ -1355,7 +1357,7 @@ function handle_order_save_request($request)
                         );
                     }
 
-                    mail_order($order_id);   
+                    //mail_order($order_id);   
                     return array('success' => true, 'message' => 'Order saved successfully', 'order_id' => $order_id);
                 } else {
                     // Si la inserción de la orden falla, devuelve un mensaje de error
@@ -1589,10 +1591,12 @@ add_action('wp_ajax_nopriv_mail_order', 'mail_order');
 
 
 
-function mail_order($order_id)
+function mail_order()
 {
 
-   
+    $order_id = $_POST['order'];
+
+
     $logo_url = site_url('wp-content/uploads/2024/03/Logo-crystal-2.png');
    
        // Realiza la consulta para obtener los datos de la orden
@@ -1610,7 +1614,7 @@ function mail_order($order_id)
            SELECT *
            FROM $orden_items_table_name
            WHERE order_id = %d
-       ", $id_orden);
+       ", $order_id);
    
        $orden_data = $wpdb->get_row($query_orden); // Obtiene solo un registro
        $items_orden = $wpdb->get_results($query_items); // Obtiene una lista de elementos
@@ -1642,7 +1646,7 @@ function mail_order($order_id)
     $wpdb->update(
         $orden_table_name,
         array('is_send' => '1'),
-        array('id' => $idDeLaOrden) // Asegúrate de tener el ID de la orden
+        array('id' => $order_id) //  ID de la orden
     );
 
 
@@ -1651,12 +1655,12 @@ function mail_order($order_id)
 
     // Verificar si el correo electrónico se envió correctamente
     if ($enviado) {
-       // echo 'El correo electrónico se ha enviado correctamente. '.$logo_url;
+       echo 'El correo electrónico se ha enviado correctamente. '.$logo_url;
         
     } else {
-     //   echo 'Error al enviar el correo electrónico.';
+        echo 'Error al enviar el correo electrónico.';
     }
-   // die();
+   die();
 }
 
 // Agrega la acción wp_ajax_my_get_order

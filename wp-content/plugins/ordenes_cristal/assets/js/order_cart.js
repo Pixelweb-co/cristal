@@ -8,7 +8,7 @@ var app = angular.module("shoppingCart", []);
 app.controller("cartSearchController", function ($scope, $http) {
   console.log("controllerSearch");
   localStorage.removeItem("marca_sel");
-  $scope.marcaSeleccionada = null;t
+  $scope.marcaSeleccionada = null;
   $scope.categoriaSeleccionada = null;
   $scope.nombreProducto = null;
   $scope.tiendaSeleccionada = null;
@@ -1335,17 +1335,20 @@ jQuery(document).ready(function($) {
   $('#btnSendOrder').click(function(e) {
       e.preventDefault();
 
+      $('#btnSendOrder .cart-loader').show();
+
+      const order = localStorage.getItem('orden_id_edit'); 
+
       $.ajax({
           type: 'POST',
           url: admin_ajax_url,
-          data: 'action=mail_order',
+          data: 'action=mail_order&order_id='+order,
           success: function(response) {
               if (response.success) {
-                
-                console.log(xhr.responseText);
+                $('#btnSendOrder .cart-loader').hide();
 
               } else {
-                console.log(xhr.responseText);
+                $('#btnSendOrder .cart-loader').hide();
               }
           },
           error: function(xhr, status, error) {
