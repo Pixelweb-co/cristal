@@ -368,7 +368,7 @@ function crear_pagina_hacer_pedido()
 {
     $post_content = '[generar_orden]';
     $page_check = get_page_by_title('hacer_pedido');
-
+    $page_check_ID = $page_check->ID;
     // Si la página no existe, entonces la creamos
     if (empty($page_check)) {
         $page_id = wp_insert_post(array(
@@ -381,7 +381,7 @@ function crear_pagina_hacer_pedido()
         ));
         // Asociar la plantilla del plugin
         $template_path = 'template-nuevo-pedido.php';
-        update_post_meta($page->ID, '_wp_page_template', $template_path);
+        update_post_meta($page_id, '_wp_page_template', $template_path);
     }
 }
 add_action('init', 'crear_pagina_hacer_pedido');
@@ -1619,6 +1619,8 @@ function mail_order()
        $orden_data = $wpdb->get_row($query_orden); // Obtiene solo un registro
        $items_orden = $wpdb->get_results($query_items); // Obtiene una lista de elementos
    
+
+
    
     ob_start(); // Comenzar el almacenamiento en búfer de salida
     // Incluir la plantilla de correo
@@ -1627,9 +1629,8 @@ function mail_order()
     // Obtener el contenido del búfer y limpiar el búfer de salida
     $mensaje = ob_get_clean();
    
-
-    // Destinatario del correo electrónico
-    $para = 'egbmaster2007@gmail.com';
+    // Obtener el email destino enviar
+    $para = get_option('mail_to_order');
 
     // Asunto del correo electrónico
     $asunto = 'Correo de confirmación de pedido';
@@ -1711,5 +1712,50 @@ function my_get_order()
         wp_send_json_success($response);
     } else {
         wp_send_json_error('No se encontró ninguna orden con el ID proporcionado');
+    }
+}
+
+
+// Agregar un menú en el administrador de WordPress
+add_action('admin_menu', 'crear_menu_formulario');
+
+function crear_menu_formulario() {
+    // Añadir un nuevo elemento al menú en el administrador de WordPress
+    add_menu_page('Formulario de Email', 'Email pedido', 'manage_options', 'formulario-email', 'mostrar_formulario_email');
+}
+
+// Función para mostrar el formulario en el administrador de WordPress
+function mostrar_formulario_email() {
+    $email_guardado = get_option('mail_to_order'); // Obtener el email guardado
+
+    ?>
+    <div class="wrap">
+        <h1>Destinatario Email</h1>
+        <?php if ($email_guardado) : ?>
+            <div class="notice notice-info">
+                <p>El email guardado actualmente es: <?php echo esc_html($email_guardado); ?></p>
+            </div>
+        <?php endif; ?>
+        <form method="post" action="">
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" class="regular-text" value="<?php echo $email_guardado; ?>" required><br><br>
+            <input type="submit" name="submit" id="submit" class="button button-primary" value="Guardar">
+        </form>
+    </div>
+    <?php
+}
+
+// Función para procesar los datos del formulario y guardar el email en la opción 'mail_to_order'
+add_action('admin_init', 'guardar_email');
+
+function guardar_email() {
+    if (isset($_POST['submit'])) {
+        $email = sanitize_email($_POST['email']); // Sanitizar y obtener el email enviado desde el formulario
+
+        // Guardar el email en la opción 'mail_to_order'
+        update_option('mail_to_order', $email);
+
+        // Mostrar un mensaje de éxito
+        echo '<div class="notice notice-success is-dismissible"><p>Email guardado correctamente.</p></div>';
     }
 }

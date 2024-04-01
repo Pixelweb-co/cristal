@@ -348,8 +348,12 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 <div class="u-row-container ordered_products" style="padding: 0px;background-color: transparent">
   <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
+od
+<?php 
 
-<?php foreach($orden_data->items as $item) {?>
+print_r($orden_data);
+
+foreach($orden_data->items as $item) {?>
 
 <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ffffff;"><![endif]-->
   <!--[if (mso)|(IE)]><td align="center" width="244" style="width: 244px;padding: 20px 0px 20px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
