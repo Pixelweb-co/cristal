@@ -8,26 +8,44 @@ var app = angular.module("shoppingCart", []);
 
 app.controller("relatedModalCtrl", function($scope, $http){
 
+  
+
+
 $scope.relateds = [];
 
 $scope.get_related_producs = async function(id_parent){
 
 
-  await $http
-  .post(base_url + "/wp-json/ordenes_cristal/v1/get_related")
-  .then(function (response) {
-    // Asignar las tiendas obtenidas a $scope.tiendas
-  $scope.relateds = response.data;
-    
-  })
-  .catch(function (error) {
-    console.error("Error al obtener llos relacionados:", error);
-  });
+
 
 }
 
 
 })
+
+// Define un servicio para realizar la llamada HTTP al endpoint y compartir datos entre controladores
+app.service('DataService', ['$http', function($http) {
+  var relacionadosData = {};
+ 
+  return {
+      // Método para obtener datos del endpoint con parámetros mediante POST
+      obtenerRelacionados: async function(params) {
+        await $http
+        .post(base_url + "/wp-json/ordenes_cristal/v1/get_related")
+        .then(function (response) {
+          // Asignar las tiendas obtenidas a $scope.tiendas
+          relacionadosData.data;
+          
+        })
+        .catch(function (error) {
+          console.error("Error al obtener llos relacionados:", error);
+        });
+      },
+      getSharedDataRS: function() {
+        return relacionadosData;
+    }
+  };
+}]);
 
 app.controller("cartSearchController", function ($scope, $http) {
   console.log("controllerSearch");
@@ -276,6 +294,10 @@ $scope.setTienda = (id,image_url) => {
   };
 
   $scope.addCart = (id_item,el ) => {
+
+
+
+    
     
     console.log(el.target)
 
@@ -1081,8 +1103,6 @@ function hideMiniCart() {
 
 jQuery(document).ready(function($) {
 
-  
-  $("#squarespaceModal").modal("show");
 
   $('#login-form').submit(function(e) {
     e.preventDefault();
