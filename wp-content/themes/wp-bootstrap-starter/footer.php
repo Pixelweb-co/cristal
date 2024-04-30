@@ -31,7 +31,7 @@ if (isset($post->post_name)) {
 		<div class="container-fluid pt-3 pb-3 first-row-colo">
 			
 
-				<div class="row d-flex align-items-stretch">
+				<!-- <div class="row d-flex align-items-stretch">
 					<div class="col-md-2 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
 						<img src="<?= site_url('wp-content/images/Logo-crystal-transparente1.png') ?>" alt="Imagen" class="img-fluid">
 
@@ -102,7 +102,7 @@ if (isset($post->post_name)) {
 							<p class="num-telefono">(604) 604 96 00</p>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			
 
 			<div class="row row-color">

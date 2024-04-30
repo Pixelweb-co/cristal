@@ -348,13 +348,14 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 <div class="u-row-container ordered_products" style="padding: 0px;background-color: transparent">
   <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-od
 <?php 
+$total = 0;
 
-print_r($orden_data);
+foreach($items_orden as $item) {
 
-foreach($orden_data->items as $item) {?>
-
+$subtotal = $item->price * $item->cnt;
+$total += $subtotal;
+?>
 <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ffffff;"><![endif]-->
   <!--[if (mso)|(IE)]><td align="center" width="244" style="width: 244px;padding: 20px 0px 20px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
     <div class="u-col u-col-38p17" style="max-width: 320px;min-width: 244.29px;display: table-cell;vertical-align: top;">
@@ -367,7 +368,7 @@ foreach($orden_data->items as $item) {?>
           <td style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px;font-family:arial,helvetica,sans-serif;" align="left">
             
       <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-        <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">{{order.items.title}}</span></p>
+        <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><?=$item->post_title?></span></p>
       </div>
 
           </td>
@@ -392,7 +393,7 @@ foreach($orden_data->items as $item) {?>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">{{order.items.quantity}}</span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><?=$item->cnt?></span></p>
   </div>
 
       </td>
@@ -418,7 +419,7 @@ foreach($orden_data->items as $item) {?>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:5px 20px 5px 10px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div style="font-size: 14px; line-height: 140%; text-align: right; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">${{order.items.price}}</span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">$<?=number_format($subtotal)?></span></p>
   </div>
 
       </td>
@@ -485,7 +486,7 @@ foreach($orden_data->items as $item) {?>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 21px 0px 10px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%; text-align: right;"><span style="font-size: 16px; line-height: 22.4px;">${{order.subtotal.price}}</span></p>
+    <p style="font-size: 14px; line-height: 140%; text-align: right;"><span style="font-size: 16px; line-height: 22.4px;">$<?=number_format($total)?></span></p>
   </div>
 
       </td>

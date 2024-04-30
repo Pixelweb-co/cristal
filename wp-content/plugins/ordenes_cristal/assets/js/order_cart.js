@@ -5,6 +5,30 @@ function closeModal() {
 
 var app = angular.module("shoppingCart", []);
 
+
+app.controller("relatedModalCtrl", function($scope, $http){
+
+$scope.relateds = [];
+
+$scope.get_related_producs = async function(id_parent){
+
+
+  await $http
+  .post(base_url + "/wp-json/ordenes_cristal/v1/get_related")
+  .then(function (response) {
+    // Asignar las tiendas obtenidas a $scope.tiendas
+  $scope.relateds = response.data;
+    
+  })
+  .catch(function (error) {
+    console.error("Error al obtener llos relacionados:", error);
+  });
+
+}
+
+
+})
+
 app.controller("cartSearchController", function ($scope, $http) {
   console.log("controllerSearch");
   localStorage.removeItem("marca_sel");
@@ -1057,6 +1081,8 @@ function hideMiniCart() {
 
 jQuery(document).ready(function($) {
 
+  
+  $("#squarespaceModal").modal("show");
 
   $('#login-form').submit(function(e) {
     e.preventDefault();

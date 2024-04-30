@@ -267,11 +267,4 @@
 
 
                     <?php endif; ?>
-                    <?php
-                        if ($post_slug != 'login') {
-                        ?>
-                       
-                    <div class="container-fluid banner-search">
-
-                    </div>
-                    <?php } ?>
+  

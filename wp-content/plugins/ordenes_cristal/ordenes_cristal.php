@@ -835,6 +835,7 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
         $precio_producto = get_post_meta($producto->ID, '_price', true);
         $imagen_producto_id = get_post_thumbnail_id($producto->ID);
         $imagen_producto_url = wp_get_attachment_url($imagen_producto_id);
+        $imagen_miniatura = get_the_post_thumbnail_url($producto->ID,'thumbnail');
         $sku_producto = get_post_meta($producto->ID, '_sku', true); // Obtener el SKU del producto
         $marca_id_producto = get_post_meta($producto->ID, '_marca_producto', true);
 
@@ -857,6 +858,7 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
             'post_content' => $producto->post_content,
             'price' => $precio_producto,
             'image_url' => $imagen_producto_url,
+            'thumbnail_prod' => $imagen_miniatura,
             'sku' => $sku_producto,
             'categorias' => $categorias_producto_info, // Agregar las categorías del producto al resultado
             'marca' => $marca_id_producto,
@@ -1376,122 +1378,6 @@ function handle_order_save_request($request)
 
 
 
-// function handle_order_save_request2($request)
-// {
-
-
-//     // Obtener los datos del cuerpo de la solicitud
-//     $params = $request->get_params();
-
-//     //die();
-
-//     // Verificar si se enviaron los datos de la orden
-//     if (isset($params['order'])) {
-//         // Si el usuario está logueado, obtener su ID
-
-//         $newOrder = json_decode(base64_decode($params['order']));
-
-
-//         $user = wp_get_current_user();
-        
-//         $user_id = $user->ID;
-
-//         if ($user_id) {
-//             global $wpdb;
-//             $orden_table_name = $wpdb->prefix . 'orden';
-//             $orden_items_table_name = $wpdb->prefix . 'orden_items';
-
-//             // Crear una nueva orden
-//             $fecha_actual = current_time('mysql'); // Obtener la fecha y hora actuales en formato MySQL
-//             $totalOrden = $newOrder->total_order; // El total de la orden
-
-//             $file_name = '';
-
-//             $marca = $newOrder->marca;
-//             $image_marca = $newOrder->image_marca;
-//             $name_marca = $newOrder->name_marca;
-//             $tienda = $newOrder->tienda;
-//             $tienda_name = $newOrder->tienda_name;
-
-//             $links = $params['links'];
-//             // Insertar la nueva orden en la tabla de órdenes
-//             $resultado_insercion_order = $wpdb->insert(
-//                 $orden_table_name,
-//                 array(
-//                     'fecha_orden' => $fecha_actual,
-//                     'cliente' => $user_id,
-//                     'cliente_name' => $user->display_name,
-//                     'totalOrden' => $totalOrden,
-//                     'fichero_adjunto' => '', //$file_name,
-//                     'marca' => $marca,
-//                     'image_marca' => $image_marca,
-//                     'name_marca' => $name_marca,
-//                     'links' => $links,
-//                     'tienda' => $tienda,
-//                     'tienda_name' => $tienda_name,
-//                     'is_send' => 0,
-//                 )
-//             );
-
-
-//             if ($resultado_insercion_order === false) {
-//                 // La inserción no fue exitosa
-//                 // La inserción no fue exitosa, mostrar el error y el SQL ejecutado
-//                 $error = $wpdb->last_error;
-//                 $sql_ejecutado = $wpdb->last_query;
-//                 //echo "Error al insertar en la base de datos. Error: $error. SQL ejecutado: $sql_ejecutado";
-
-//             } else {
-//                 // La inserción fue exitosa
-//                 //  echo "¡Datos insertados correctamente!";
-//             }
-//             // Obtener el ID de la orden recién creada
-//             $order_id = $wpdb->insert_id;
-
-//             // Guardar los ítems de la orden en la tabla de items de la orden
-//             foreach ($newOrder->items as $item) {
-//                 $resultado_insercion_items =  $wpdb->insert(
-//                     $orden_items_table_name,
-//                     array(
-//                         'order_id' => $order_id,
-//                         'ID' => $item->ID,
-//                         'post_title' => $item->post_title,
-//                         'post_content' => $item->post_content,
-//                         'cnt' => $item->cnt,
-//                         'observacion' => $item->observacion,
-//                         'price' => $item->price,
-//                         'categorias' => json_encode($item->categorias),
-//                         'subtotal' => $item->subtotal,
-//                         'sku' => $item->sku,
-//                         'image_url' => $item->image_url
-//                     )
-//                 );
-
-//                 if ($resultado_insercion_items === false) {
-//                     // La inserción no fue exitosa
-//                     // La inserción no fue exitosa, mostrar el error y el SQL ejecutado
-//                     $error = $wpdb->last_error;
-//                     $sql_ejecutado = $wpdb->last_query;
-//                     echo "Error al insertar en la base de datos. Error: $error. SQL ejecutado: $sql_ejecutado";
-//                 } else {
-//                     // La inserción fue exitosa
-//                     //     echo "¡Datos insertados correctamente!";
-//                 }
-//             }
-
-
-
-//             return array('success' => true, 'message' => 'Order saved successfully', 'order_id' => $order_id);
-//         } else {
-//             return array('success' => false, 'message' => 'User not logged in');
-//         }
-//     } else {
-//         // Si faltan datos de la orden, devolver un mensaje de error
-//         return array('success' => false, 'message' => 'Error: Missing order data');
-//     }
-// }
-
-
 function get_orders_list()
 {
 
@@ -1594,7 +1480,7 @@ add_action('wp_ajax_nopriv_mail_order', 'mail_order');
 function mail_order()
 {
 
-    $order_id = $_POST['order'];
+    $order_id = $_POST['order_id'];
 
 
     $logo_url = site_url('wp-content/uploads/2024/03/Logo-crystal-2.png');

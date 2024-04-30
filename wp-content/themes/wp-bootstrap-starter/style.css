@@ -1164,8 +1164,9 @@ body:not(.theme-preset-active) footer#colophon {
   margin-top: 25px !important;
 }
 
-#angresults{
-  min-height: 400px !important;
+.bg-row{
+  min-height: 200px !important;
+  background-color: #fcfcfc !important;
 }
 
 #teste{
@@ -1292,7 +1293,36 @@ margin-left: 5%;
 
 }
 
+.thumbnail-container {
+  vertical-align: middle;
+  align-items: center;
+  align-content: center;
+}
 
+.cart_sel_continer{
+  vertical-align: middle;
+  align-items: center;
+  align-content: center;
+}
+
+
+
+.thumbnail  {
+
+  object-fit: contain !important;
+
+  
+-webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+
+}
+
+.img-event {
+
+  height: 255px !important;
+
+}
 
 .thumbnail.card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 

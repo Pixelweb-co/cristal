@@ -79,7 +79,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
 
             </div>
 
-            <div class="container">
+            <div class="container-fluid">
                 <h3 ng-if="marcaNameSel">{{marcaNameSel}}</h3>                
 
                 <div ng-if="sresult.length == 0 " class="d-flex  align-items-center justify-content-center text-center" style="height: 35em;" role="alert">
@@ -90,48 +90,53 @@ $productos_encontrados = buscar_productos('', null, null, null);
                 </div>
 
 
-                <div class="row mt-5" id="angresults" ng-if="sresult.length > 0 ">
+                <div class=" mt-3" id="angresults" ng-if="sresult.length > 0 ">
 
-
-                    <div class="col-xs-12 col-md-6 col-lg-4 col-xl-3" ng-repeat="r in sresult">
-                        <div class="thumbnail card position-relative">
-                            <div class="img-event position-relative">
-                                <img class="group list-group-image img-fluid" ng-src="{{ r.image_url }}" alt="Producto" />
-                                <div class="overlay">
-                                    <p class="text-justify p-2 text-white">{{r.post_content}} </p>
-                                </div>
-                            </div>
-                            <div class="caption card-body">
-                                <div class="text-item-block">Código:  {{r.sku}}</div>
-                                <div class="text-item-block">{{r.post_title}}</div>
-                                <div class="text-item-block">
-                                    Catégoria:  
+                
+                    
+                
+                
+                <div class="bg-row row mb-2 border p-2 rounded" ng-repeat="r in sresult">
+                        
+                <div class="col-md-2 text-center p-2 thumbnail-container ">
+              
+                                <img class="thumbnail rounded" ng-src="{{ r.thumbnail_prod }}" alt="Producto" />
+                                
+                </div>
+                <div class="col-md-8">
+                    <div class="text-item-block">Código:  {{r.sku}}</div>
+                    <div class="text-item-block">{{r.post_title}}</div>
+                    <div class="text-item-block">Catégoria:  
                                     <span class="lead-1"  ng-repeat="c in r.categorias">
                                             {{c.name}}
                                     </span>
-                                </div>
-                                <div class="d-flex text-item-block">
+                    </div>
+                    <p class="text-justify p-1 ">{{r.post_content}} </p>
+                    
+                
+                </div>
+                <div class="col-md-2 cart_sel_continer">
+                                    <div class=" text-item-block">
                                     
-                                <div class="w-50">
-                                Qty: <input type="text" ng-class="{'qtyMinicartInput item-id-': r.ID}"  ng-value="1" value="1">
-                                </div>
-                                <div class="w-50">
-
-                                {{r.price | currency: '$'}}
-                                </div>
-                            
-                                </div>
+                                        
+                                        <div class="w-100">
+    
+                                           Precio: <span class="vright">{{r.price | currency: '$'}}</span>
+                                        </div>
+                                        <div class="w-100 dqty">
+                                           <span>Cantidad: </span> <input type="number" ng-class="{'qtyMinicartInput item-id-': r.ID}"  ng-value="1" value="1">
+                                        </div>
+                                    </div>
+                                
+                                    
                                 <div class="text-center text-item-block">
                                     <hr>    
                                     <button class="btn w-80 btn-outline-generic" ng-click="addCart(r.ID,$event)">Agregar a la orden</button>
                                 </div>
-                                
-                                
 
-
-                            </div>
-                            
-                        </div>
+                </div>
+                
+                
                     </div>
 
 
