@@ -13,39 +13,10 @@ app.controller("relatedModalCtrl", function($scope, $http){
 
 $scope.relateds = [];
 
-$scope.get_related_producs = async function(id_parent){
-
-
-
-
-}
-
 
 })
 
-// Define un servicio para realizar la llamada HTTP al endpoint y compartir datos entre controladores
-app.service('DataService', ['$http', function($http) {
-  var relacionadosData = {};
- 
-  return {
-      // Método para obtener datos del endpoint con parámetros mediante POST
-      obtenerRelacionados: async function(params) {
-        await $http
-        .post(base_url + "/wp-json/ordenes_cristal/v1/get_related")
-        .then(function (response) {
-          // Asignar las tiendas obtenidas a $scope.tiendas
-          relacionadosData.data;
-          
-        })
-        .catch(function (error) {
-          console.error("Error al obtener llos relacionados:", error);
-        });
-      },
-      getSharedDataRS: function() {
-        return relacionadosData;
-    }
-  };
-}]);
+
 
 app.controller("cartSearchController", function ($scope, $http) {
   console.log("controllerSearch");
@@ -131,6 +102,8 @@ app.controller("cartSearchController", function ($scope, $http) {
     console.log("sresult",$scope.sresult)
 
 };
+
+
 
 
 $scope.setTienda = (id,image_url) => {
@@ -245,7 +218,7 @@ $scope.setTienda = (id,image_url) => {
     
     if ($scope.tiendaSeleccionada) {
 
-      await $http
+      $http
       .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
       .then(function (response) {
         // Asignar las tiendas obtenidas a $scope.tiendas
@@ -293,10 +266,38 @@ $scope.setTienda = (id,image_url) => {
     });
   };
 
+
+  
+  $scope.getRelatedProducts = async function(id) {
+    await $http({
+      method: "POST",
+      url: base_url + "/wp-json/ordenes_cristal/v1/buscar_productos",
+      params: {id:id},
+      headers: { "X-WP-Nonce": nonce },
+    }).then(function (response) {
+      // Manejar la respuesta de la búsqueda de productos
+    
+      
+      // Obtener el alcance de AngularJS del elemento MiniCart
+    var scope2 = angular.element(document.getElementById("squarespaceModal")).scope();
+
+    // Aplicar los cambios en el alcance
+    scope2.$apply(function () {
+      scope2.relateds = response.data
+     
+    });
+
+    return response.data
+    });
+    }
+
+
   $scope.addCart = (id_item,el ) => {
 
 
+    var relp = $scope.getRelatedProducts(id_item);
 
+    console.log("relp: " , relp)
     
     
     console.log(el.target)
