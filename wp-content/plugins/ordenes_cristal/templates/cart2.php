@@ -4,7 +4,7 @@
     <div class="col-md-12"><h2>Pedido <span ng-if="orden_id">#{{orden_id}}</span></h2></div>    
     <div class="col-lg-8">
             <div class="table-cart">
-                <table>
+                <table id="table-cart-items">
                     <thead>
                         <tr>
                             <th>Producto</th>
@@ -46,7 +46,7 @@
             <td class="product-count">
                 <form action="#" class="count-inlineflex">
                     <div class="qtyminus" ng-click="setQty('minus',x.ID)" role="button">-</div>
-                    <input type="text" name="quantity" ng-model="x.cnt"  class="qty" ng-blur="actualizarCantidad(x)">
+                    <input type="text" name="quantity" ng-model="x.cnt"  class="qty" ng-blur="actualizarCantidad(x)" >
                     <div class="qtyplus" role="button" ng-click="setQty('add',x.ID)">+</div>
                 </form>
             </td>
@@ -71,7 +71,9 @@
             </div>
             <div class=" row mt-4 mb-3">
                 <div class="col-md-4 text-center "><a class="btn btn-outline-generic" href="<?= site_url('/index.php/catalogo') ?>">Agregar mas productos</a></div>
-                <div class="col-md-8 text-left "> <button type="button" class="btn btn-black-generic" data-toggle="modal" data-target="#modalAddProduct">Agregar nuevo producto</a></div>
+                <div class="col-md-4 text-center "> <button type="button" class="btn btn-black-generic" data-toggle="modal" data-target="#modalAddProduct">Agregar nuevo producto</a></div>
+                <div class="col-md-4 text-center "><button class="btn btn-outline-generic" type="button" ng-click="NewOrder()">Nuevo Pedido</button></div>
+             
             </div>
 
             <div class="row">

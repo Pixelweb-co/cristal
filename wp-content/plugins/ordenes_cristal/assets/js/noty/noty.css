@@ -63,6 +63,26 @@
   -webkit-transform: translate(-webkit-calc(-50% - .5px), -webkit-calc(-50% - .5px)) translateZ(0) scale(1, 1);
           transform: translate(calc(-50% - .5px), calc(-50% - .5px)) translateZ(0) scale(1, 1); }
 
+.noty_theme__mint.noty_bar .noty_buttons {
+            padding: 10px !important;
+            text-align: center !important;
+}
+
+
+
+.noty_theme__mint.noty_type__success {
+  background-color: #ffffff !important;
+  border: 1px solid #10100f !important;
+  color: #10100f !important;
+  
+}
+
+.noty_theme__mint.noty_bar .noty_body {
+  padding: 8px !important;
+  font-size: 18px !important;
+  text-align: center !important;
+}
+
 #noty_layout__centerLeft {
   top: 50%;
   left: 20px;

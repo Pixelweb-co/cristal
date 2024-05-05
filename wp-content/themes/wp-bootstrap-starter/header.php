@@ -42,7 +42,7 @@
      
     ?>
 
-    <div id="page" class="site">
+    <div id="page" class="site" ng-app="shoppingCart">
         <a class="skip-link screen-reader-text" href="#content"><?php esc_html_e('Skip to content', 'wp-bootstrap-starter'); ?></a>
         <?php if (!is_page_template('blank-page.php') && !is_page_template('blank-page-with-container.php')) : ?>
             <!-- <header id="masthead" class="site-header navbar-static-top <?php echo wp_bootstrap_starter_bg_class(); ?>" role="banner">
@@ -157,7 +157,7 @@
 
 <?php if ($post_slug != 'login') { ?>
           
-<header id="masthead" class="site-header navbar-static-top <?php echo wp_bootstrap_starter_bg_class(); ?>" role="banner">
+<header id="masthead" class="site-header navbar-static-top <?php echo wp_bootstrap_starter_bg_class(); ?>" role="banner" ng-controller="CartHeaderController">
     <div class="container">
         <nav class="navbar navbar-expand-xl p-0">
             <div class="navbar-brand mr-auto">
@@ -171,8 +171,8 @@
             </div>
             <div class="d-flex align-items-center col-sm-5"> 
                 
-                    <input type="search" class="form-control w-100 border-0 custom-bg-search">
-                    <span class="search-icon"></span>
+                    <input type="search" class="form-control w-100 border-0 custom-bg-search" id="searchField">
+                    <span class="search-icon" ng-click="searchTerm()"></span>
                  </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -249,7 +249,7 @@
                 var nonce = '<?php echo wp_create_nonce('wp_rest'); ?>'
             </script>
 
-            <div id="content" class="site-content" ng-app="shoppingCart">
+            <div id="content" class="site-content" >
                 <div class="container-fluid">
                     <div class="row-fluid">
 

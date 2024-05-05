@@ -1,5 +1,5 @@
 <?php
-define( 'SAVEQUERIES', true );
+define('SAVEQUERIES', true);
 
 
 require_once('classes/cart.php');
@@ -63,7 +63,7 @@ function cristal_pos_activate()
         cliente varchar(100) NOT NULL,
         cliente_name varchar(255) NOT NULL,
         totalOrden decimal(10,2) NOT NULL,
-        fichero_adjunto varchar(100) NOT NULL,
+        fichero_adjunto longtext NOT NULL,
         marca varchar(100) NOT NULL,
         image_marca varchar(100) NOT NULL,
         name_marca varchar(100) NOT NULL,
@@ -73,6 +73,8 @@ function cristal_pos_activate()
         tienda_name varchar(255) NOT NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";
+
+
 
     $orden_items_sql = "CREATE TABLE $orden_items_table_name (
         id_item mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -120,6 +122,8 @@ function agregar_estilos_y_scripts()
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         var plugins_url = '<?= plugins_url() ?>'
@@ -142,8 +146,9 @@ function agregar_estilos_y_scripts()
     wp_register_style('cart_order-plugin', plugins_url('assets/css/cart_order.css', __FILE__));
     wp_enqueue_style('cart_order-plugin');
 
-
-
+    
+    wp_register_script('ng-infinite-scroll', plugins_url('assets/js/ng-infinite-scroll.min.js', __FILE__), array('jquery'), '1.6', true);
+    wp_enqueue_script('ng-infinite-scroll'); 
     // Registrar y encolar el archivo JS
     wp_register_script('order-plugin', plugins_url('assets/js/order_cart.js', __FILE__), array('jquery'), '1.0', true);
     wp_enqueue_script('order-plugin');
@@ -228,12 +233,15 @@ function restrict_access_to_logged_in_users()
 }
 add_action('template_redirect', 'restrict_access_to_logged_in_users');
 
-function redirect_to_profile() {
-    if(isset($_POST['log'])){    
-    $who = strtolower(sanitize_user($_POST['log']));
-    $redirect_to = get_option('home');
-    return $redirect_to;
-    }else{ return false; }    
+function redirect_to_profile()
+{
+    if (isset($_POST['log'])) {
+        $who = strtolower(sanitize_user($_POST['log']));
+        $redirect_to = get_option('home');
+        return $redirect_to;
+    } else {
+        return false;
+    }
 }
 add_filter('login_redirect', 'redirect_to_profile');
 
@@ -727,6 +735,109 @@ function cargar_jquery_edicion_rapida()
 }
 
 
+//endpoint relaionados
+
+
+
+function registrar_endpoint_busqueda_relacionados_post()
+{
+    register_rest_route('ordenes_cristal/v1', '/get_related', array(
+        'methods' => 'POST',
+        'callback' => 'buscar_productos_relacionados',
+    ));
+}
+add_action('rest_api_init', 'registrar_endpoint_busqueda_relacionados_post');
+
+// Función de devolución de llamada para buscar productos desde el endpoint por POST
+function buscar_productos_relacionados($request)
+{
+
+    $params = $request->get_params();
+    $id = $params['id'];
+    $relacionados = obtener_productos_relacionados_por_padre($id);
+
+
+    // Devolver los productos encontrados como respuesta JSON
+    return rest_ensure_response($relacionados);
+}
+
+
+
+/**
+ * Función para obtener productos relacionados por ID de producto padre.
+ *
+ * @param int $parent_product_id El ID del producto padre.
+ * @param int $limit (Opcional) Límite de productos relacionados a obtener.
+ * @return array Array de IDs de productos relacionados.
+ */
+function obtener_productos_relacionados_por_padre($parent_product_id, $limit = -1)
+{
+    // Obtener los productos hijos del producto padre.
+    global $product; 
+
+    $productos_con_info = array();
+    $product_id = $parent_product_id;
+    $post = get_post($product_id);
+    if ($post) {
+        $related_products = array();
+        $product = wc_get_product($product_id);
+        $related = $product->get_children();
+
+        if (!empty($related)) {
+
+            foreach ($related as $related_id) {
+
+                $pr = wc_get_product($related_id);
+
+                $related_products[] = $pr;
+            }
+          }
+
+        foreach ($related_products as $productoi) {
+            $precio_producto = get_post_meta($productoi->get_id(), '_price', true);
+            $imagen_producto_id = get_post_thumbnail_id($productoi->get_id());
+            $imagen_producto_url = wp_get_attachment_url($imagen_producto_id);
+            $imagen_miniatura = get_the_post_thumbnail_url($productoi->get_id(), 'thumbnail');
+            $sku_producto = get_post_meta($productoi->get_id(), '_sku', true); // Obtener el SKU del producto
+            $marca_id_producto = get_post_meta($productoi->get_id(), '_marca_producto', true);
+            
+            // Obtener las categorías asociadas al producto con todos los campos y metacampos
+            $categorias_producto = wp_get_post_terms($productoi->get_id(), 'product_cat');
+
+            // Almacenar la información relevante de cada categoría asociada al producto
+            $categorias_producto_info = array();
+            foreach ($categorias_producto as $categoria_producto) {
+                // Obtener todos los detalles de la categoría, incluidos los metacampos
+                $categoria_info = get_term_by('id', $categoria_producto->term_id, 'product_cat');
+                $categorias_producto_info[] = $categoria_info;
+            }
+
+
+
+            $productos_con_info[] = array(
+                'ID' => $productoi->get_id(),
+                'post_title' => $productoi->get_title(),
+                'post_content' => $productoi->get_description(),
+                'price' => $precio_producto,
+                'image_url' => $imagen_producto_url,
+                'thumbnail_prod' => $imagen_miniatura,
+                'sku' => $sku_producto,
+                'categorias' => $categorias_producto_info, // Agregar las categorías del producto al resultado
+                'marca' => $marca_id_producto,
+                'observacion' => ''
+            );
+        }
+
+        return $productos_con_info;
+    } else {
+        return array();
+    }
+}
+
+
+
+
+
 // Registrar endpoint personalizado para buscar productos por POST
 function registrar_endpoint_busqueda_productos_post()
 {
@@ -745,9 +856,11 @@ function buscar_productos_endpoint_post($request)
     $marca = isset($params['marca']) ? $params['marca'] : null;
     $categoria = isset($params['categoria']) ? $params['categoria'] : null;
     $tienda = isset($params['categoria']) ? $params['categoria'] : null;
+    $page  = isset($params['page']) ? $params['page'] : 1;
+    $term  = isset($params['term']) ? $params['term'] : '';
 
     // Llamar a la función buscar_productos con los parámetros proporcionados
-    $productos_encontrados = buscar_productos($nombre, $marca, $categoria, $tienda);
+    $productos_encontrados = buscar_productos($nombre, $marca, $categoria, $tienda,$page,$term);
 
     // Devolver los productos encontrados como respuesta JSON
     return rest_ensure_response($productos_encontrados);
@@ -789,13 +902,39 @@ function obtener_post_type_marca_por_titulo($titulo_marca)
 }
 
 
-function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, $tienda_id)
+function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, $tienda_id,$paged = 1,$term = '')
 {
+    global $wpdb;
+    $for_page = 5; //option later used
+
     $args = array(
         'post_type' => 'product',
-        'posts_per_page' => -1 // Obtener todos los productos
+        'posts_per_page' => $for_page, // Obtener todos los productos
+        'paged'  => $paged,
+        'orderby' => 'menu_order', // Ordenar por menu_order
+        'order' => 'ASC', // Orden ascendente
+        'paginate' => true,
+        'post_status'    => 'publish',
     );
 
+
+    $posts_found = array();
+
+    if(!empty($term)){
+        
+    $sql = "SELECT wp_posts.ID FROM wp_posts LEFT JOIN wp_postmeta ON wp_posts.ID = wp_postmeta.post_id WHERE post_type = 'product' AND wp_posts.post_title LIKE '%$term%' OR (wp_postmeta.meta_key = '_sku' AND wp_postmeta.meta_value LIKE '%$term%') GROUP BY wp_posts.ID;";
+
+    $registros_existente = $wpdb->get_results($sql, OBJECT);
+
+    foreach ($registros_existente as $item) { //
+        $posts_found[] = $item->ID;
+    }
+
+    $args['post__in'] = $posts_found;
+
+    }else{
+
+        
     if ($marca_id !== null || $categoria_id !== null) {
 
         $args['tax_query'] = array('relation' => 'AND'); // Relación AND para ambas condiciones
@@ -825,9 +964,13 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
         }
     }
 
+    }
+
+    ob_start();
 
     // Realizar la consulta
     $productos = new WP_Query($args);
+
 
     // Obtener la información (precio, imagen, SKU y categorías) para cada producto
     $productos_con_info = array();
@@ -835,7 +978,7 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
         $precio_producto = get_post_meta($producto->ID, '_price', true);
         $imagen_producto_id = get_post_thumbnail_id($producto->ID);
         $imagen_producto_url = wp_get_attachment_url($imagen_producto_id);
-        $imagen_miniatura = get_the_post_thumbnail_url($producto->ID,'thumbnail');
+        $imagen_miniatura = get_the_post_thumbnail_url($producto->ID, 'thumbnail');
         $sku_producto = get_post_meta($producto->ID, '_sku', true); // Obtener el SKU del producto
         $marca_id_producto = get_post_meta($producto->ID, '_marca_producto', true);
 
@@ -856,6 +999,7 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
             'ID' => $producto->ID,
             'post_title' => $producto->post_title,
             'post_content' => $producto->post_content,
+            'order' => $producto->menu_order,
             'price' => $precio_producto,
             'image_url' => $imagen_producto_url,
             'thumbnail_prod' => $imagen_miniatura,
@@ -866,7 +1010,7 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
         );
     }
 
-    return ['productos' => $productos_con_info];
+    return ['productos' => $productos_con_info,'num_pages' => $productos->max_num_pages,'for_page'=>$for_page];
 }
 
 
@@ -1229,18 +1373,19 @@ function handle_order_save_request($request)
     // Subir archivos adjuntos
     $archivos = [];
     $upload_dir = wp_upload_dir();
-    
-    if(isset($_FILES['file_order'])){
-    $files = $_FILES['file_order'];
-    foreach ($files['tmp_name'] as $key => $tmp_name) {
-        $file_name = $files['name'][$key];
-        $file_path = $upload_dir['path'] . '/' . $file_name;
-        
-        array_push($files_order_complete_path, $file_path);
-        move_uploaded_file($tmp_name, $file_path);
-        $archivos[] = $file_name;
-    }
 
+    if (isset($_FILES['file_order'])) {
+       
+        $files = $_FILES['file_order'];
+        foreach ($files['tmp_name'] as $key => $tmp_name) {
+            $file_name = $files['name'][$key];
+            $file_path = $upload_dir['path'] . '/' . $file_name;
+           
+            array_push($files_order_complete_path, $file_path);
+            move_uploaded_file($tmp_name, $file_path);
+           
+            $archivos[] = $file_name;
+        }
     }
     // Verificar si se enviaron los datos de la orden
     if (isset($params['order'])) {
@@ -1314,9 +1459,9 @@ function handle_order_save_request($request)
                 // Si no se proporcionó un ID de orden, se crea una nueva orden
                 // Insertar la nueva orden en la tabla de órdenes
                 $fecha_actual = current_time('mysql');
-              
+
                
-              
+
                 $resultado_insercion_order = $wpdb->insert(
                     $orden_table_name,
                     array(
@@ -1363,7 +1508,7 @@ function handle_order_save_request($request)
                     return array('success' => true, 'message' => 'Order saved successfully', 'order_id' => $order_id);
                 } else {
                     // Si la inserción de la orden falla, devuelve un mensaje de error
-                    return array('success' => false, 'message' => 'Error: Failed to insert order');
+                    return array('error' => false, 'message' => 'Error: Failed to insert order');
                 }
             }
         } else {
@@ -1484,37 +1629,37 @@ function mail_order()
 
 
     $logo_url = site_url('wp-content/uploads/2024/03/Logo-crystal-2.png');
-   
-       // Realiza la consulta para obtener los datos de la orden
-       global $wpdb;
-       $orden_table_name = $wpdb->prefix . 'orden';
-       $query_orden = $wpdb->prepare("
+
+    // Realiza la consulta para obtener los datos de la orden
+    global $wpdb;
+    $orden_table_name = $wpdb->prefix . 'orden';
+    $query_orden = $wpdb->prepare("
            SELECT *
            FROM $orden_table_name
            WHERE id = %d
        ", $order_id);
-   
-       // Realiza la consulta para obtener los elementos de la orden
-       $orden_items_table_name = $wpdb->prefix . 'orden_items';
-       $query_items = $wpdb->prepare("
+
+    // Realiza la consulta para obtener los elementos de la orden
+    $orden_items_table_name = $wpdb->prefix . 'orden_items';
+    $query_items = $wpdb->prepare("
            SELECT *
            FROM $orden_items_table_name
            WHERE order_id = %d
        ", $order_id);
-   
-       $orden_data = $wpdb->get_row($query_orden); // Obtiene solo un registro
-       $items_orden = $wpdb->get_results($query_items); // Obtiene una lista de elementos
-   
+
+    $orden_data = $wpdb->get_row($query_orden); // Obtiene solo un registro
+    $items_orden = $wpdb->get_results($query_items); // Obtiene una lista de elementos
 
 
-   
+
+
     ob_start(); // Comenzar el almacenamiento en búfer de salida
     // Incluir la plantilla de correo
     include 'templates/orderMail.php';
 
     // Obtener el contenido del búfer y limpiar el búfer de salida
     $mensaje = ob_get_clean();
-   
+
     // Obtener el email destino enviar
     $para = get_option('mail_to_order');
 
@@ -1542,12 +1687,11 @@ function mail_order()
 
     // Verificar si el correo electrónico se envió correctamente
     if ($enviado) {
-       echo 'El correo electrónico se ha enviado correctamente. '.$logo_url;
-        
+        echo 'El correo electrónico se ha enviado correctamente. ' . $logo_url;
     } else {
         echo 'Error al enviar el correo electrónico.';
     }
-   die();
+    die();
 }
 
 // Agrega la acción wp_ajax_my_get_order
@@ -1605,16 +1749,18 @@ function my_get_order()
 // Agregar un menú en el administrador de WordPress
 add_action('admin_menu', 'crear_menu_formulario');
 
-function crear_menu_formulario() {
+function crear_menu_formulario()
+{
     // Añadir un nuevo elemento al menú en el administrador de WordPress
     add_menu_page('Formulario de Email', 'Email pedido', 'manage_options', 'formulario-email', 'mostrar_formulario_email');
 }
 
 // Función para mostrar el formulario en el administrador de WordPress
-function mostrar_formulario_email() {
+function mostrar_formulario_email()
+{
     $email_guardado = get_option('mail_to_order'); // Obtener el email guardado
 
-    ?>
+?>
     <div class="wrap">
         <h1>Destinatario Email</h1>
         <?php if ($email_guardado) : ?>
@@ -1628,13 +1774,14 @@ function mostrar_formulario_email() {
             <input type="submit" name="submit" id="submit" class="button button-primary" value="Guardar">
         </form>
     </div>
-    <?php
+<?php
 }
 
 // Función para procesar los datos del formulario y guardar el email en la opción 'mail_to_order'
 add_action('admin_init', 'guardar_email');
 
-function guardar_email() {
+function guardar_email()
+{
     if (isset($_POST['submit'])) {
         $email = sanitize_email($_POST['email']); // Sanitizar y obtener el email enviado desde el formulario
 

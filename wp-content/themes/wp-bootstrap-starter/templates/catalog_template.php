@@ -90,13 +90,13 @@ $productos_encontrados = buscar_productos('', null, null, null);
                 </div>
 
 
-                <div class=" mt-3" id="angresults" ng-if="sresult.length > 0 ">
+                <div class=" mt-3" id="angresults" ng-if="sresult.length > 0 " directive-when-scrolled="cargarMas()" >
 
                 
                     
                 
                 
-                <div class="bg-row row mb-2 border p-2 rounded" ng-repeat="r in sresult">
+                <div class="bg-row row mb-2 border p-2 rounded" ng-repeat="r in sresult | limitTo: limit | orderBy:'order'">
                         
                 <div class="col-md-2 text-center p-2 thumbnail-container ">
               
@@ -104,7 +104,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
                                 
                 </div>
                 <div class="col-md-8">
-                    <div class="text-item-block">Código:  {{r.sku}}</div>
+                    <div class="text-item-block"><b>Código: {{r.sku}} </b></div>
                     <div class="text-item-block">{{r.post_title}}</div>
                     <div class="text-item-block">Catégoria:  
                                     <span class="lead-1"  ng-repeat="c in r.categorias">
@@ -124,7 +124,7 @@ $productos_encontrados = buscar_productos('', null, null, null);
                                            Precio: <span class="vright">{{r.price | currency: '$'}}</span>
                                         </div>
                                         <div class="w-100 dqty">
-                                           <span>Cantidad: </span> <input type="number" ng-class="{'qtyMinicartInput item-id-': r.ID}"  ng-value="1" value="1">
+                                           <span>Cantidad: </span> <input step="any" type="number" ng-class="{'qtyMinicartInput item-id-': r.ID}"  ng-model="r.cnt">
                                         </div>
                                     </div>
                                 

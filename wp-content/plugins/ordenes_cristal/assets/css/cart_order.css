@@ -206,7 +206,7 @@
     margin-right: 40px;
     color: #989898;
     font-size: 16px;
-    font-family: 'Nunito';
+    font-family: 'GothamBlackRegular' !important;
 }
 .table-cart tr td .quanlity {
     position: relative;
@@ -481,14 +481,14 @@ input:focus {
     font-size: 16px;
     font-weight: 300px;
     font-style: italic;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'GothamBlackRegular' !important;
 }
 
 .text-item-general-14{
     font-size: 14px;
     font-weight: 300px;
     font-style: italic;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'GothamBlackRegular' !important;
 }
 
 .observ_field{
@@ -526,7 +526,7 @@ input:focus {
     color:#000 !important;
     font-weight: 400 !important;
     padding: 6px !important;
-    font-family: Arial, Helvetica, sans-serif !important;
+    font-family: 'GothamBlackRegular' !important;
 }
 
 .center {
@@ -543,16 +543,10 @@ input:focus {
 .modal-content {
     margin-top: 13%;
 }
-.modal-footer .btn-group button {
-	height:40px !important;
-	border-top-left-radius : 0 !important;
-	border-top-right-radius : 0 !important;
-	border: none !important;
-	border-right: 1px solid #ddd !important;
-}
+
 	
-.modal-footer .btn-group:last-child > button {
-	border-right: 0 !important;
+.modal-footer .btn-group button {
+	margin-right: 3px !important;
 }
 
 
@@ -597,4 +591,14 @@ input:focus {
 .imgp{
     width: 50px !important;
     height: 50px !important;
+}
+
+.thead-light{
+
+background-color: #D9D9D959 !important;
+
+}
+
+#squarespaceModal .table td, .table th{
+    vertical-align: middle !important;
 }
