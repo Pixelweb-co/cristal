@@ -3,154 +3,135 @@ function closeModal() {
   $("#modalSearchProducts").modal("hide");
 }
 
-
-
-
-
-
 var app = angular.module("shoppingCart", []);
 
 app.directive("scroll2", function () {
   return {
-    link: function(scope, element, attrs) {
-        element.bind("wheel", function() {
-           console.log('Scrolled below header.');
-        });
-    }
-  }
-})
-
-app.directive("directiveWhenScrolled", function() {
-  console.log('Directive When Scrolled');
+    link: function (scope, element, attrs) {
+      element.bind("wheel", function () {
+        console.log("Scrolled below header.");
+      });
+    },
+  };
+});
+var loding = false;
+app.directive("directiveWhenScrolled", function () {
+  console.log("Directive When Scrolled");
   return {
-    
-    link: function(scope, elm, attr) {
-      var loding = false
-      var raw = elm[0]; 
-    elm.bind('wheel', function() {
+    link: function (scope, elm, attr) {
      
-      console.log('scrollHeight. ',raw.scrollHeight)
-       console.log('scrollTop. ',jQuery(raw).offset().top)
-       console.log('offsetHeight. ',jQuery(window).outerHeight())
-       var scroll  = jQuery(window).scrollTop();
-       console.log('scrolltopjq . ',scroll)
-       console.log("restante", jQuery(raw).offset().top -  jQuery(window).outerHeight())
-      if ((scroll +  jQuery(window).outerHeight()) >= raw.scrollHeight && !loding) {
-      
-        loding = scope.$apply(attr.directiveWhenScrolled);
-        loding = true
-          console.log('wheelx')
-      
-        }else{
-          loding = false
+      var raw = elm[0];
+      elm.bind("wheel", function () {
+        console.log("scrollHeight. ", raw.scrollHeight);
+        console.log("scrollTop. ", jQuery(raw).offset().top);
+        console.log("offsetHeight. ", jQuery(window).outerHeight());
+        var scroll = jQuery(window).scrollTop();
+        console.log("scrolltopjq . ", scroll);
+        console.log(
+          "restante",
+          jQuery(raw).offset().top - jQuery(window).outerHeight()
+        );
+        if (
+          scroll + jQuery(window).outerHeight() >= raw.scrollHeight &&
+          !loding
+        ) {
+         
+          scope.$apply(attr.directiveWhenScrolled);
+          loding = true;
+          console.log("wheelx");
+        } else {
+          loding = false;
         }
-    });
-  }
-  }
+      });
+    },
+  };
 });
 
-
-app.controller("CartHeaderController",function($scope, $http){
-  
+app.controller("CartHeaderController", function ($scope, $http) {
   console.log("CartHeaderController");
   $scope.init = () => {
-   
     var data = JSON.parse(localStorage.getItem("OrderCart"));
-    if(!data || data.length == 0) {      
+    if (!data || data.length == 0) {
       console.log("init no hay pedido");
       jQuery('#main-nav ul li a[title="Pedido"]').hide();
       localStorage.removeItem("marca_sel");
-    
     }
-  
-    if(localStorage.getItem("search") && document.getElementById("primary")) {
-      var term = localStorage.getItem("search")
 
-      document.getElementById("searchField").value = term
+    if (localStorage.getItem("search") && document.getElementById("primary")) {
+      var term = localStorage.getItem("search");
 
-      setBusqueda(term)  
-      localStorage.removeItem("search")
+      document.getElementById("searchField").value = term;
 
+      setBusqueda(term);
+      localStorage.removeItem("search");
     }
-  }
-  
-  
-  $scope.init()
+  };
+
+  $scope.init();
 
   $scope.searchTerm = (el) => {
-    
-    console.log("el",document.getElementById("searchField").value)
+    console.log("el", document.getElementById("searchField").value);
 
-    var term = document.getElementById("searchField").value
+    var term = document.getElementById("searchField").value;
 
-    if(term==''){
-      return false
+    if (term == "") {
+      return false;
     }
 
-    if(!document.getElementById("primary")){
-      
-      localStorage.setItem("search", term)
-      location.href = base_url
-      return false
+    if (!document.getElementById("primary")) {
+      localStorage.setItem("search", term);
+      location.href = base_url;
+      return false;
     }
-    setBusqueda(term)
-  }
-
-})
+    setBusqueda(term);
+  };
+});
 
 app.controller("relatedModalCtrl", function ($scope, $http) {
   $scope.relateds = [];
   $scope.addRelatedsCart = () => {
     console.log("relteds in crtl ", $scope.relateds);
-    enviarEventoConProductosRelacionados($scope.relateds)
+    enviarEventoConProductosRelacionados($scope.relateds);
   };
 });
 
 // setBusqueda
 function setBusqueda(term) {
   // Crear un nuevo evento personalizado
-  var evento = new CustomEvent("setbusquedam", { detail:term });
+  var evento = new CustomEvent("setbusquedam", { detail: term });
 
-  console.log("from searchctrl fn",term)
+  console.log("from searchctrl fn", term);
   // Dispatch del evento
   window.dispatchEvent(evento);
 }
 
-
 // Escuchar el evento y setbusqueda
 window.addEventListener("setbusquedam", function (event) {
- console.log("setBusqueda", event)
-  var termino = event.detail
+  console.log("setBusqueda", event);
+  var termino = event.detail;
   angular.element(document).ready(function () {
     // Obtener el alcance de AngularJS del elemento MiniCart
-    var scope = angular
-      .element(document.getElementById("primary"))
-      .scope();
+    var scope = angular.element(document.getElementById("primary")).scope();
 
+    isCartPage = document.getElementById("cartController");
 
-      isCartPage = document.getElementById("cartController")
-
-    if(isCartPage){
-      
-      localStorage.setItem("search", termino)
-      location.href = base_url
-      return false
+    if (isCartPage) {
+      localStorage.setItem("search", termino);
+      location.href = base_url;
+      return false;
     }
 
     // Aplicar los cambios en el alcance
     scope.$apply(function () {
       // Llamar a la función loadData en el controlador correspo  ndiente para actualizar los datos del mini carrito
       //scope.sento_cart(event.detail);
-      scope.term = termino
+      scope.term = termino;
       scope.buscarProductos();
-      
-      
-      console.log("busqueda ev:", termino);
 
+      console.log("busqueda ev:", termino);
     });
   });
 });
-
 
 // Función para crear y enviar un evento con parámetros
 function enviarEventoConProductosRelacionados(lista) {
@@ -161,16 +142,13 @@ function enviarEventoConProductosRelacionados(lista) {
   window.dispatchEvent(evento);
 }
 
-
 // Escuchar el evento y mostrar la lista en la consola
 window.addEventListener("setCartR", function (event) {
   console.log("Lista recibida ev select:", event.detail);
 
   angular.element(document).ready(function () {
     // Obtener el alcance de AngularJS del elemento MiniCart
-    var scope = angular
-      .element(document.getElementById("primary"))
-      .scope();
+    var scope = angular.element(document.getElementById("primary")).scope();
 
     jQuery("#squarespaceModal").modal("hide");
     // Aplicar los cambios en el alcance
@@ -180,9 +158,6 @@ window.addEventListener("setCartR", function (event) {
     });
   });
 });
-
-
-
 
 // Función para crear y enviar un evento con parámetros
 function enviarEventoConParametros(lista) {
@@ -246,44 +221,43 @@ app.controller("cartSearchController", function ($scope, $http) {
   $scope.perPage = 5; // Cantidad de productos por página
   $scope.limit = 5;
   $scope.total_pages = 0;
+  $scope.last_page = 0;
 
-//busqeda termino
-  $scope.term = '';
+  //busqeda termino
+  $scope.term = "";
 
   // Obtener el alcance de AngularJS del elemento MiniCart
   $scope.relpd = [];
 
-$scope.init = () => {
-
-  var data = JSON.parse(localStorage.getItem("OrderCart"));
-  if(!data || data.length == 0) {      
-    console.log("init no hay pedido");
-    jQuery('#main-nav ul li a[title="Pedido"]').hide();
-    localStorage.removeItem("marca_sel");
-  
-  }
-
-  
-    //term query
-    if(localStorage.getItem("search") && localStorage.getItem("search") != ''){
-      $scope.term = localStorage.getItem("search");
-      $scope.buscarProductos()
-      console.log("busqueda en cache");
-      localStorage.removeItem("search")
-      $scope.term = ''
+  $scope.init = () => {
+    var data = JSON.parse(localStorage.getItem("OrderCart"));
+    if (!data || data.length == 0) {
+      console.log("init no hay pedido");
+      jQuery('#main-nav ul li a[title="Pedido"]').hide();
+      localStorage.removeItem("marca_sel");
     }
 
+    //term query
+    if (
+      localStorage.getItem("search") &&
+      localStorage.getItem("search") != ""
+    ) {
+      $scope.term = localStorage.getItem("search");
+      $scope.buscarProductos();
+      console.log("busqueda en cache");
+      localStorage.removeItem("search");
+      $scope.term = "";
+    }
+  };
 
-}
-
-setTimeout(function() {
-$scope.init()
-},500)
+  setTimeout(function () {
+    $scope.init();
+  }, 500);
 
   $scope.setMarca = (id, image_url, name_marca) => {
     $scope.page = 1;
-    $scope.limit = 5
-    $scope.term = '';
+    $scope.limit = 5;
+    $scope.term = "";
 
     $scope.marcaNameSel = name_marca;
     if (localStorage.getItem("marca_sel")) {
@@ -295,9 +269,6 @@ $scope.init()
         items_order != null &&
         items_order.length > 0
       ) {
-
-      
-
         Swal.fire({
           title:
             "Ya hay un pedido con la marca seleccionada, desea cancelar el pedido actual e iniciar uno nuevo con esta marca que desea?",
@@ -315,7 +286,7 @@ $scope.init()
             localStorage.setItem("marca_sel", id);
             localStorage.setItem("marca_sel_image", image_url);
             localStorage.setItem("name_marca", name_marca);
-           
+
             $scope.marcaSeleccionada = id;
             console.log("setsel", id);
             $scope.$apply();
@@ -355,7 +326,7 @@ $scope.init()
 
   $scope.setTienda = (id, image_url) => {
     $scope.page = 1;
-    $scope.limit = 3
+    $scope.limit = 3;
     if (localStorage.getItem("marca_sel")) {
       var items_order = JSON.parse(localStorage.getItem("OrderCart"));
       console.log("new ", id);
@@ -365,8 +336,6 @@ $scope.init()
         items_order != null &&
         items_order.length > 0
       ) {
-        
-       
         Swal.fire({
           title:
             "Ya hay un pedido con la marca seleccionada, desea cancelar el pedido actual e iniciar uno nuevo con esta marca que desea?",
@@ -384,7 +353,7 @@ $scope.init()
             localStorage.setItem("marca_sel", id);
             localStorage.setItem("marca_sel_image", image_url);
             localStorage.setItem("name_marca", name_marca);
-            
+
             $scope.marcaSeleccionada = id;
             console.log("setsel", id);
             $scope.$apply();
@@ -425,74 +394,71 @@ $scope.init()
   $scope.buscarProductos = async function () {
     jQuery("#primary .cart-loader").show();
 
-    
-    
-    if($scope.term == ''){
-    
-    
-    $marca_sel = localStorage.getItem("marca_sel");
+    if ($scope.term == "") {
+      $marca_sel = localStorage.getItem("marca_sel");
 
-    if (!$marca_sel) {
-      Swal.fire({
-        title: "Te falta seleccionar la marca",
-        text: "Para realizar la busqueda debes selecionar una marca de el listado",
-        icon: "info",
-      });
-      jQuery("#primary .cart-loader").hide();
-
-      return false;
-    }
-
-    var parametros = {
-      page:$scope.page
-    };
-    if ($scope.marcaSeleccionada) {
-      parametros.marca = $scope.marcaSeleccionada;
-    }
-    if ($scope.categoriaSeleccionada) {
-      parametros.categoria = $scope.categoriaSeleccionada;
-    }
-    if ($scope.nombreProducto) {
-      parametros.nombre = $scope.nombreProducto;
-    }
-
-    if ($scope.tiendaSeleccionada) {
-      $http
-        .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
-        .then(function (response) {
-          // Asignar las tiendas obtenidas a $scope.tiendas
-          $scope.tiendas = response.data;
-
-          parametros.tienda = $scope.tiendaSeleccionada;
-          console.log("tid ", parametros.tienda);
-          localStorage.setItem("tiendaSeleccionada", $scope.tiendaSeleccionada);
-          console.log("tiendaS", $scope.tiendas);
-          const tienda_name = $scope.tiendas.find(
-            (t) => t.metros_cuadrados == $scope.tiendaSeleccionada
-          ).titulo;
-          console.log("Ts ", tienda_name);
-
-          localStorage.setItem("tienda_name", tienda_name);
-        })
-        .catch(function (error) {
-          console.error("Error al obtener las tiendas:", error);
+      if (!$marca_sel) {
+        Swal.fire({
+          title: "Te falta seleccionar la marca",
+          text: "Para realizar la busqueda debes selecionar una marca de el listado",
+          icon: "info",
         });
-    } else {
-      Swal.fire({
-        title: "Te falta seleccionar la tienda",
-        text: "Para realizar la busqueda debes selecionar una tienda de el listado",
-        icon: "info",
-      });
-      jQuery("#primary .cart-loader").hide();
+        jQuery("#primary .cart-loader").hide();
 
-      return false;
+        return false;
+      }
+
+      var parametros = {
+        page: $scope.page,
+      };
+      if ($scope.marcaSeleccionada) {
+        parametros.marca = $scope.marcaSeleccionada;
+      }
+      if ($scope.categoriaSeleccionada) {
+        parametros.categoria = $scope.categoriaSeleccionada;
+      }
+      if ($scope.nombreProducto) {
+        parametros.nombre = $scope.nombreProducto;
+      }
+
+      if ($scope.tiendaSeleccionada) {
+        $http
+          .get(base_url + "/wp-json/ordenes_cristal/v1/obtener_tiendas")
+          .then(function (response) {
+            // Asignar las tiendas obtenidas a $scope.tiendas
+            $scope.tiendas = response.data;
+
+            parametros.tienda = $scope.tiendaSeleccionada;
+            console.log("tid ", parametros.tienda);
+            localStorage.setItem(
+              "tiendaSeleccionada",
+              $scope.tiendaSeleccionada
+            );
+            console.log("tiendaS", $scope.tiendas);
+            const tienda_name = $scope.tiendas.find(
+              (t) => t.metros_cuadrados == $scope.tiendaSeleccionada
+            ).titulo;
+            console.log("Ts ", tienda_name);
+
+            localStorage.setItem("tienda_name", tienda_name);
+          })
+          .catch(function (error) {
+            console.error("Error al obtener las tiendas:", error);
+          });
+      } else {
+        Swal.fire({
+          title: "Te falta seleccionar la tienda",
+          text: "Para realizar la busqueda debes selecionar una tienda de el listado",
+          icon: "info",
+        });
+        jQuery("#primary .cart-loader").hide();
+
+        return false;
+      }
+    } else {
+      var parametros = { term: $scope.term };
     }
-    
-    
-    }else{
-      var  parametros = {term : $scope.term};
-    }
-    
+
     console.log("parametros", parametros);
     // Lógica para realizar la búsqueda de productos con los parámetros seleccionados
     $http({
@@ -502,23 +468,22 @@ $scope.init()
       headers: { "X-WP-Nonce": nonce },
     }).then(function (response) {
       // Manejar la respuesta de la búsqueda de productos
-      var tmpl = []
+      var tmpl = [];
       console.log("Tienda ", response.data.tienda);
       $scope.sresult = response.data.productos;
-      if($scope.sresult == 0 ){
-        $scope.marcaNameSel = "No se encontraron resultados"
-        
-      } 
+      if ($scope.sresult == 0) {
+        $scope.marcaNameSel = "No se encontraron resultados";
+      }
       $scope.sresult.forEach((item) => {
         tmpl.push({ ...item, cnt: 1 });
       });
 
-      $scope.sresult = tmpl
-      console.log("data load results cnt ",$scope.sresult)
+      $scope.sresult = tmpl;
+      console.log("data load results cnt ", $scope.sresult);
 
       $scope.page++;
       $scope.limit += parseInt(response.data.for_page);
-      $scope.total_pages = response.data.num_pages
+      $scope.total_pages = response.data.num_pages;
 
       $scope.smarca = response.data.marca;
       $scope.stienda = response.data.tienda;
@@ -526,59 +491,67 @@ $scope.init()
     });
   };
 
+  // Función para cargar más elementos cuando se activa el scroll infinito
+  $scope.cargarMas = async function () {
+    console.log("pages", $scope.total_pages);
+    console.log("page", $scope.page);
+    if ($scope.page > $scope.total_pages) {
+      return true;
+    }
 
- // Función para cargar más elementos cuando se activa el scroll infinito
- $scope.cargarMas = async function () {
-  console.log('pages',$scope.total_pages)
-  console.log('page',$scope.page)
-  if($scope.page > $scope.total_pages){
-    return true
-  }
+    if($scope.last_page < $scope.page){
+     
 
-  // Realizar una solicitud HTTP para obtener más productos
-  console.log("cargar mas");
-  var parametros = {
+    // Realizar una solicitud HTTP para obtener más productos
+    console.log("cargar mas");
+    var parametros = {
       marca: $scope.marcaSeleccionada,
       categoria: $scope.categoriaSeleccionada,
       nombre: $scope.nombreProducto,
       tienda: $scope.tiendaSeleccionada,
       page: $scope.page, // Página actual para paginación
-     
-      
-  };
+    };
 
-
-
- await $http({
+    await $http({
       method: "POST",
       url: base_url + "/wp-json/ordenes_cristal/v1/buscar_productos",
       params: parametros,
       headers: { "X-WP-Nonce": nonce },
-  }).then(function (response) {
+    }).then(function (response) {
       // Manejar la respuesta de la búsqueda de productos
       // Concatenar los nuevos productos al array existente
 
-      var tmpl = []
+      var tmpl = [];
       response.data.productos.forEach((item) => {
         tmpl.push({ ...item, cnt: 1 });
       });
-      console.log(tmpl)
-     // $scope.sresult = $scope.sresult.concat(tmpl);
-      $scope.sresult = $scope.sresult.concat(tmpl);
-      
+      console.log(tmpl);
+      // Filtrar elementos duplicados
+      var uniqueResults = [];
+      tmpl.forEach(function(item) {
+        var found = $scope.sresult.some(function(existingItem) {
+
+          return existingItem.ID === item.ID; // Suponiendo que cada objeto tiene una propiedad 'id'
+        });
+        if (!found) {
+          uniqueResults.push(item);
+        }
+      });
+
+      // Concatenar los nuevos elementos sin duplicados
+      $scope.sresult = $scope.sresult.concat(uniqueResults);
+
       // Incrementar el número de página para la próxima carga
       $scope.page++;
       $scope.limit += parseInt(response.data.for_page);
-      $scope.total_pages = response.data.num_pages
-  
+      $scope.total_pages = response.data.num_pages;
     });
 
+    
+    }
 
-
-
-  return true
-
-};
+    return true;
+  };
 
   $scope.getRelatedProducts = function (id) {
     $http({
@@ -599,62 +572,63 @@ $scope.init()
   };
 
   $scope.sento_cart = (items) => {
-    
     $scope.items_to_cart = [...$scope.items_to_cart, ...items];
-    console.log("items a enviar",$scope.items_to_cart);
+    console.log("items a enviar", $scope.items_to_cart);
     $scope.items_to_cart.forEach((product_add) => {
-
-      console.log("padd-item ",product_add)
+      console.log("padd-item ", product_add);
 
       if (!localStorage.getItem("OrderCart")) {
         console.log("no existe localstorass");
-  
+
         localStorage.setItem(
           "OrderCart",
           JSON.stringify([
-            { ...product_add, cnt: product_add.cnt, subtotal: parseInt(product_add.price) },
+            {
+              ...product_add,
+              cnt: product_add.cnt,
+              subtotal: parseInt(product_add.price),
+            },
           ])
         );
       } else {
         var data = JSON.parse(localStorage.getItem("OrderCart"));
         console.log("mini carrito", data);
-  
+
         var found = data.find((i) => i.ID == product_add.ID);
-  
+
         if (!found && product_add.cnt > 0) {
           console.log("no found", found);
-  
+
           data.push({
             ...product_add,
             cnt: parseFloat(product_add.cnt),
             subtotal: parseInt(product_add.price),
             price: parseInt(product_add.price),
           });
-  
+
           localStorage.setItem("OrderCart", JSON.stringify(data));
         }
-        
-        if(found && product_add.cnt > 0){
+
+        if (found && product_add.cnt > 0) {
           console.log("founddd ", found);
-  
+
           found.cnt = parseFloat(found.cnt + product_add.cnt);
           found.subtotal = parseInt(found.price) * parseFloat(product_add.cnt);
           found.price = parseInt(found.price);
-  
+
           var new_data = data.filter((i) => i.ID != product_add.ID);
           new_data.push(found);
           console.log("nwdta", new_data);
-  
+
           localStorage.setItem("OrderCart", JSON.stringify(new_data));
-  
+
           console.log("act localstorass", new_data);
         }
         var data = JSON.parse(localStorage.getItem("OrderCart"));
-        if(data.length > 0) {
+        if (data.length > 0) {
           jQuery('#main-nav ul li a[title="Pedido"]').show();
         }
       }
-
     });
 
     new Noty({
@@ -673,44 +647,37 @@ $scope.init()
         ),
       ],
     }).show();
-
   };
-
 
   $scope.addCart = (id_item, el) => {
     $scope.items_to_cart = [];
 
-   
-
     var product_add = $scope.sresult.find((p) => p.ID === id_item);
-   
-    if(product_add.cnt > 0) {
-   
-    $scope.getRelatedProducts(id_item);
-    console.log("padd", product_add);
 
-    $scope.items_to_cart.push({
-      ...product_add,
-      cnt: parseFloat(product_add.cnt),
-      subtotal: parseInt(product_add.price),
-      price: parseInt(product_add.price),
-    });
+    if (product_add.cnt > 0) {
+      $scope.getRelatedProducts(id_item);
+      console.log("padd", product_add);
 
+      $scope.items_to_cart.push({
+        ...product_add,
+        cnt: parseFloat(product_add.cnt),
+        subtotal: parseInt(product_add.price),
+        price: parseInt(product_add.price),
+      });
 
-    setTimeout(() => {
-      console.log("relp: ", $scope.relpd);
-      console.log($scope.relpd);
+      setTimeout(() => {
+        console.log("relp: ", $scope.relpd);
+        console.log($scope.relpd);
 
-      if ($scope.relpd.length > 0) {
-        console.log("tiene relacionados");
+        if ($scope.relpd.length > 0) {
+          console.log("tiene relacionados");
 
-        enviarEventoConParametros($scope.relpd);
-      }else{
-        $scope.sento_cart([])
-      }
-    }, 1000);
-
-  }
+          enviarEventoConParametros($scope.relpd);
+        } else {
+          $scope.sento_cart([]);
+        }
+      }, 1000);
+    }
   };
 
   $scope.setQty = (element, id_item) => {
@@ -1096,19 +1063,17 @@ app.controller("cartController", function ($scope, $http) {
       ).valor_ideal; // valor ideal marca ctegoria;
       var valor_restante = valor_ideal - metro_cuadrado_total_categoria; //valor ideal restante;
 
-      var porcentaje_utilizado = 30
-        
-      
-      var pocentaje_utilizado_init = (metro_cuadrado_total_categoria / valor_ideal) * 100;  
-      if(pocentaje_utilizado_init >= 30){
-        porcentaje_utilizado = pocentaje_utilizado_init
+      var porcentaje_utilizado = 30;
+
+      var pocentaje_utilizado_init =
+        (metro_cuadrado_total_categoria / valor_ideal) * 100;
+      if (pocentaje_utilizado_init >= 30) {
+        porcentaje_utilizado = pocentaje_utilizado_init;
       }
-      if(pocentaje_utilizado_init <= 30){
-        porcentaje_utilizado = 30 
-      }  
+      if (pocentaje_utilizado_init <= 30) {
+        porcentaje_utilizado = 30;
+      }
 
-
-      
       var porcentaje_restante =
         100 -
         (totalsByCategory[categoryName] /
@@ -1307,9 +1272,7 @@ app.controller("cartController", function ($scope, $http) {
     });
   };
 
-
-  $scope.clearCart = ()=>{
-
+  $scope.clearCart = () => {
     localStorage.removeItem("OrderCart");
     localStorage.removeItem("orden_id_edit");
 
@@ -1319,21 +1282,15 @@ app.controller("cartController", function ($scope, $http) {
 
     localStorage.removeItem("marca_sel_image");
     localStorage.removeItem("name_marca");
-  
-  
-    jQuery('#main-nav ul li a[title="Pedido"]').hide();
-  
-  }
 
+    jQuery('#main-nav ul li a[title="Pedido"]').hide();
+  };
 
   $scope.NewOrder = () => {
-    
-    $scope.clearCart()
+    $scope.clearCart();
 
-    location.href = base_url
-
-  }
-
+    location.href = base_url;
+  };
 
   $scope.setQty = (action, id_item) => {
     console.log("id_item", id_item);
@@ -1522,27 +1479,29 @@ jQuery(document).ready(function ($) {
     $(this).closest("tbody").find(".detail-order").show();
   });
 
-
   $(document).on("click", ".obs-toggle", function () {
     console.log("press enter");
     var $icon = $(this).find("i");
 
     if ($icon.hasClass("fa-caret-down")) {
-        console.log("Show observ_field");
-        // Ocultar todos los observ_field
-        $("#table-cart-items tbody tr td").find("i.fa-caret-up").removeClass("fa-caret-up").addClass("fa-caret-down");
-        $("#table-cart-items tbody tr td").find(".observ_field").hide();
+      console.log("Show observ_field");
+      // Ocultar todos los observ_field
+      $("#table-cart-items tbody tr td")
+        .find("i.fa-caret-up")
+        .removeClass("fa-caret-up")
+        .addClass("fa-caret-down");
+      $("#table-cart-items tbody tr td").find(".observ_field").hide();
 
-        // Mostrar el observ_field correspondiente
-        $icon.removeClass("fa-caret-down").addClass("fa-caret-up");
-        $(this).closest("tr").find(".observ_field").show();
+      // Mostrar el observ_field correspondiente
+      $icon.removeClass("fa-caret-down").addClass("fa-caret-up");
+      $(this).closest("tr").find(".observ_field").show();
     } else {
-        console.log("Hide observ_field");
-        // Ocultar el observ_field correspondiente
-        $icon.removeClass("fa-caret-up").addClass("fa-caret-down");
-        $(this).closest("tr").find(".observ_field").hide();
+      console.log("Hide observ_field");
+      // Ocultar el observ_field correspondiente
+      $icon.removeClass("fa-caret-up").addClass("fa-caret-down");
+      $(this).closest("tr").find(".observ_field").hide();
     }
-});
+  });
   // Capturar el clic en el botón de editar orden
   $(".edit_order").click(function () {
     var orderId = $(this).data("id_orden");
@@ -1606,25 +1565,25 @@ jQuery(document).ready(function ($) {
 jQuery(document).ready(function ($) {
   // Agrega reglas de validación
   $("#prdForm").validate({
-       errorPlacement: function (error, element) {
-         error.insertAfter(element);
-       },
-      rules: {
-          sku: "required",
-          post_title: "required",
-          post_content: "required",
-          categorias: "required",
-          cnt: "required",
-          price: "required"
-      },
-      messages: {
-          sku: "Por favor, ingrese el código",
-          post_title: "Por favor, ingrese el nombre",
-          post_content: "Por favor, ingrese la descripción",
-          categorias: "Por favor, seleccione una categoría",
-          cnt: "Por favor, ingrese la cantidad",
-          price: "Por favor, ingrese el precio"
-      }
+    errorPlacement: function (error, element) {
+      error.insertAfter(element);
+    },
+    rules: {
+      sku: "required",
+      post_title: "required",
+      post_content: "required",
+      categorias: "required",
+      cnt: "required",
+      price: "required",
+    },
+    messages: {
+      sku: "Por favor, ingrese el código",
+      post_title: "Por favor, ingrese el nombre",
+      post_content: "Por favor, ingrese la descripción",
+      categorias: "Por favor, seleccione una categoría",
+      cnt: "Por favor, ingrese la cantidad",
+      price: "Por favor, ingrese el precio",
+    },
   });
 });
 // Función para validar y enviar el formulario

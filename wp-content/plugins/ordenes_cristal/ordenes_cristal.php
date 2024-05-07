@@ -146,9 +146,9 @@ function agregar_estilos_y_scripts()
     wp_register_style('cart_order-plugin', plugins_url('assets/css/cart_order.css', __FILE__));
     wp_enqueue_style('cart_order-plugin');
 
-    
+
     wp_register_script('ng-infinite-scroll', plugins_url('assets/js/ng-infinite-scroll.min.js', __FILE__), array('jquery'), '1.6', true);
-    wp_enqueue_script('ng-infinite-scroll'); 
+    wp_enqueue_script('ng-infinite-scroll');
     // Registrar y encolar el archivo JS
     wp_register_script('order-plugin', plugins_url('assets/js/order_cart.js', __FILE__), array('jquery'), '1.0', true);
     wp_enqueue_script('order-plugin');
@@ -773,7 +773,7 @@ function buscar_productos_relacionados($request)
 function obtener_productos_relacionados_por_padre($parent_product_id, $limit = -1)
 {
     // Obtener los productos hijos del producto padre.
-    global $product; 
+    global $product;
 
     $productos_con_info = array();
     $product_id = $parent_product_id;
@@ -791,7 +791,7 @@ function obtener_productos_relacionados_por_padre($parent_product_id, $limit = -
 
                 $related_products[] = $pr;
             }
-          }
+        }
 
         foreach ($related_products as $productoi) {
             $precio_producto = get_post_meta($productoi->get_id(), '_price', true);
@@ -800,7 +800,7 @@ function obtener_productos_relacionados_por_padre($parent_product_id, $limit = -
             $imagen_miniatura = get_the_post_thumbnail_url($productoi->get_id(), 'thumbnail');
             $sku_producto = get_post_meta($productoi->get_id(), '_sku', true); // Obtener el SKU del producto
             $marca_id_producto = get_post_meta($productoi->get_id(), '_marca_producto', true);
-            
+
             // Obtener las categorías asociadas al producto con todos los campos y metacampos
             $categorias_producto = wp_get_post_terms($productoi->get_id(), 'product_cat');
 
@@ -860,7 +860,7 @@ function buscar_productos_endpoint_post($request)
     $term  = isset($params['term']) ? $params['term'] : '';
 
     // Llamar a la función buscar_productos con los parámetros proporcionados
-    $productos_encontrados = buscar_productos($nombre, $marca, $categoria, $tienda,$page,$term);
+    $productos_encontrados = buscar_productos($nombre, $marca, $categoria, $tienda, $page, $term);
 
     // Devolver los productos encontrados como respuesta JSON
     return rest_ensure_response($productos_encontrados);
@@ -902,7 +902,7 @@ function obtener_post_type_marca_por_titulo($titulo_marca)
 }
 
 
-function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, $tienda_id,$paged = 1,$term = '')
+function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, $tienda_id, $paged = 1, $term = '')
 {
     global $wpdb;
     $for_page = 5; //option later used
@@ -920,50 +920,48 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
 
     $posts_found = array();
 
-    if(!empty($term)){
-        
-    $sql = "SELECT wp_posts.ID FROM wp_posts LEFT JOIN wp_postmeta ON wp_posts.ID = wp_postmeta.post_id WHERE post_type = 'product' AND wp_posts.post_title LIKE '%$term%' OR (wp_postmeta.meta_key = '_sku' AND wp_postmeta.meta_value LIKE '%$term%') GROUP BY wp_posts.ID;";
+    if (!empty($term)) {
 
-    $registros_existente = $wpdb->get_results($sql, OBJECT);
+        $sql = "SELECT wp_posts.ID FROM wp_posts LEFT JOIN wp_postmeta ON wp_posts.ID = wp_postmeta.post_id WHERE post_type = 'product' AND wp_posts.post_title LIKE '%$term%' OR (wp_postmeta.meta_key = '_sku' AND wp_postmeta.meta_value LIKE '%$term%') GROUP BY wp_posts.ID;";
 
-    foreach ($registros_existente as $item) { //
-        $posts_found[] = $item->ID;
-    }
+        $registros_existente = $wpdb->get_results($sql, OBJECT);
 
-    $args['post__in'] = $posts_found;
-
-    }else{
-
-        
-    if ($marca_id !== null || $categoria_id !== null) {
-
-        $args['tax_query'] = array('relation' => 'AND'); // Relación AND para ambas condiciones
-
-        // Condición de búsqueda por marca si se proporciona
-        if ($marca_id !== null) {
-            //echo "por marca ".$marca_id;
-            $args['meta_query'] = array(
-                array(
-                    'key' => '_marca_producto', // Clave del metadato de la marca
-                    'value' => $marca_id, // ID de la marca específica
-                    'compare' => '=' // Comparación de igualdad
-                )
-            );
+        foreach ($registros_existente as $item) { //
+            $posts_found[] = $item->ID;
         }
 
-        // Condición de búsqueda por categoría si se proporciona
-        if ($categoria_id !== null) {
-            //echo "por categoria ".$categoria_id;
-            $args['tax_query'] = array(
-                array(
-                    'taxonomy' => 'product_cat', // Taxonomía de categorías de productos
-                    'field'    => 'term_id', // Campo a buscar
-                    'terms'    => $categoria_id // ID de la categoría específica
-                )
-            );
-        }
-    }
+        $args['post__in'] = $posts_found;
+    } else {
 
+            
+        if ($marca_id !== null || $categoria_id !== null) {
+
+            $args['tax_query'] = array('relation' => 'AND'); // Relación AND para ambas condiciones
+
+            // Condición de búsqueda por marca si se proporciona
+            if ($marca_id !== null) {
+                //echo "por marca ".$marca_id;
+                $args['meta_query'] = array(
+                    array(
+                        'key' => '_marca_producto', // Clave del metadato de la marca
+                        'value' => $marca_id, // ID de la marca específica
+                        'compare' => '=' // Comparación de igualdad
+                    )
+                );
+            }
+
+            // Condición de búsqueda por categoría si se proporciona
+            if ($categoria_id !== null) {
+                //echo "por categoria ".$categoria_id;
+                $args['tax_query'] = array(
+                    array(
+                        'taxonomy' => 'product_cat', // Taxonomía de categorías de productos
+                        'field'    => 'term_id', // Campo a buscar
+                        'terms'    => $categoria_id // ID de la categoría específica
+                    )
+                );
+            }
+        }
     }
 
     ob_start();
@@ -1010,7 +1008,7 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
         );
     }
 
-    return ['productos' => $productos_con_info,'num_pages' => $productos->max_num_pages,'for_page'=>$for_page];
+    return ['productos' => $productos_con_info, 'num_pages' => $productos->max_num_pages, 'for_page' => $for_page];
 }
 
 
@@ -1375,15 +1373,15 @@ function handle_order_save_request($request)
     $upload_dir = wp_upload_dir();
 
     if (isset($_FILES['file_order'])) {
-       
+
         $files = $_FILES['file_order'];
         foreach ($files['tmp_name'] as $key => $tmp_name) {
             $file_name = $files['name'][$key];
             $file_path = $upload_dir['path'] . '/' . $file_name;
-           
+
             array_push($files_order_complete_path, $file_path);
             move_uploaded_file($tmp_name, $file_path);
-           
+
             $archivos[] = $file_name;
         }
     }
@@ -1460,7 +1458,7 @@ function handle_order_save_request($request)
                 // Insertar la nueva orden en la tabla de órdenes
                 $fecha_actual = current_time('mysql');
 
-               
+
 
                 $resultado_insercion_order = $wpdb->insert(
                     $orden_table_name,
