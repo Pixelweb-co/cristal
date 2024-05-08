@@ -80,7 +80,7 @@ $categorias = obtener_categorias();
                                 </tr>
                                 <tr class="detail-order">
                                     <td colspan="5" class="pl-5 pr-5 pt-5">
-                                            <table cellspacing="0" class="table-order-detail" style="width: 80%; margin-left:20%">
+                                            <table cellspacing="0" class="table-order-detail" style="margin-left:20%">
                                                 <thead>
                                                     <tr>
                                                     <th></th>

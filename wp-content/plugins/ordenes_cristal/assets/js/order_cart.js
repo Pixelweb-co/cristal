@@ -1204,21 +1204,33 @@ app.controller("cartController", function ($scope, $http) {
       formData.append("file_order[]", files_send[x]);
     }
 
-    formData.append(
-      "order",
-      btoa(
-        JSON.stringify({
-          items: $scope.items,
-          total_order: $scope.total_order,
-          marca: marca_sel,
-          image_marca: image_marca,
-          name_marca: name_marca,
-          tienda: tienda_sel,
-          tienda_name: localStorage.getItem("tienda_name"),
-        })
-      )
-    );
+    // formData.append(
+    //   "order",
+    //   btoa(
+    //     JSON.stringify({
+    //       items: $scope.items,
+    //       total_order: $scope.total_order,
+    //       marca: marca_sel,
+    //       image_marca: image_marca,
+    //       name_marca: name_marca,
+    //       tienda: tienda_sel,
+    //       tienda_name: localStorage.getItem("tienda_name"),
+    //     })
+    //   )
+    // );
+      
+    formData.append("items", JSON.stringify($scope.items));
+    formData.append("total_order", $scope.total_order);
+    formData.append("marca", marca_sel);
+    formData.append("image_marca", image_marca);
+    formData.append("name_marca", name_marca);
+    formData.append("tienda", tienda_sel);
+    formData.append("tienda_name", tienda_name);
+    
+
+
     formData.append("links", JSON.stringify($scope.links));
+
     if ($scope.orden_id) {
       formData.append("orden_id", localStorage.getItem("orden_id_edit"));
     }

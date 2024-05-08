@@ -1,354 +1,852 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
 <head>
-<!--[if gte mso 9]>
-<xml>
-  <o:OfficeDocumentSettings>
-    <o:AllowPNG/>
-    <o:PixelsPerInch>96</o:PixelsPerInch>
-  </o:OfficeDocumentSettings>
-</xml>
-<![endif]-->
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="x-apple-disable-message-reformatting">
-  <!--[if !mso]><!--><meta http-equiv="X-UA-Compatible" content="IE=edge"><!--<![endif]-->
-  <title></title>
-  
+ <meta charset="UTF-8" />
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <!--[if !mso]><!-- -->
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <!--<![endif]-->
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <meta name="format-detection" content="telephone=no" />
+ <meta name="format-detection" content="date=no" />
+ <meta name="format-detection" content="address=no" />
+ <meta name="format-detection" content="email=no" />
+ <meta name="x-apple-disable-message-reformatting" />
+ <link href="https://fonts.googleapis.com/css?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800" rel="stylesheet" />
+ <title>Untitled</title>
+ <!-- Made with Postcards by Designmodo https://designmodo.com/postcards -->
+ <!--[if !mso]><!-- -->
+ <style>
+ @media  all {
+                                     /* cyrillic-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 300;
+                 font-display: swap;
+                 src: local('Fira Sans Light'), local('FiraSans-Light'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnPKreSxf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+             }
+             /* cyrillic */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 300;
+                 font-display: swap;
+                 src: local('Fira Sans Light'), local('FiraSans-Light'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnPKreQhf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+             }
+             /* latin-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 300;
+                 font-display: swap;
+                 src: local('Fira Sans Light'), local('FiraSans-Light'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnPKreSBf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+             }
+             /* latin */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 300;
+                 font-display: swap;
+                 src: local('Fira Sans Light'), local('FiraSans-Light'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnPKreRhf6Xl7Glw.woff2) format('woff2');
+                 unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+             }
+                                     /* cyrillic-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 400;
+                 src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(https://fonts.gstatic.com/s/firasans/v10/va9E4kDNxMZdWfMOD5VvmojLazX3dGTP.woff2) format('woff2');
+                 unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+             }
+             /* cyrillic */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 400;
+                 src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(https://fonts.gstatic.com/s/firasans/v10/va9E4kDNxMZdWfMOD5Vvk4jLazX3dGTP.woff2) format('woff2');
+                 unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+             }
+             /* latin-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 400;
+                 src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(https://fonts.gstatic.com/s/firasans/v10/va9E4kDNxMZdWfMOD5VvmYjLazX3dGTP.woff2) format('woff2');
+                 unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+             }
+             /* latin */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 400;
+                 src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(https://fonts.gstatic.com/s/firasans/v10/va9E4kDNxMZdWfMOD5Vvl4jLazX3dA.woff2) format('woff2');
+                 unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+             }
+                                     /* cyrillic-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 500;
+                 src: local('Fira Sans Medium'), local('FiraSans-Medium'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnZKveSxf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+             }
+             /* cyrillic */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 500;
+                 src: local('Fira Sans Medium'), local('FiraSans-Medium'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnZKveQhf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+             }
+             /* latin-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 500;
+                 src: local('Fira Sans Medium'), local('FiraSans-Medium'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnZKveSBf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+             }
+             /* latin */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 500;
+                 src: local('Fira Sans Medium'), local('FiraSans-Medium'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnZKveRhf6Xl7Glw.woff2) format('woff2');
+                 unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+             }
+                                     /* cyrillic-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 700;
+                 src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnLK3eSxf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+             }
+             /* cyrillic */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 700;
+                 src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnLK3eQhf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+             }
+             /* latin-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 700;
+                 src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnLK3eSBf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+             }
+             /* latin */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 700;
+                 src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnLK3eRhf6Xl7Glw.woff2) format('woff2');
+                 unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+             }
+                                     /* cyrillic-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 800;
+                 font-display: swap;
+                 src: local('Fira Sans ExtraBold'), local('FiraSans-ExtraBold'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnMK7eSxf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+             }
+             /* cyrillic */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 800;
+                 font-display: swap;
+                 src: local('Fira Sans ExtraBold'), local('FiraSans-ExtraBold'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnMK7eQhf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+             }
+             /* latin-ext */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 800;
+                 font-display: swap;
+                 src: local('Fira Sans ExtraBold'), local('FiraSans-ExtraBold'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnMK7eSBf6Xl7Gl3LX.woff2) format('woff2');
+                 unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+             }
+             /* latin */
+             @font-face {
+                 font-family: 'Fira Sans';
+                 font-style: normal;
+                 font-weight: 800;
+                 font-display: swap;
+                 src: local('Fira Sans ExtraBold'), local('FiraSans-ExtraBold'), url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnMK7eRhf6Xl7Glw.woff2) format('woff2');
+                 unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+             }
+                     }
+ </style>
+ <!--<![endif]-->
+ <style>
+ html,
+         body {
+             margin: 0 !important;
+             padding: 0 !important;
+             min-height: 100% !important;
+             width: 100% !important;
+             -webkit-font-smoothing: antialiased;
+         }
+ 
+         * {
+             -ms-text-size-adjust: 100%;
+         }
+ 
+         #outlook a {
+             padding: 0;
+         }
+ 
+         .ReadMsgBody,
+         .ExternalClass {
+             width: 100%;
+         }
+ 
+         .ExternalClass,
+         .ExternalClass p,
+         .ExternalClass td,
+         .ExternalClass div,
+         .ExternalClass span,
+         .ExternalClass font {
+             line-height: 100%;
+         }
+ 
+         div[style*="margin: 14px 0"],
+         div[style*="margin: 16px 0"] {
+             margin: 0 !important;
+         }
+ 
+         table,
+         td,
+         th {
+             mso-table-lspace: 0 !important;
+             mso-table-rspace: 0 !important;
+             border-collapse: collapse;
+             will-change: transform;
+         }
+ 
+         body, td, th, p, div, li, a, span {
+             -webkit-text-size-adjust: 100%;
+             -ms-text-size-adjust: 100%;
+             mso-line-height-rule: exactly;
+         }
+ 
+         img {
+             border: 0;
+             outline: none;
+             line-height: 100%;
+             text-decoration: none;
+             -ms-interpolation-mode: bicubic;
+         }
+ 
+         a[x-apple-data-detectors] {
+             color: inherit !important;
+             text-decoration: none !important;
+         }
+ 
+         .pc-gmail-fix {
+             display: none;
+             display: none !important;
+         }
+ 
+         @media (min-width: 621px) {
+             .pc-lg-hide {
+                 display: none;
+             } 
+ 
+             .pc-lg-bg-img-hide {
+                 background-image: none !important;
+             }
+         }
+ </style>
+ <style>
+ @media (max-width: 620px) {
+ .pc-project-body {min-width: 0px !important;}
+ .pc-project-container {width: 100% !important;}
+ .pc-sm-hide {display: none !important;}
+ .pc-sm-bg-img-hide {background-image: none !important;}
+ table.pc-w620-spacing-0-0-40-0 {margin: 0px 0px 40px 0px !important;}
+ td.pc-w620-spacing-0-0-40-0,th.pc-w620-spacing-0-0-40-0{margin: 0 !important;padding: 0px 0px 40px 0px !important;}
+ .pc-w620-fontSize-30 {font-size: 30px !important;}
+ .pc-w620-lineHeight-40 {line-height: 40px !important;}
+ .pc-w620-fontSize-16 {font-size: 16px !important;}
+ .pc-w620-lineHeight-26 {line-height: 26px !important;}
+ .pc-w620-padding-35-35-35-35 {padding: 35px 35px 35px 35px !important;}
+ .pc-w620-fontSize-18 {font-size: 18px !important;}
+ .pc-w620-lineHeight-28 {line-height: 28px !important;}
+ .pc-w620-padding-30-0 {padding-top: 15px !important;padding-bottom: 15px !important;}
+ .pc-w620-view-vertical,.pc-w620-view-vertical > tbody,.pc-w620-view-vertical > tbody > tr,.pc-w620-view-vertical > tbody > tr > th,.pc-w620-view-vertical > tr,.pc-w620-view-vertical > tr > th {display: inline-block;width: 100% !important;}
+ table.pc-w620-spacing-0-0-20-0 {margin: 0px 0px 20px 0px !important;}
+ td.pc-w620-spacing-0-0-20-0,th.pc-w620-spacing-0-0-20-0{margin: 0 !important;padding: 0px 0px 20px 0px !important;}
+ .pc-w620-width-0 {width: px !important;}a.pc-w620-width-0 {padding-left: 0 !important; padding-right: 0 !important;}
+ .pc-w620-fontSize-22 {font-size: 22px !important;}
+ .pc-w620-lineHeight-32 {line-height: 32px !important;}
+ 
+ .pc-w620-gridCollapsed-1 > tbody,.pc-w620-gridCollapsed-1 > tbody > tr,.pc-w620-gridCollapsed-1 > tr {display: inline-block !important;}
+ .pc-w620-gridCollapsed-1.pc-width-fill > tbody,.pc-w620-gridCollapsed-1.pc-width-fill > tbody > tr,.pc-w620-gridCollapsed-1.pc-width-fill > tr {width: 100% !important;}
+ .pc-w620-gridCollapsed-1.pc-w620-width-fill > tbody,.pc-w620-gridCollapsed-1.pc-w620-width-fill > tbody > tr,.pc-w620-gridCollapsed-1.pc-w620-width-fill > tr {width: 100% !important;}
+ .pc-w620-gridCollapsed-1 > tbody > tr > td,.pc-w620-gridCollapsed-1 > tr > td {display: block !important;width: auto !important;padding-left: 0 !important;padding-right: 0 !important;}
+ .pc-w620-gridCollapsed-1.pc-width-fill > tbody > tr > td,.pc-w620-gridCollapsed-1.pc-width-fill > tr > td {width: 100% !important;}
+ .pc-w620-gridCollapsed-1.pc-w620-width-fill > tbody > tr > td,.pc-w620-gridCollapsed-1.pc-w620-width-fill > tr > td {width: 100% !important;}
+ .pc-w620-gridCollapsed-1 > tbody > .pc-grid-tr-first > .pc-grid-td-first,pc-w620-gridCollapsed-1 > .pc-grid-tr-first > .pc-grid-td-first {padding-top: 0 !important;}
+ .pc-w620-gridCollapsed-1 > tbody > .pc-grid-tr-last > .pc-grid-td-last,pc-w620-gridCollapsed-1 > .pc-grid-tr-last > .pc-grid-td-last {padding-bottom: 0 !important;}
+ 
+ .pc-w620-gridCollapsed-0 > tbody > .pc-grid-tr-first > td,.pc-w620-gridCollapsed-0 > .pc-grid-tr-first > td {padding-top: 0 !important;}
+ .pc-w620-gridCollapsed-0 > tbody > .pc-grid-tr-last > td,.pc-w620-gridCollapsed-0 > .pc-grid-tr-last > td {padding-bottom: 0 !important;}
+ .pc-w620-gridCollapsed-0 > tbody > tr > .pc-grid-td-first,.pc-w620-gridCollapsed-0 > tr > .pc-grid-td-first {padding-left: 0 !important;}
+ .pc-w620-gridCollapsed-0 > tbody > tr > .pc-grid-td-last,.pc-w620-gridCollapsed-0 > tr > .pc-grid-td-last {padding-right: 0 !important;}
+ 
+ .pc-w620-tableCollapsed-1 > tbody,.pc-w620-tableCollapsed-1 > tbody > tr,.pc-w620-tableCollapsed-1 > tr {display: block !important;}
+ .pc-w620-tableCollapsed-1.pc-width-fill > tbody,.pc-w620-tableCollapsed-1.pc-width-fill > tbody > tr,.pc-w620-tableCollapsed-1.pc-width-fill > tr {width: 100% !important;}
+ .pc-w620-tableCollapsed-1.pc-w620-width-fill > tbody,.pc-w620-tableCollapsed-1.pc-w620-width-fill > tbody > tr,.pc-w620-tableCollapsed-1.pc-w620-width-fill > tr {width: 100% !important;}
+ .pc-w620-tableCollapsed-1 > tbody > tr > td,.pc-w620-tableCollapsed-1 > tr > td {display: block !important;width: auto !important;}
+ .pc-w620-tableCollapsed-1.pc-width-fill > tbody > tr > td,.pc-w620-tableCollapsed-1.pc-width-fill > tr > td {width: 100% !important;box-sizing: border-box !important;}
+ .pc-w620-tableCollapsed-1.pc-w620-width-fill > tbody > tr > td,.pc-w620-tableCollapsed-1.pc-w620-width-fill > tr > td {width: 100% !important;box-sizing: border-box !important;}
+ }
+ @media (max-width: 520px) {
+ .pc-w520-padding-30-30-30-30 {padding: 30px 30px 30px 30px !important;}
+ }
+ </style>
+ <!--[if !mso]><!-- -->
+ <style>
+ @media all { @font-face { font-family: 'Fira Sans'; font-style: normal; font-weight: 400; src: url('https://fonts.gstatic.com/s/firasans/v17/va9E4kDNxMZdWfMOD5VvmYjN.woff') format('woff'), url('https://fonts.gstatic.com/s/firasans/v17/va9E4kDNxMZdWfMOD5VvmYjL.woff2') format('woff2'); } @font-face { font-family: 'Fira Sans'; font-style: normal; font-weight: 800; src: url('https://fonts.gstatic.com/s/firasans/v17/va9B4kDNxMZdWfMOD5VnMK7eSBf8.woff') format('woff'), url('https://fonts.gstatic.com/s/firasans/v17/va9B4kDNxMZdWfMOD5VnMK7eSBf6.woff2') format('woff2'); } @font-face { font-family: 'Fira Sans'; font-style: normal; font-weight: 300; src: url('https://fonts.gstatic.com/s/firasans/v17/va9B4kDNxMZdWfMOD5VnPKreSBf8.woff') format('woff'), url('https://fonts.gstatic.com/s/firasans/v17/va9B4kDNxMZdWfMOD5VnPKreSBf6.woff2') format('woff2'); } @font-face { font-family: 'Fira Sans'; font-style: normal; font-weight: 700; src: url('https://fonts.gstatic.com/s/firasans/v17/va9B4kDNxMZdWfMOD5VnLK3eSBf8.woff') format('woff'), url('https://fonts.gstatic.com/s/firasans/v17/va9B4kDNxMZdWfMOD5VnLK3eSBf6.woff2') format('woff2'); } @font-face { font-family: 'Fira Sans'; font-style: normal; font-weight: 500; src: url('https://fonts.gstatic.com/s/firasans/v17/va9B4kDNxMZdWfMOD5VnZKveSBf8.woff') format('woff'), url('https://fonts.gstatic.com/s/firasans/v17/va9B4kDNxMZdWfMOD5VnZKveSBf6.woff2') format('woff2'); } }
+ </style>
+ <!--<![endif]-->
+ <!--[if mso]>
     <style type="text/css">
-      @media only screen and (min-width: 660px) {
-  .u-row {
-    width: 640px !important;
-  }
-  .u-row .u-col {
-    vertical-align: top;
-  }
-
-  .u-row .u-col-28p34 {
-    width: 181.37599999999998px !important;
-  }
-
-  .u-row .u-col-28p5 {
-    width: 182.4px !important;
-  }
-
-  .u-row .u-col-33p33 {
-    width: 213.31199999999998px !important;
-  }
-
-  .u-row .u-col-35p33 {
-    width: 226.11199999999997px !important;
-  }
-
-  .u-row .u-col-38p17 {
-    width: 244.28800000000004px !important;
-  }
-
-  .u-row .u-col-38p33 {
-    width: 245.31199999999998px !important;
-  }
-
-  .u-row .u-col-50 {
-    width: 320px !important;
-  }
-
-  .u-row .u-col-64p67 {
-    width: 413.88800000000003px !important;
-  }
-
-  .u-row .u-col-100 {
-    width: 640px !important;
-  }
-
-}
-
-@media (max-width: 660px) {
-  .u-row-container {
-    max-width: 100% !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-  }
-  .u-row .u-col {
-    min-width: 320px !important;
-    max-width: 100% !important;
-    display: block !important;
-  }
-  .u-row {
-    width: 100% !important;
-  }
-  .u-col {
-    width: 100% !important;
-  }
-  .u-col > div {
-    margin: 0 auto;
-  }
-}
-body {
-  margin: 0;
-  padding: 0;
-}
-
-table,
-tr,
-td {
-  vertical-align: top;
-  border-collapse: collapse;
-}
-
-p {
-  margin: 0;
-}
-
-.ie-container table,
-.mso-container table {
-  table-layout: fixed;
-}
-
-* {
-  line-height: inherit;
-}
-
-a[x-apple-data-detectors='true'] {
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: underline; }
+        .pc-font-alt {
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
     </style>
-  
-  
-
-<!--[if !mso]><!--><link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" type="text/css"><!--<![endif]-->
-
+    <![endif]-->
+ <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
 </head>
 
-<body class="clean-body u_body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #e7e7e7;color: #000000">
-  <!--[if IE]><div class="ie-container"><![endif]-->
-  <!--[if mso]><div class="mso-container"><![endif]-->
-  <table id="u_body" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #e7e7e7;width:100%" cellpadding="0" cellspacing="0">
-  <tbody>
-  <tr style="vertical-align: top">
-    <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-    <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color: #e7e7e7;"><![endif]-->
-    
-  
-  
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
-  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #3378ef;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #3378ef;"><![endif]-->
-      
-<!--[if (mso)|(IE)]><td align="center" width="640" style="width: 640px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-100" style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:25px 10px 0px 18px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<body class="pc-font-alt" style="width: 100% !important; min-height: 100% !important; margin: 0 !important; padding: 0 !important; line-height: 1.5; color: #2D3A41; mso-line-height-rule: exactly; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-variant-ligatures: normal; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; background-color: #f4f4f4;" bgcolor="#f4f4f4">
+ <table class="pc-project-body" style="table-layout: fixed; min-width: 600px; background-color:#f4f4f4; will-change: transform" bgcolor="#f4f4f4" width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
   <tr>
-    <td style="padding-right: 0px;padding-left: 0px;" align="center">
-      
-      <img align="center" border="0" src="<?=$logo_url?>" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 196px;" width="196"/>
-      
-    </td>
-  </tr>
-</table>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-  </div>
-  
-
-
-  
-  
-    <!--[if gte mso 9]>
-      <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto;min-width: 320px;max-width: 640px;">
+   <td align="center" valign="top">
+    <table class="pc-project-container" style="width: 600px; max-width: 600px;" width="600" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+     <tr>
+      <td style="padding: 20px 0px 20px 0px;" align="left" valign="top">
+       <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width: 100%;">
         <tr>
-          <td background="https://img.bayengage.com/assets/1602408772940-562814" valign="top" width="100%">
-      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width: 640px;">
-        <v:fill type="frame" src="https://img.bayengage.com/assets/1602408772940-562814" /><v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
-      <![endif]-->
-  
-<div class="u-row-container" style="padding: 0px;background-image: url('https://img.bayengage.com/assets/1602408772940-562814');background-repeat: no-repeat;background-position: center top;background-color: transparent">
-  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-image: url('https://img.bayengage.com/assets/1602408772940-562814');background-repeat: no-repeat;background-position: center top;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: transparent;"><![endif]-->
+         <td valign="top">
+          <!-- BEGIN MODULE: Transactional 6 -->
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
+           <tr>
+            <td style="padding: 0px 0px 0px 0px;">
+             <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
+              <tr>
+               <td valign="top" class="pc-w520-padding-30-30-30-30 pc-w620-padding-35-35-35-35" style="padding: 40px 40px 40px 40px; border-radius: 0px; background-color: #ffffff;" bgcolor="#ffffff">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                 <tr>
+                  <td align="left" valign="top" style="padding: 0px 0px 18px 0px;">
+                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                    <tr>
+                     <td valign="top" align="left">
+                      <div class="pc-font-alt" style="line-height: 121%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 500; font-variant-ligatures: normal; color: #EB5757; text-align: left; text-align-last: left;">
+                       <div><span>Numero #<?=$orden_data->id?></span>
+                       </div>
+                      </div>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                 <tr>
+                  <td align="left" valign="top" style="padding: 0px 0px 15px 0px;">
+                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                    <tr>
+                     <td valign="top" align="left">
+                      <div class="pc-font-alt pc-w620-fontSize-30 pc-w620-lineHeight-40" style="line-height: 128%; letter-spacing: -0.6px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 36px; font-weight: 800; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                       <div style="text-align: right; margin-right:10px">
+                       <img align="center" border="0" src="<?=$logo_url?>" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 196px;" width="196"/>
       
-<!--[if (mso)|(IE)]><td align="center" width="640" style="width: 640px;padding: 20px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
-<div class="u-col u-col-100" style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 20px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:80px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td style="padding-right: 0px;padding-left: 0px;" align="center">
-      
-      <img align="center" border="0" src="https://img.bayengage.com/assets/1641809645206-1613615720006-tick%20(1).jpg" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 106px;" width="106"/>
-      
-    </td>
-  </tr>
-</table>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 0px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; line-height: 130%; text-align: left; word-wrap: break-word;">
-    <p style="line-height: 130%; text-align: center;"><span style="color: #3378ef; font-family: Poppins, sans-serif;"><span style="font-size: 34px; line-height: 44.2px;"><strong>Se ha creado un nuevo pedido</strong></span></span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 20px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;">Este correo es la confirmación de su nuevo pedido</span></p>
-<p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;"><strong>Pedido NRO: <?=$order_id?></strong></span></p>
-<p style="font-size: 14px; line-height: 140%; text-align: center;"><span style="font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif; color: #34495e;"><strong>Fecha: <?=$orden_data->fecha_orden?></strong></span></p>
- 
-
-</div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-  </div>
-  
-    <!--[if gte mso 9]>
-      </v:textbox></v:rect>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
-    
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
-  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #000000;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #000000;"><![endif]-->
-      
-<!--[if (mso)|(IE)]><td align="center" width="245" style="width: 245px;padding: 0px 20px 0px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-38p33" style="max-width: 320px;min-width: 245.31px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 0px 20px 0px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; color: #ffffff; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><strong>Producto</strong></span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-<!--[if (mso)|(IE)]><td align="center" width="181" style="width: 181px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-28p34" style="max-width: 320px;min-width: 181.38px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; color: #ffffff; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><strong>Cantidad</strong></span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-<!--[if (mso)|(IE)]><td align="center" width="213" style="width: 213px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-33p33" style="max-width: 320px;min-width: 213.31px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 20px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; color: #ffffff; line-height: 140%; text-align: right; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><strong>Subtotal</strong></span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-  </div>
-  
-
-
-  
-  
-<div class="u-row-container ordered_products" style="padding: 0px;background-color: transparent">
-  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-<?php 
+                       </div>
+                      </div>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                 <tr>
+                  <td align="left" valign="top" style="padding: 0px 0px 40px 0px;">
+                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                    <tr>
+                     <td valign="top" align="left">
+                      <div class="pc-font-alt pc-w620-fontSize-18 pc-w620-lineHeight-28" style="line-height: 150%; letter-spacing: -0.4px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 20px; font-weight: normal; font-variant-ligatures: normal; color: #9b9b9b; text-align: left; text-align-last: left;">
+                       <div><span>Esta es la notificación de un nuevo pedido</span>
+                       </div>
+                      </div>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                 <tr>
+                  <td style="padding: 0px 0px 40px 0px;">
+                   <table class="pc-width-fill pc-w620-gridCollapsed-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr class="pc-grid-tr-first">
+                     <td class="pc-grid-td-first pc-w620-padding-30-0" align="left" valign="top" style="width: 50%; padding-top: 0px; padding-right: 20px; padding-bottom: 20px; padding-left: 0px;">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse: separate; border-spacing: 0; width: 100%;">
+                       <tr>
+                        <td align="left" valign="top">
+                         <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                          <tr>
+                           <td align="left" valign="top">
+                            <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0;">
+                                <tr>
+                                 <td valign="top" align="left">
+                                  <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                   <div><span>Solicitante</span>
+                                   </div>
+                                  </div>
+                                 </td>
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-right: auto;">
+                                <tr>
+                                 <!--[if gte mso 9]>
+                    <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                <![endif]-->
+                                 <!--[if !gte mso 9]><!-- -->
+                                 <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                                 <!--<![endif]-->
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" align="left" style="border-collapse: separate; border-spacing: 0;">
+                             <tr>
+                              <td valign="top" align="left">
+                               <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                <div><span><?=$orden_data->cliente_name?></span>
+                                </div>
+                               </div>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                         </table>
+                        </td>
+                       </tr>
+                      </table>
+                     </td>
+                     <td class="pc-grid-td-last pc-w620-padding-30-0" align="left" valign="top" style="width: 50%; padding-top: 0px; padding-right: 0px; padding-bottom: 20px; padding-left: 20px;">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse: separate; border-spacing: 0; width: 100%;">
+                       <tr>
+                        <td align="left" valign="top">
+                         <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                          <tr>
+                           <td align="left" valign="top">
+                            <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0;">
+                                <tr>
+                                 <td valign="top" align="left">
+                                  <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                   <div><span>Fecha pedido</span>
+                                   </div>
+                                  </div>
+                                 </td>
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-right: auto;">
+                                <tr>
+                                 <!--[if gte mso 9]>
+                    <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                <![endif]-->
+                                 <!--[if !gte mso 9]><!-- -->
+                                 <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                                 <!--<![endif]-->
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" align="left" style="border-collapse: separate; border-spacing: 0;">
+                             <tr>
+                              <td valign="top" align="left">
+                               <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                               <?=$orden_data->fecha_orden?></div>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                         </table>
+                        </td>
+                       </tr>
+                      </table>
+                     </td>
+                    </tr>
+                    <tr>
+                     <td class="pc-grid-td-first pc-w620-padding-30-0" align="left" valign="top" style="width: 50%; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 0px;">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse: separate; border-spacing: 0; width: 100%;">
+                       <tr>
+                        <td align="left" valign="top">
+                         <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                          <tr>
+                           <td align="left" valign="top">
+                            <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0;">
+                                <tr>
+                                 <td valign="top" align="left">
+                                  <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                   <div><span>Marca</span>
+                                   </div>
+                                  </div>
+                                 </td>
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-right: auto;">
+                                <tr>
+                                 <!--[if gte mso 9]>
+                    <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                <![endif]-->
+                                 <!--[if !gte mso 9]><!-- -->
+                                 <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                                 <!--<![endif]-->
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" align="left" style="border-collapse: separate; border-spacing: 0;">
+                             <tr>
+                              <td valign="top" align="left">
+                               <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                               <?=$orden_data->name_marca?></div>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                         </table>
+                        </td>
+                       </tr>
+                      </table>
+                     </td>
+                     <td class="pc-grid-td-last pc-w620-padding-30-0" align="left" valign="top" style="width: 50%; padding-top: 20px; padding-right: 0px; padding-bottom: 20px; padding-left: 20px;">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse: separate; border-spacing: 0; width: 100%;">
+                       <tr>
+                        <td align="left" valign="top">
+                         <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                          <tr>
+                           <td align="left" valign="top">
+                            <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0;">
+                                <tr>
+                                 <td valign="top" align="left">
+                                  <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                   <div><span>Tienda</span>
+                                   </div>
+                                  </div>
+                                 </td>
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-right: auto;">
+                                <tr>
+                                 <!--[if gte mso 9]>
+                    <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                <![endif]-->
+                                 <!--[if !gte mso 9]><!-- -->
+                                 <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                                 <!--<![endif]-->
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" align="left" style="border-collapse: separate; border-spacing: 0;">
+                             <tr>
+                              <td valign="top" align="left">
+                               <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                <div><span><?=$orden_data->tienda_name?></span>
+                                </div>
+                               </div>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                         </table>
+                        </td>
+                       </tr>
+                      </table>
+                     </td>
+                    </tr>
+                    <tr class="pc-grid-tr-last">
+                     <td class="pc-grid-td-first pc-w620-padding-30-0" align="left" valign="top" style="width: 50%; padding-top: 20px; padding-right: 20px; padding-bottom: 0px; padding-left: 0px;">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse: separate; border-spacing: 0; width: 100%;">
+                       <tr>
+                        <td align="left" valign="top">
+                         <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                          <tr>
+                           <td align="left" valign="top">
+                            <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0;">
+                                <tr>
+                                 <td valign="top" align="left">
+                                  <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                   <div><span>Documentos Adjuntos</span>
+                                   </div>
+                                  </div>
+                                 </td>
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-right: auto;">
+                                <tr>
+                                 <!--[if gte mso 9]>
+                    <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                <![endif]-->
+                                 <!--[if !gte mso 9]><!-- -->
+                                 <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                                 <!--<![endif]-->
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" align="left" style="border-collapse: separate; border-spacing: 0;">
+                             <tr>
+                              <td valign="top" align="left">
+                               <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                <div>
+                                <?php foreach(json_decode($orden_data->fichero_adjunto) as $key => $doc ){?>
+                                    <p><a href="<?=$doc?>">Doc <?=($key+1)?></a></p>
+                                <? } ?>
+                                
+                                </div>
+                               </div>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                         </table>
+                        </td>
+                       </tr>
+                      </table>
+                     </td>
+                     <td class="pc-grid-td-last pc-w620-padding-30-0" align="left" valign="top" style="width: 50%; padding-top: 20px; padding-right: 0px; padding-bottom: 0px; padding-left: 20px;">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse: separate; border-spacing: 0; width: 100%;">
+                       <tr>
+                        <td align="left" valign="top">
+                         <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                          <tr>
+                           <td align="left" valign="top">
+                            <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0;">
+                                <tr>
+                                 <td valign="top" align="left">
+                                  <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                   <div><span>Enlaces</span>
+                                   </div>
+                                  </div>
+                                 </td>
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                             <tr>
+                              <td valign="top" style="padding: 0px 0px 10px 0px;">
+                               <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-right: auto;">
+                                <tr>
+                                 <!--[if gte mso 9]>
+                    <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                <![endif]-->
+                                 <!--[if !gte mso 9]><!-- -->
+                                 <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 1px solid #e5e5e5;">&nbsp;</td>
+                                 <!--<![endif]-->
+                                </tr>
+                               </table>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td align="left" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" align="left" style="border-collapse: separate; border-spacing: 0;">
+                             <tr>
+                              <td valign="top" align="left">
+                               <div class="pc-font-alt" style="line-height: 156%; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                <div>
+                                <?php foreach(json_decode($orden_data->links) as $key => $link ){?>
+                                    <p><a href="<?=$link?>">Link <?=($key+1)?></a></p>
+                                <? } ?>
+                                </div>
+                               </div>
+                              </td>
+                             </tr>
+                            </table>
+                           </td>
+                          </tr>
+                         </table>
+                        </td>
+                       </tr>
+                      </table>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                 <tr>
+                  <td>
+                 
+                  <table class="pc-w620-tableCollapsed-0" border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; width: 100%;">
+                    <tbody>
+                     <tr>
+                      <td align="left" valign="top" style="padding: 20px 10px 20px 0px; border-bottom: 1px solid #E5E5E5;">
+                       <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                        <tr>
+                         <td valign="top" align="left">
+                          <div class="pc-font-alt pc-w620-fontSize-16 pc-w620-lineHeight-26" style="line-height: 28px; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                           Item</div>
+                         </td>
+                        </tr>
+                       </table>
+                      </td>
+                      <td align="left" valign="top" style="padding: 20px 10px 20px 0px; border-bottom: 1px solid #E5E5E5;">
+                       <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                        <tr>
+                         <td valign="top" align="right">
+                          <div class="pc-font-alt pc-w620-fontSize-16 pc-w620-lineHeight-26" style="line-height: 28px; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: right; text-align-last: right;">
+                           Qty</div>
+                         </td>
+                        </tr>
+                       </table>
+                      </td>
+                      <td align="left" valign="top" style="padding: 20px 0px 20px 0px; border-bottom: 1px solid #E5E5E5;">
+                       <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                        <tr>
+                         <td valign="top" align="right">
+                          <div class="pc-font-alt pc-w620-fontSize-16 pc-w620-lineHeight-26" style="line-height: 28px; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: right; text-align-last: right;">
+                           Price</div>
+                         </td>
+                        </tr>
+                       </table>
+                      </td>
+                     </tr>
+                     <?php 
 $total = 0;
 
 foreach($items_orden as $item) {
@@ -356,344 +854,201 @@ foreach($items_orden as $item) {
 $subtotal = $item->price * $item->cnt;
 $total += $subtotal;
 ?>
-<!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ffffff;"><![endif]-->
-  <!--[if (mso)|(IE)]><td align="center" width="244" style="width: 244px;padding: 20px 0px 20px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-    <div class="u-col u-col-38p17" style="max-width: 320px;min-width: 244.29px;display: table-cell;vertical-align: top;">
-      <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-      <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 20px 0px 20px 15px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-      
-    <table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-      <tbody>
-        <tr>
-          <td style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-            
-      <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-        <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><?=$item->post_title?></span></p>
-      </div>
 
-          </td>
+                     
+                     <tr>
+                      <td align="left" valign="top" style="padding: 20px 10px 20px 0px; border-bottom: 1px solid #E5E5E5;">
+                       <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                         <td>
+                          <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                           <tr>
+                            <td valign="top">
+                             <table class="pc-w620-view-vertical" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                              <tr>
+                               <th valign="top" style="font-weight: normal; text-align: left;">
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                 <tr>
+                                  <td class="pc-w620-spacing-0-0-20-0" valign="top" style="padding: 0px 20px 0px 0px;">
+                                   <img src="<?=$item->image_url?>" class="" width="100" height="104" alt="" style="display: block; border: 0; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width:100px; height:104px;" />
+                                  </td>
+                                 </tr>
+                                </table>
+                               </th>
+                               <th valign="top" style="font-weight: normal; text-align: left;">
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                 <tr>
+                                  <td>
+                                   <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                    <tr>
+                                     <td valign="top">
+                                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                       <tr>
+                                        <th align="left" valign="top" style="font-weight: normal; text-align: left; padding: 0px 0px 4px 0px;">
+                                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                                          <tr>
+                                           <td valign="top" align="left" style="padding: 9px 0px 0px 0px;">
+                                            <div class="pc-font-alt pc-w620-fontSize-16 pc-w620-lineHeight-26" style="line-height: 28px; letter-spacing: -0.3px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 500; font-variant-ligatures: normal; color: #151515; text-align: left; text-align-last: left;">
+                                            <?=$item->post_title?></div>
+                                           </td>
+                                          </tr>
+                                         </table>
+                                        </th>
+                                       </tr>
+                                       <tr>
+                                        <th align="left" valign="top" style="font-weight: normal; text-align: left;">
+                                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                                          <tr>
+                                           <td valign="top" align="left">
+                                            <div class="pc-font-alt" style="line-height: 24px; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-variant-ligatures: normal; color: #9b9b9b; text-align: left; text-align-last: left;">
+                                             Pink</div>
+                                           </td>
+                                          </tr>
+                                         </table>
+                                        </th>
+                                       </tr>
+                                       <tr>
+                                        <th align="left" valign="top" style="font-weight: normal; text-align: left;">
+                                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                                          <tr>
+                                           <td valign="top" align="left">
+                                            <div class="pc-font-alt" style="line-height: 24px; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-variant-ligatures: normal; color: #9b9b9b; text-align: left; text-align-last: left;">
+                                             Medium</div>
+                                           </td>
+                                          </tr>
+                                         </table>
+                                        </th>
+                                       </tr>
+                                      </table>
+                                     </td>
+                                    </tr>
+                                   </table>
+                                  </td>
+                                 </tr>
+                                </table>
+                               </th>
+                              </tr>
+                             </table>
+                            </td>
+                           </tr>
+                          </table>
+                         </td>
+                        </tr>
+                       </table>
+                      </td>
+                      <td align="left" valign="top" style="padding: 20px 10px 20px 0px; border-bottom: 1px solid #E5E5E5;">
+                       <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                        <tr>
+                         <td valign="top" align="right">
+                          <div class="pc-font-alt pc-w620-fontSize-16 pc-w620-lineHeight-26" style="line-height: 22px; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #9b9b9b; text-align: right; text-align-last: right;">
+                          <?=$item->cnt?></div>
+                         </td>
+                        </tr>
+                       </table>
+                      </td>
+                      <td align="left" valign="top" style="padding: 20px 0px 20px 0px; border-bottom: 1px solid #E5E5E5;">
+                       <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                        <tr>
+                         <td valign="top" align="right">
+                          <div class="pc-font-alt pc-w620-fontSize-16 pc-w620-lineHeight-26" style="line-height: 22px; letter-spacing: -0.2px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #151515; text-align: right; text-align-last: right;">
+                           $<?=number_format($item->subtotal,2)?></div>
+                         </td>
+                        </tr>
+                       </table>
+                      </td>
+                     </tr>
+
+                     <?php } ?>
+
+                    </tbody>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+              
+               
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                 <tr>
+                  <td height="20" style="line-height: 1px; font-size: 1px;">&nbsp;</td>
+                 </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%;">
+                 <tr>
+                  <td valign="top">
+                   <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                     <!--[if gte mso 9]>
+                    <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 2px solid #e5e5e5;">&nbsp;</td>
+                <![endif]-->
+                     <!--[if !gte mso 9]><!-- -->
+                     <td height="1" valign="top" style="line-height: 1px; font-size: 1px; border-bottom: 2px solid #e5e5e5;">&nbsp;</td>
+                     <!--<![endif]-->
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                 <tr>
+                  <td height="20" style="line-height: 1px; font-size: 1px;">&nbsp;</td>
+                 </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                 <tr>
+                  <td>
+                   <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                     <td valign="top">
+                      <table class="" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                       <tr>
+                        <th class="pc-w620-width-0" width="460" align="right" valign="top" style="font-weight: normal; text-align: left; width: 460px;">
+                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" class="pc-w620-width-0" width="460" align="right" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                          <tr>
+                           <td valign="top" align="right">
+                            <div class="pc-font-alt pc-w620-fontSize-22 pc-w620-lineHeight-32" style="line-height: 34px; letter-spacing: -0.4px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 24px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: right; text-align-last: right;">
+                             Total:</div>
+                           </td>
+                          </tr>
+                         </table>
+                        </th>
+                        <th class="pc-w620-width-0" width="60" align="right" valign="top" style="font-weight: normal; text-align: left; width: 60px;">
+                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" class="pc-w620-width-0" width="60" align="right" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
+                          <tr>
+                           <td valign="top" align="right" style="padding: 0px 0px 0px 20px;">
+                            <div class="pc-font-alt pc-w620-fontSize-22 pc-w620-lineHeight-32" style="line-height: 34px; letter-spacing: -0.4px; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 24px; font-weight: bold; font-variant-ligatures: normal; color: #151515; text-align: right; text-align-last: right;">
+                             $<?=number_format($total,2)?></div>
+                           </td>
+                          </tr>
+                         </table>
+                        </th>
+                       </tr>
+                      </table>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+               </td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+          </table>
+          <!-- END MODULE: Transactional 6 -->
+         </td>
         </tr>
-      </tbody>
+
+       </table>
+      </td>
+     </tr>
     </table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-
-
-<!--[if (mso)|(IE)]><td align="center" width="182" style="width: 182px;padding: 20px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-28p5" style="max-width: 320px;min-width: 182.4px;display: table-cell;vertical-align: top;">
-<div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 20px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><?=$item->cnt?></span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-
-
-
-<!--[if (mso)|(IE)]><td align="center" width="213" style="width: 213px;padding: 20px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-33p33" style="max-width: 320px;min-width: 213.31px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 20px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:5px 20px 5px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; line-height: 140%; text-align: right; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">$<?=number_format($subtotal)?></span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-
-</div>
-</div>
-
-
-<!--[if (mso)|(IE)]></td><![endif]-->
-
-<?php } ?>
-
-<!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-
-    </div>
-  </div>
-  </div>
-  
-
-
-  
-  
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
-  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ecf0f1;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ecf0f1;"><![endif]-->
-      
-<!--[if (mso)|(IE)]><td align="center" width="413" style="width: 413px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-64p67" style="max-width: 320px;min-width: 413.89px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%; text-align: right;"><span style="font-size: 16px; line-height: 22.4px;">Total</span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-<!--[if (mso)|(IE)]><td align="center" width="226" style="width: 226px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-35p33" style="max-width: 320px;min-width: 226.11px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 21px 0px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%; text-align: right;"><span style="font-size: 16px; line-height: 22.4px;">$<?=number_format($total)?></span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-  </div>
-  
-
-
-  
-  
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
-  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ffffff;"><![endif]-->
-      
-<!--[if (mso)|(IE)]><td align="center" width="320" style="width: 320px;padding: 10px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-50" style="max-width: 320px;min-width: 320px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 10px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 0px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <!--[if mso]><table width="100%"><tr><td><![endif]-->
-    <h4 style="margin: 0px; color: #000000; line-height: 140%; text-align: left; word-wrap: break-word; font-family: arial,helvetica,sans-serif; font-size: 15px; font-weight: 400;"><span><strong>Archivos adjuntos</strong></span></h4>
-  <!--[if mso]></td></tr></table><![endif]-->
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:6px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <!--[if mso]><table width="100%"><tr><td><![endif]-->
-    <h3 style="margin: 0px; color: #000000; line-height: 140%; text-align: left; word-wrap: break-word; font-family: arial,helvetica,sans-serif; font-size: 15px; font-weight: 400;"><span><span>{{order.billing_address}}</span></span></h3>
-  <!--[if mso]></td></tr></table><![endif]-->
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:6px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <!--[if mso]><table width="100%"><tr><td><![endif]-->
-    <h3 style="margin: 0px; color: #000000; line-height: 140%; text-align: left; word-wrap: break-word; font-family: arial,helvetica,sans-serif; font-size: 15px; font-weight: 400;"><span><span>{{order.billing_address}}</span></span></h3>
-  <!--[if mso]></td></tr></table><![endif]-->
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-<!--[if (mso)|(IE)]><td align="center" width="320" style="width: 320px;padding: 10px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-50" style="max-width: 320px;min-width: 320px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 10px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 0px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <!--[if mso]><table width="100%"><tr><td><![endif]-->
-    <h4 style="margin: 0px; color: #000000; line-height: 140%; text-align: left; word-wrap: break-word; font-family: arial,helvetica,sans-serif; font-size: 15px; font-weight: 400;"><span><strong>Enlaces</strong></span></h4>
-  <!--[if mso]></td></tr></table><![endif]-->
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:6px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <!--[if mso]><table width="100%"><tr><td><![endif]-->
-    <h3 style="margin: 0px; color: #000000; line-height: 140%; text-align: left; word-wrap: break-word; font-family: arial,helvetica,sans-serif; font-size: 15px; font-weight: 400;"><span>{{order.shipping_address}}</span></h3>
-  <!--[if mso]></td></tr></table><![endif]-->
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:6px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <!--[if mso]><table width="100%"><tr><td><![endif]-->
-    <h3 style="margin: 0px; color: #000000; line-height: 140%; text-align: left; word-wrap: break-word; font-family: arial,helvetica,sans-serif; font-size: 15px; font-weight: 400;"><span>{{order.shipping_address}}</span></h3>
-  <!--[if mso]></td></tr></table><![endif]-->
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-  </div>
-  
-
-
-  
-  
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
-  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: transparent;"><![endif]-->
-      
-<!--[if (mso)|(IE)]><td align="center" width="640" style="width: 640px;padding: 20px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-<div class="u-col u-col-100" style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 20px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
-  
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-  </div>
-  
-
-
-  
-  
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
-  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: transparent;"><![endif]-->
-      
-<!--[if (mso)|(IE)]><td align="center" width="640" style="width: 640px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
-<div class="u-col u-col-100" style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;">
-  <div style="height: 100%;width: 100% !important;">
-  <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;"><!--<![endif]-->
-  
-<table class="logoContent" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td style="padding-right: 0px;padding-left: 0px;" align="center">
-      <a href="https://app.bayengage.com" target="_blank">
-      <img align="center" border="0" src="https://app.bayengage.com/images/bayengage-logo.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 150px;" width="150"/>
-      </a>
-    </td>
+   </td>
   </tr>
-</table>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-  </div>
-  
-
-
-    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-    </td>
-  </tr>
-  </tbody>
-  </table>
-  <!--[if mso]></div><![endif]-->
-  <!--[if IE]></div><![endif]-->
+ </table>
+ <!-- Fix for Gmail on iOS -->
+ <div class="pc-gmail-fix" style="white-space: nowrap; font: 15px courier; line-height: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+ </div>
 </body>
 
 </html>

@@ -1373,20 +1373,44 @@ function handle_order_save_request($request)
     $upload_dir = wp_upload_dir();
 
     if (isset($_FILES['file_order'])) {
-
-        $files = $_FILES['file_order'];
-        foreach ($files['tmp_name'] as $key => $tmp_name) {
-            $file_name = $files['name'][$key];
-            $file_path = $upload_dir['path'] . '/' . $file_name;
-
-            array_push($files_order_complete_path, $file_path);
+        $upload_dir = wp_upload_dir(); // Obtiene la información del directorio de subidas de WordPress
+        $upload_path = $upload_dir['path']; // Ruta del directorio de subidas
+    
+        $archivos = array(); // Array para almacenar las URLs de los archivos
+    
+        // Recorre cada archivo cargado
+        foreach ($_FILES['file_order']['tmp_name'] as $key => $tmp_name) {
+            $file_name = $_FILES['file_order']['name'][$key];
+            $file_path = $upload_path . '/' . $file_name; // Ruta completa del archivo en el servidor
+    
+            // Mueve el archivo al directorio de subidas de WordPress
             move_uploaded_file($tmp_name, $file_path);
-
-            $archivos[] = $file_name;
+    
+            // Sube el archivo a WordPress y obtén su ID de adjunto
+            $attachment_id = wp_insert_attachment(array(
+                'guid' => $upload_dir['url'] . '/' . $file_name,
+                'post_mime_type' => $_FILES['file_order']['type'][$key],
+                'post_title' => $file_name,
+                'post_content' => '',
+                'post_status' => 'inherit'
+            ), $file_path);
+    
+            // Genera el enlace de descarga directa para el archivo adjunto
+            $file_url = wp_get_attachment_url($attachment_id);
+    
+            // Almacena la URL del archivo
+            //echo "furl ".$file_url;
+            $archivos[] = $file_url;
         }
+
+        $files_order_complete_path = $archivos;
+    
+        // $archivos ahora contiene las URLs de los archivos cargados en WordPress
+        // Puedes usar este array para descargar los archivos más tarde
     }
+    
     // Verificar si se enviaron los datos de la orden
-    if (isset($params['order'])) {
+    if (isset($params['items'])) {
         // Si el usuario está logueado, obtener su ID
         $user = wp_get_current_user();
         $user_id = $user->ID;
@@ -1397,13 +1421,16 @@ function handle_order_save_request($request)
             $orden_items_table_name = $wpdb->prefix . 'orden_items';
 
             // Obtener los datos de la orden del cuerpo de la solicitud
-            $newOrder = json_decode(base64_decode($params['order']));
-            $totalOrden = $newOrder->total_order;
-            $marca = $newOrder->marca;
-            $image_marca = $newOrder->image_marca;
-            $name_marca = $newOrder->name_marca;
-            $tienda = $newOrder->tienda;
-            $tienda_name = $newOrder->tienda_name;
+          
+
+            $totalOrden = $params['total_order'];
+            $marca = $params['marca'];
+            $image_marca =$params['image_marca'];
+            $name_marca = $params['name_marca'];
+            $tienda = $params['tienda'];
+            $tienda_name = $params['tienda_name'];
+            $tems = json_decode($params['items']);
+
             $links = $params['links'];
 
             // Verificar si se proporcionó un ID de orden para actualizar
@@ -1433,7 +1460,7 @@ function handle_order_save_request($request)
                 );
 
                 // Insertar los nuevos elementos de la orden en la tabla de items de la orden
-                foreach ($newOrder->items as $item) {
+                foreach ($tems as $item) {
                     $wpdb->insert(
                         $orden_items_table_name,
                         array(
@@ -1450,7 +1477,9 @@ function handle_order_save_request($request)
                             'image_url' => $item->image_url
                         )
                     );
-                }
+                
+
+		}
 
                 return array('success' => true, 'message' => 'Order updated successfully', 'order_id' => $order_id);
             } else {
@@ -1478,12 +1507,20 @@ function handle_order_save_request($request)
                     )
                 );
 
+
+		// echo $wpdb->last_query;
+
+		// echo "----------------";
+
+		// // Print last SQL query Error
+		// echo $wpdb->last_error;
+
                 if ($resultado_insercion_order !== false) {
                     // Obtener el ID de la orden recién creada
                     $order_id = $wpdb->insert_id;
 
                     // Insertar los elementos de la orden en la tabla de items de la orden
-                    foreach ($newOrder->items as $item) {
+                    foreach ($tems as $item) {
                         $wpdb->insert(
                             $orden_items_table_name,
                             array(
