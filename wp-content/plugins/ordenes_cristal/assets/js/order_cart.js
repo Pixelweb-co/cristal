@@ -248,10 +248,30 @@ app.controller("cartSearchController", function ($scope, $http) {
       localStorage.removeItem("search");
       $scope.term = "";
     }
+
+    if(localStorage.getItem("marca_sel")){
+
+      $scope.marca_sel = localStorage.getItem("marca_sel");
+      
+      $scope.marcaSeleccionada = localStorage.getItem("name_marca");
+      // Almacenar los datos de la tienda seleccionada en el localStorage
+      $scope.tiendaSeleccionada = localStorage.getItem("tiendaSeleccionada");
+
+      $scope.marcaNameSel =  localStorage.getItem("name_marca");
+
+      jQuery("#filter-area .marco-marca-m").removeClass("selected");
+      jQuery("#menuma-" + $scope.marca_sel).addClass("selected");
+
+    }
+
+
+
   };
 
   setTimeout(function () {
     $scope.init();
+
+    console.log("nm",$scope.marcaNameSel)
   }, 500);
 
   $scope.setMarca = (id, image_url, name_marca) => {
@@ -259,7 +279,7 @@ app.controller("cartSearchController", function ($scope, $http) {
     $scope.limit = 5;
     $scope.term = "";
 
-    $scope.marcaNameSel = name_marca;
+    
     if (localStorage.getItem("marca_sel")) {
       var items_order = JSON.parse(localStorage.getItem("OrderCart"));
       console.log("new ", id);
@@ -281,6 +301,7 @@ app.controller("cartSearchController", function ($scope, $http) {
           if (result.isConfirmed) {
             $scope.sresult = [];
             console.log("limpiando", $scope.sresult);
+            $scope.marcaNameSel = name_marca;
 
             localStorage.setItem("OrderCart", JSON.stringify([]));
             localStorage.setItem("marca_sel", id);
@@ -308,6 +329,7 @@ app.controller("cartSearchController", function ($scope, $http) {
 
         jQuery("#filter-area .marco-marca-m").removeClass("selected");
         jQuery("#menuma-" + id).addClass("selected");
+        $scope.marcaNameSel = name_marca;
       }
     } else {
       $scope.sresult = [];
@@ -475,7 +497,7 @@ app.controller("cartSearchController", function ($scope, $http) {
         $scope.marcaNameSel = "No se encontraron resultados";
       }
       $scope.sresult.forEach((item) => {
-        tmpl.push({ ...item, cnt: 1 });
+        tmpl.push({ ...item });
       });
 
       $scope.sresult = tmpl;
@@ -523,7 +545,7 @@ app.controller("cartSearchController", function ($scope, $http) {
 
       var tmpl = [];
       response.data.productos.forEach((item) => {
-        tmpl.push({ ...item, cnt: 1 });
+        tmpl.push({ ...item });
       });
       console.log(tmpl);
       // Filtrar elementos duplicados
@@ -565,7 +587,7 @@ app.controller("cartSearchController", function ($scope, $http) {
         $scope.relpd = [];
 
         response.data.forEach((item) => {
-          $scope.relpd.push({ ...item, cnt: 1 });
+          $scope.relpd.push({ ...item });
         });
       }
     });
@@ -841,10 +863,17 @@ app.controller("cartController", function ($scope, $http) {
   $scope.linkError = null;
   $scope.valores_ideales = [];
   $scope.orden_id = null;
+  $scope.orden_is_send = 0;
+
 
   if (localStorage.getItem("orden_id_edit")) {
     $scope.orden_id = parseInt(localStorage.getItem("orden_id_edit"));
   }
+  if (localStorage.getItem("orden_is_send")) {
+    $scope.orden_is_send = parseInt(localStorage.getItem("orden_is_send"));
+  }
+
+  
 
   // Obtener las tiendas desde el endpoint
   $http
@@ -1146,7 +1175,7 @@ app.controller("cartController", function ($scope, $http) {
 
       localStorage.setItem(
         "OrderCart",
-        JSON.stringify([{ ...product_add, cnt: 1 }])
+        JSON.stringify([{ ...product_add }])
       );
     } else {
       var data = JSON.parse(localStorage.getItem("OrderCart"));
@@ -1257,6 +1286,7 @@ app.controller("cartController", function ($scope, $http) {
         console.log("svo ", response.data);
         localStorage.removeItem("OrderCart");
         localStorage.removeItem("orden_id_edit");
+        localStorage.removeItem("orden_is_send");
 
         localStorage.removeItem("marca_sel");
         localStorage.removeItem("tienda_name");
@@ -1287,6 +1317,8 @@ app.controller("cartController", function ($scope, $http) {
   $scope.clearCart = () => {
     localStorage.removeItem("OrderCart");
     localStorage.removeItem("orden_id_edit");
+    localStorage.removeItem("orden_is_send");
+
 
     localStorage.removeItem("marca_sel");
     localStorage.removeItem("tienda_name");
@@ -1542,6 +1574,7 @@ jQuery(document).ready(function ($) {
           response.data.orden_data.tienda
         );
         localStorage.setItem("orden_id_edit", response.data.orden_data.id);
+        localStorage.setItem("orden_is_send", response.data.orden_data.is_send);
 
         var localitems = [];
         response.data.items_orden.map((item) => {
@@ -1784,15 +1817,45 @@ jQuery(document).ready(function ($) {
       url: admin_ajax_url,
       data: "action=mail_order&order_id=" + order,
       success: function (response) {
-        if (response.success) {
+        console.log(response);
+        if (response.result == 'success') {
+          console.log("Orden sending ");
+         
+          angular.element(document).ready(function () {
+          
+            var scope_cart = angular
+              .element(document.getElementById("cartController"))
+              .scope();
+
+            console.log("Orden send");
+            
+            scope_cart.$apply(() => {
+              scope_cart.orden_is_send = 1
+              scope_cart.clearCart();
+              Swal.fire(
+                `Pedido # ${order} ha sido enviado. Redirigiendo a listado de pedidos...`,
+                "",
+                "success"
+              );
+             
+            });
+
+
+          });
+
+          localStorage.setItem("orden_is_send", 1);
           $("#btnSendOrder .cart-loader").hide();
+          location.href = base_url + "/listado-de-pedidos/"
         } else {
           $("#btnSendOrder .cart-loader").hide();
         }
       },
       error: function (xhr, status, error) {
         console.log(xhr.responseText);
-      },
+      }
+    
     });
+
+
   });
 });

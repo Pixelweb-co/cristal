@@ -44,14 +44,16 @@
             </td>
 
             <td class="product-count">
-                <form action="#" class="count-inlineflex">
+                <form action="#" class="count-inlineflex" ng-if="orden_is_send == 0">
                     <div class="qtyminus" ng-click="setQty('minus',x.ID)" role="button">-</div>
                     <input type="text" name="quantity" ng-model="x.cnt"  class="qty" ng-blur="actualizarCantidad(x)" >
                     <div class="qtyplus" role="button" ng-click="setQty('add',x.ID)">+</div>
                 </form>
+
+                <span ng-if="orden_is_send == 1">{{x.cnt}}</span>
             </td>
             <td class="text-center">
-                <button type="button" class="btn  btn-xs" ng-click="removeItem(x.ID)">
+                <button type="button" class="btn  btn-xs" ng-click="removeItem(x.ID)" ng-if="orden_is_send == 0">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="obs-toggle ml-4 btn btn-xs">
@@ -70,16 +72,16 @@
                 <div class="col-md-2 text-center total_order_v"> {{total_order | currency: '$'}}</div>
             </div>
             <div class=" row mt-4 mb-3">
-                <div class="col-md-4 text-center "><a class="btn btn-outline-generic" href="<?= site_url('/index.php/catalogo') ?>">Agregar mas productos</a></div>
-                <div class="col-md-4 text-center "> <button type="button" class="btn btn-black-generic" data-toggle="modal" data-target="#modalAddProduct">Agregar nuevo producto</a></div>
+                <div class="col-md-4 text-center "><a class="btn btn-outline-generic" href="<?= site_url('/index.php/catalogo') ?>" >Agregar mas productos</a></div>
+                <div class="col-md-4 text-center "> <button type="button" class="btn btn-black-generic" ng-if="orden_is_send == 0" data-toggle="modal" data-target="#modalAddProduct">Agregar nuevo producto</a></div>
                 <div class="col-md-4 text-center "><button class="btn btn-outline-generic" type="button" ng-click="NewOrder()">Nuevo Pedido</button></div>
              
             </div>
 
             <div class="row">
                 <div class="col-md-6">
-                    <div style="padding-top: 20px;"><b>Adjuntar documentos e imagenes:</b></div>
-                    <div class="file-upload" id="file-upload">
+                    <div style="padding-top: 20px;" ng-if="orden_is_send == 0"><b>Adjuntar documentos e imagenes:</b></div>
+                    <div class="file-upload" id="file-upload" ng-if="orden_is_send == 0">
 
 
                         <div id="box" class="animated bounceIn image-upload-wrap">
@@ -97,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="enlaces-panel" style="padding-top: 20px;">
+                    <div class="enlaces-panel" style="padding-top: 20px;" ng-if="orden_is_send == 0">
                         <div class="container">
                             <div class="row " style="margin-bottom: 30px;">
                                 <div class="col-md-6"><b>Agregar enlaces:</b></div>
@@ -150,7 +152,7 @@
 
 
             <?php include('panelStats.php'); ?>
-            <div class="btn-cart-totals flex-d">
+            <div class="btn-cart-totals flex-d" ng-if="orden_is_send == 0">
                 <button type="button" id="btnSaveOrder" class="btn btn-outline-generic ml-10" ng-click="guardarOrden()">
                     <div class="cart-loader"></div> <span class="title_btn">Guardar pedido</span>
                 </button>

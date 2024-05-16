@@ -735,6 +735,34 @@ function cargar_jquery_edicion_rapida()
 }
 
 
+// Función para agregar el campo personalizado al formulario de edición del producto en la pestaña de Inventario
+function agregar_campo_cantidad_minima_para_pedir() {
+    global $woocommerce, $post;
+
+    echo '<div class="options_group">';
+
+    // Campo de entrada para la cantidad mínima para pedir
+    woocommerce_wp_text_input(
+        array(
+            'id'          => 'cantidad_minima_para_pedir',
+            'label'       => __('Cantidad Mínima para Pedir', 'woocommerce'),
+            'placeholder' => '',
+            'description' => __('Ingrese la cantidad mínima para pedir este producto.', 'woocommerce')
+        )
+    );
+
+    echo '</div>';
+}
+add_action('woocommerce_product_options_inventory_product_data', 'agregar_campo_cantidad_minima_para_pedir');
+
+// Función para guardar el valor del campo personalizado al guardar el producto
+function guardar_campo_cantidad_minima_para_pedir($product_id) {
+    $cantidad_minima = isset($_POST['cantidad_minima_para_pedir']) ? sanitize_text_field($_POST['cantidad_minima_para_pedir']) : '';
+    update_post_meta($product_id, 'cantidad_minima_para_pedir', $cantidad_minima);
+}
+add_action('woocommerce_process_product_meta', 'guardar_campo_cantidad_minima_para_pedir', 10, 1);
+
+
 //endpoint relaionados
 
 
@@ -761,6 +789,37 @@ function buscar_productos_relacionados($request)
     return rest_ensure_response($relacionados);
 }
 
+
+function set_cantidad_default($id_product,$id_parent_product){
+
+    $cnt_min = get_post_meta($id_product, 'cantidad_minima_para_pedir', true);
+
+    $cnt_min_parent = get_post_meta($id_parent_product, 'cantidad_minima_para_pedir', true);
+
+
+// Verificar si se encontró un valor
+if (!empty($cnt_min_parent)) {
+   // echo 'La cantidad mínima para pedir este producto padre es: ' . $cnt_min_parent;
+} else {
+    //json_encode(array('error'=>'No se encontró una cantidad mínima definida para este producto.'));
+    $cnt_min_parent = 0;
+}
+
+
+// Verificar si se encontró un valor
+if (!empty($cnt_min)) {
+   // echo 'La cantidad mínima para pedir este producto es: ' . $cnt_min;
+} else {
+    //echo json_encode(array('error'=>'No se encontró una cantidad mínima definida para este producto.'));
+    $cnt_min = 0;
+}
+
+
+$cnt_min = $cnt_min * $cnt_min_parent;
+
+return $cnt_min;
+
+}
 
 
 /**
@@ -804,6 +863,8 @@ function obtener_productos_relacionados_por_padre($parent_product_id, $limit = -
             // Obtener las categorías asociadas al producto con todos los campos y metacampos
             $categorias_producto = wp_get_post_terms($productoi->get_id(), 'product_cat');
 
+            $cantidad_producto = set_cantidad_default($productoi->get_id(),$parent_product_id);
+
             // Almacenar la información relevante de cada categoría asociada al producto
             $categorias_producto_info = array();
             foreach ($categorias_producto as $categoria_producto) {
@@ -822,6 +883,7 @@ function obtener_productos_relacionados_por_padre($parent_product_id, $limit = -
                 'image_url' => $imagen_producto_url,
                 'thumbnail_prod' => $imagen_miniatura,
                 'sku' => $sku_producto,
+                'cnt' => $cantidad_producto,
                 'categorias' => $categorias_producto_info, // Agregar las categorías del producto al resultado
                 'marca' => $marca_id_producto,
                 'observacion' => ''
@@ -969,7 +1031,7 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
     // Realizar la consulta
     $productos = new WP_Query($args);
 
-
+    
     // Obtener la información (precio, imagen, SKU y categorías) para cada producto
     $productos_con_info = array();
     foreach ($productos->posts as $producto) {
@@ -979,9 +1041,11 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
         $imagen_miniatura = get_the_post_thumbnail_url($producto->ID, 'thumbnail');
         $sku_producto = get_post_meta($producto->ID, '_sku', true); // Obtener el SKU del producto
         $marca_id_producto = get_post_meta($producto->ID, '_marca_producto', true);
-
+        
         // Obtener las categorías asociadas al producto con todos los campos y metacampos
         $categorias_producto = wp_get_post_terms($producto->ID, 'product_cat');
+
+        $cantidad_producto = 1;
 
         // Almacenar la información relevante de cada categoría asociada al producto
         $categorias_producto_info = array();
@@ -1004,7 +1068,8 @@ function buscar_productos($nombre = '', $marca_id = null, $categoria_id = null, 
             'sku' => $sku_producto,
             'categorias' => $categorias_producto_info, // Agregar las categorías del producto al resultado
             'marca' => $marca_id_producto,
-            'observacion' => ''
+            'observacion' => '',
+            'tipo' => wc_get_product($producto->ID)->get_type()
         );
     }
 
@@ -1686,6 +1751,14 @@ function mail_order()
     $items_orden = $wpdb->get_results($query_items); // Obtiene una lista de elementos
 
 
+    // Actualiza el campo is_send a 1 para el registro con el ID especificado
+    $result = $wpdb->update(
+        $orden_table_name,
+        array( 'is_send' => '1' ),
+        array( 'id' => $order_id ),
+        array( '%d' ),
+        array( '%d' )
+    );
 
 
     ob_start(); // Comenzar el almacenamiento en búfer de salida
@@ -1719,12 +1792,12 @@ function mail_order()
 
     // Envío del correo electrónico
     $enviado = wp_mail($para, $asunto, $mensaje, $cabeceras);
-
+    header('Content-Type: application/json');
     // Verificar si el correo electrónico se envió correctamente
     if ($enviado) {
-        echo 'El correo electrónico se ha enviado correctamente. ' . $logo_url;
+        echo json_encode(array('result'=>'success','messaje' => 'El correo electrónico se ha enviado correctamente. '));
     } else {
-        echo 'Error al enviar el correo electrónico.';
+        echo json_encode(array('result'=> 'error' ,'messaje' => 'Error al enviar el correo electrónico.'));
     }
     die();
 }

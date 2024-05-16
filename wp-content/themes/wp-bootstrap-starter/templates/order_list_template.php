@@ -65,12 +65,12 @@ $categorias = obtener_categorias();
                                     <button type="button" class="btn  btn-xs edit_order" data-id_orden="<?=$ord['order']->id?>">
                                         <i class="fa fa-edit" aria-hidden="true"></i>
                                     </button>
-                                    <?php } ?>
+<!--                                     
                                     <button type="button" class="obs-toggle-m ml-2 btn btn-xs btnEmailOrder" >
                                     <i class=" fa fa-envelope" aria-hidden="true"></i>
-                                        
-                                    </button>
-                                    
+                                   
+                                    </button> -->
+                                       <?php } ?>  
                                     <button type="button" class="obs-toggle-l ml-2 btn btn-xs" >
                                     <i class=" fa fa-caret-up" aria-hidden="true"></i>
                                         
